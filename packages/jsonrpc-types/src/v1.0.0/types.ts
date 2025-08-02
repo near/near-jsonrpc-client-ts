@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-08-02T12:20:03.728Z
+// Generated on: 2025-08-02T19:49:57.295Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -15,39 +15,23 @@ import * as schemas from './schemas';
 export type AccessKey = z.infer<ReturnType<typeof schemas.AccessKeySchema>>;
 
 /** Describes the cost of creating an access key. */
-export type AccessKeyCreationConfigView = z.infer<
-  ReturnType<typeof schemas.AccessKeyCreationConfigViewSchema>
->;
+export type AccessKeyCreationConfigView = z.infer<ReturnType<typeof schemas.AccessKeyCreationConfigViewSchema>>;
 
-export type AccessKeyInfoView = z.infer<
-  ReturnType<typeof schemas.AccessKeyInfoViewSchema>
->;
+export type AccessKeyInfoView = z.infer<ReturnType<typeof schemas.AccessKeyInfoViewSchema>>;
 
-export type AccessKeyList = z.infer<
-  ReturnType<typeof schemas.AccessKeyListSchema>
->;
+export type AccessKeyList = z.infer<ReturnType<typeof schemas.AccessKeyListSchema>>;
 
 /** Defines permissions for AccessKey */
-export type AccessKeyPermission = z.infer<
-  ReturnType<typeof schemas.AccessKeyPermissionSchema>
->;
+export type AccessKeyPermission = z.infer<ReturnType<typeof schemas.AccessKeyPermissionSchema>>;
 
-export type AccessKeyPermissionView = z.infer<
-  ReturnType<typeof schemas.AccessKeyPermissionViewSchema>
->;
+export type AccessKeyPermissionView = z.infer<ReturnType<typeof schemas.AccessKeyPermissionViewSchema>>;
 
-export type AccessKeyView = z.infer<
-  ReturnType<typeof schemas.AccessKeyViewSchema>
->;
+export type AccessKeyView = z.infer<ReturnType<typeof schemas.AccessKeyViewSchema>>;
 
 /** The structure describes configuration for creation of new accounts. */
-export type AccountCreationConfigView = z.infer<
-  ReturnType<typeof schemas.AccountCreationConfigViewSchema>
->;
+export type AccountCreationConfigView = z.infer<ReturnType<typeof schemas.AccountCreationConfigViewSchema>>;
 
-export type AccountDataView = z.infer<
-  ReturnType<typeof schemas.AccountDataViewSchema>
->;
+export type AccountDataView = z.infer<ReturnType<typeof schemas.AccountDataViewSchema>>;
 
 /**
  * NEAR Account Identifier. This is a unique, syntactically valid,
@@ -60,9 +44,7 @@ export type AccountDataView = z.infer<
  */
 export type AccountId = z.infer<ReturnType<typeof schemas.AccountIdSchema>>;
 
-export type AccountIdValidityRulesVersion = z.infer<
-  ReturnType<typeof schemas.AccountIdValidityRulesVersionSchema>
->;
+export type AccountIdValidityRulesVersion = z.infer<ReturnType<typeof schemas.AccountIdValidityRulesVersionSchema>>;
 
 /** Account info for validators */
 export type AccountInfo = z.infer<ReturnType<typeof schemas.AccountInfoSchema>>;
@@ -70,9 +52,7 @@ export type AccountInfo = z.infer<ReturnType<typeof schemas.AccountInfoSchema>>;
 /** A view of the account */
 export type AccountView = z.infer<ReturnType<typeof schemas.AccountViewSchema>>;
 
-export type AccountWithPublicKey = z.infer<
-  ReturnType<typeof schemas.AccountWithPublicKeySchema>
->;
+export type AccountWithPublicKey = z.infer<ReturnType<typeof schemas.AccountWithPublicKeySchema>>;
 
 export type Action = z.infer<ReturnType<typeof schemas.ActionSchema>>;
 
@@ -80,27 +60,19 @@ export type Action = z.infer<ReturnType<typeof schemas.ActionSchema>>;
  * Describes the cost of creating a specific action, `Action`. Includes all
  * variants.
  */
-export type ActionCreationConfigView = z.infer<
-  ReturnType<typeof schemas.ActionCreationConfigViewSchema>
->;
+export type ActionCreationConfigView = z.infer<ReturnType<typeof schemas.ActionCreationConfigViewSchema>>;
 
 /** An error happened during Action execution */
 export type ActionError = z.infer<ReturnType<typeof schemas.ActionErrorSchema>>;
 
-export type ActionErrorKind = z.infer<
-  ReturnType<typeof schemas.ActionErrorKindSchema>
->;
+export type ActionErrorKind = z.infer<ReturnType<typeof schemas.ActionErrorKindSchema>>;
 
 export type ActionView = z.infer<ReturnType<typeof schemas.ActionViewSchema>>;
 
 /** Describes the error for validating a list of actions. */
-export type ActionsValidationError = z.infer<
-  ReturnType<typeof schemas.ActionsValidationErrorSchema>
->;
+export type ActionsValidationError = z.infer<ReturnType<typeof schemas.ActionsValidationErrorSchema>>;
 
-export type AddKeyAction = z.infer<
-  ReturnType<typeof schemas.AddKeyActionSchema>
->;
+export type AddKeyAction = z.infer<ReturnType<typeof schemas.AddKeyActionSchema>>;
 
 /**
  * `BandwidthRequest` describes the size of receipts that a shard would like
@@ -108,50 +80,34 @@ export type AddKeyAction = z.infer<
  * another shard, it needs to create a request and wait for a bandwidth grant
  * from the bandwidth scheduler.
  */
-export type BandwidthRequest = z.infer<
-  ReturnType<typeof schemas.BandwidthRequestSchema>
->;
+export type BandwidthRequest = z.infer<ReturnType<typeof schemas.BandwidthRequestSchema>>;
 
 /**
  * Bitmap which describes which values from the predefined list are being
  * requested. The nth bit is set to 1 when the nth value from the list is
  * being requested.
  */
-export type BandwidthRequestBitmap = z.infer<
-  ReturnType<typeof schemas.BandwidthRequestBitmapSchema>
->;
+export type BandwidthRequestBitmap = z.infer<ReturnType<typeof schemas.BandwidthRequestBitmapSchema>>;
 
 /**
  * A list of shard's bandwidth requests. Describes how much the shard would
  * like to send to other shards.
  */
-export type BandwidthRequests = z.infer<
-  ReturnType<typeof schemas.BandwidthRequestsSchema>
->;
+export type BandwidthRequests = z.infer<ReturnType<typeof schemas.BandwidthRequestsSchema>>;
 
-export type BandwidthRequestsV1 = z.infer<
-  ReturnType<typeof schemas.BandwidthRequestsV1Schema>
->;
+export type BandwidthRequestsV1 = z.infer<ReturnType<typeof schemas.BandwidthRequestsV1Schema>>;
 
-export type BlockHeaderInnerLiteView = z.infer<
-  ReturnType<typeof schemas.BlockHeaderInnerLiteViewSchema>
->;
+export type BlockHeaderInnerLiteView = z.infer<ReturnType<typeof schemas.BlockHeaderInnerLiteViewSchema>>;
 
-export type BlockHeaderView = z.infer<
-  ReturnType<typeof schemas.BlockHeaderViewSchema>
->;
+export type BlockHeaderView = z.infer<ReturnType<typeof schemas.BlockHeaderViewSchema>>;
 
 export type BlockId = z.infer<ReturnType<typeof schemas.BlockIdSchema>>;
 
-export type BlockStatusView = z.infer<
-  ReturnType<typeof schemas.BlockStatusViewSchema>
->;
+export type BlockStatusView = z.infer<ReturnType<typeof schemas.BlockStatusViewSchema>>;
 
 export type CallResult = z.infer<ReturnType<typeof schemas.CallResultSchema>>;
 
-export type CatchupStatusView = z.infer<
-  ReturnType<typeof schemas.CatchupStatusViewSchema>
->;
+export type CatchupStatusView = z.infer<ReturnType<typeof schemas.CatchupStatusViewSchema>>;
 
 /**
  * Config for the Chunk Distribution Network feature. This allows nodes to
@@ -159,92 +115,56 @@ export type CatchupStatusView = z.infer<
  * approach are: (1) less request/response traffic on the peer-to-peer network
  * and (2) lower latency for RPC nodes indexing the chain.
  */
-export type ChunkDistributionNetworkConfig = z.infer<
-  ReturnType<typeof schemas.ChunkDistributionNetworkConfigSchema>
->;
+export type ChunkDistributionNetworkConfig = z.infer<ReturnType<typeof schemas.ChunkDistributionNetworkConfigSchema>>;
 
 /** URIs for the Chunk Distribution Network feature. */
-export type ChunkDistributionUris = z.infer<
-  ReturnType<typeof schemas.ChunkDistributionUrisSchema>
->;
+export type ChunkDistributionUris = z.infer<ReturnType<typeof schemas.ChunkDistributionUrisSchema>>;
 
-export type ChunkHeaderView = z.infer<
-  ReturnType<typeof schemas.ChunkHeaderViewSchema>
->;
+export type ChunkHeaderView = z.infer<ReturnType<typeof schemas.ChunkHeaderViewSchema>>;
 
-export type CompilationError = z.infer<
-  ReturnType<typeof schemas.CompilationErrorSchema>
->;
+export type CompilationError = z.infer<ReturnType<typeof schemas.CompilationErrorSchema>>;
 
-export type CongestionControlConfigView = z.infer<
-  ReturnType<typeof schemas.CongestionControlConfigViewSchema>
->;
+export type CongestionControlConfigView = z.infer<ReturnType<typeof schemas.CongestionControlConfigViewSchema>>;
 
-export type CongestionInfoView = z.infer<
-  ReturnType<typeof schemas.CongestionInfoViewSchema>
->;
+export type CongestionInfoView = z.infer<ReturnType<typeof schemas.CongestionInfoViewSchema>>;
 
 /** A view of the contract code. */
-export type ContractCodeView = z.infer<
-  ReturnType<typeof schemas.ContractCodeViewSchema>
->;
+export type ContractCodeView = z.infer<ReturnType<typeof schemas.ContractCodeViewSchema>>;
 
 export type CostGasUsed = z.infer<ReturnType<typeof schemas.CostGasUsedSchema>>;
 
 /** Create account action */
-export type CreateAccountAction = z.infer<
-  ReturnType<typeof schemas.CreateAccountActionSchema>
->;
+export type CreateAccountAction = z.infer<ReturnType<typeof schemas.CreateAccountActionSchema>>;
 
 export type CryptoHash = z.infer<ReturnType<typeof schemas.CryptoHashSchema>>;
 
-export type CurrentEpochValidatorInfo = z.infer<
-  ReturnType<typeof schemas.CurrentEpochValidatorInfoSchema>
->;
+export type CurrentEpochValidatorInfo = z.infer<ReturnType<typeof schemas.CurrentEpochValidatorInfoSchema>>;
 
-export type DataReceiptCreationConfigView = z.infer<
-  ReturnType<typeof schemas.DataReceiptCreationConfigViewSchema>
->;
+export type DataReceiptCreationConfigView = z.infer<ReturnType<typeof schemas.DataReceiptCreationConfigViewSchema>>;
 
-export type DataReceiverView = z.infer<
-  ReturnType<typeof schemas.DataReceiverViewSchema>
->;
+export type DataReceiverView = z.infer<ReturnType<typeof schemas.DataReceiverViewSchema>>;
 
 /** This action allows to execute the inner actions behalf of the defined sender. */
-export type DelegateAction = z.infer<
-  ReturnType<typeof schemas.DelegateActionSchema>
->;
+export type DelegateAction = z.infer<ReturnType<typeof schemas.DelegateActionSchema>>;
 
-export type DeleteAccountAction = z.infer<
-  ReturnType<typeof schemas.DeleteAccountActionSchema>
->;
+export type DeleteAccountAction = z.infer<ReturnType<typeof schemas.DeleteAccountActionSchema>>;
 
-export type DeleteKeyAction = z.infer<
-  ReturnType<typeof schemas.DeleteKeyActionSchema>
->;
+export type DeleteKeyAction = z.infer<ReturnType<typeof schemas.DeleteKeyActionSchema>>;
 
 /** Deploy contract action */
-export type DeployContractAction = z.infer<
-  ReturnType<typeof schemas.DeployContractActionSchema>
->;
+export type DeployContractAction = z.infer<ReturnType<typeof schemas.DeployContractActionSchema>>;
 
 /** Deploy global contract action */
-export type DeployGlobalContractAction = z.infer<
-  ReturnType<typeof schemas.DeployGlobalContractActionSchema>
->;
+export type DeployGlobalContractAction = z.infer<ReturnType<typeof schemas.DeployGlobalContractActionSchema>>;
 
-export type DetailedDebugStatus = z.infer<
-  ReturnType<typeof schemas.DetailedDebugStatusSchema>
->;
+export type DetailedDebugStatus = z.infer<ReturnType<typeof schemas.DetailedDebugStatusSchema>>;
 
 export type Direction = z.infer<ReturnType<typeof schemas.DirectionSchema>>;
 
 /** Configures how to dump state to external storage. */
 export type DumpConfig = z.infer<ReturnType<typeof schemas.DumpConfigSchema>>;
 
-export type DurationAsStdSchemaProvider = z.infer<
-  ReturnType<typeof schemas.DurationAsStdSchemaProviderSchema>
->;
+export type DurationAsStdSchemaProvider = z.infer<ReturnType<typeof schemas.DurationAsStdSchemaProviderSchema>>;
 
 /**
  * Epoch identifier -- wrapped hash, to make it easier to distinguish. EpochId
@@ -253,41 +173,25 @@ export type DurationAsStdSchemaProvider = z.infer<
  */
 export type EpochId = z.infer<ReturnType<typeof schemas.EpochIdSchema>>;
 
-export type EpochSyncConfig = z.infer<
-  ReturnType<typeof schemas.EpochSyncConfigSchema>
->;
+export type EpochSyncConfig = z.infer<ReturnType<typeof schemas.EpochSyncConfigSchema>>;
 
-export type ExecutionMetadataView = z.infer<
-  ReturnType<typeof schemas.ExecutionMetadataViewSchema>
->;
+export type ExecutionMetadataView = z.infer<ReturnType<typeof schemas.ExecutionMetadataViewSchema>>;
 
-export type ExecutionOutcomeView = z.infer<
-  ReturnType<typeof schemas.ExecutionOutcomeViewSchema>
->;
+export type ExecutionOutcomeView = z.infer<ReturnType<typeof schemas.ExecutionOutcomeViewSchema>>;
 
-export type ExecutionOutcomeWithIdView = z.infer<
-  ReturnType<typeof schemas.ExecutionOutcomeWithIdViewSchema>
->;
+export type ExecutionOutcomeWithIdView = z.infer<ReturnType<typeof schemas.ExecutionOutcomeWithIdViewSchema>>;
 
-export type ExecutionStatusView = z.infer<
-  ReturnType<typeof schemas.ExecutionStatusViewSchema>
->;
+export type ExecutionStatusView = z.infer<ReturnType<typeof schemas.ExecutionStatusViewSchema>>;
 
 /**
  * Typed view of ExtCostsConfig to preserve JSON output field names in
  * protocol config RPC output.
  */
-export type ExtCostsConfigView = z.infer<
-  ReturnType<typeof schemas.ExtCostsConfigViewSchema>
->;
+export type ExtCostsConfigView = z.infer<ReturnType<typeof schemas.ExtCostsConfigViewSchema>>;
 
-export type ExternalStorageConfig = z.infer<
-  ReturnType<typeof schemas.ExternalStorageConfigSchema>
->;
+export type ExternalStorageConfig = z.infer<ReturnType<typeof schemas.ExternalStorageConfigSchema>>;
 
-export type ExternalStorageLocation = z.infer<
-  ReturnType<typeof schemas.ExternalStorageLocationSchema>
->;
+export type ExternalStorageLocation = z.infer<ReturnType<typeof schemas.ExternalStorageLocationSchema>>;
 
 /**
  * Costs associated with an object that can only be sent over the network (and
@@ -301,28 +205,20 @@ export type Fee = z.infer<ReturnType<typeof schemas.FeeSchema>>;
  * Execution outcome of the transaction and all the subsequent receipts. Could
  * be not finalized yet
  */
-export type FinalExecutionOutcomeView = z.infer<
-  ReturnType<typeof schemas.FinalExecutionOutcomeViewSchema>
->;
+export type FinalExecutionOutcomeView = z.infer<ReturnType<typeof schemas.FinalExecutionOutcomeViewSchema>>;
 
 /**
  * Final execution outcome of the transaction and all of subsequent the
  * receipts. Also includes the generated receipt.
  */
-export type FinalExecutionOutcomeWithReceiptView = z.infer<
-  ReturnType<typeof schemas.FinalExecutionOutcomeWithReceiptViewSchema>
->;
+export type FinalExecutionOutcomeWithReceiptView = z.infer<ReturnType<typeof schemas.FinalExecutionOutcomeWithReceiptViewSchema>>;
 
-export type FinalExecutionStatus = z.infer<
-  ReturnType<typeof schemas.FinalExecutionStatusSchema>
->;
+export type FinalExecutionStatus = z.infer<ReturnType<typeof schemas.FinalExecutionStatusSchema>>;
 
 /** Different types of finality. */
 export type Finality = z.infer<ReturnType<typeof schemas.FinalitySchema>>;
 
-export type FunctionCallAction = z.infer<
-  ReturnType<typeof schemas.FunctionCallActionSchema>
->;
+export type FunctionCallAction = z.infer<ReturnType<typeof schemas.FunctionCallActionSchema>>;
 
 /**
  * Serializable version of `near-vm-runner::FunctionCallError`. Must never
@@ -330,9 +226,7 @@ export type FunctionCallAction = z.infer<
  * very carefully). It describes stable serialization format, and only used by
  * serialization logic.
  */
-export type FunctionCallError = z.infer<
-  ReturnType<typeof schemas.FunctionCallErrorSchema>
->;
+export type FunctionCallError = z.infer<ReturnType<typeof schemas.FunctionCallErrorSchema>>;
 
 /**
  * Grants limited permission to make transactions with FunctionCallActions The
@@ -340,315 +234,137 @@ export type FunctionCallError = z.infer<
  * also restrict the account ID of the receiver for this function call. It
  * also can restrict the method name for the allowed function calls.
  */
-export type FunctionCallPermission = z.infer<
-  ReturnType<typeof schemas.FunctionCallPermissionSchema>
->;
+export type FunctionCallPermission = z.infer<ReturnType<typeof schemas.FunctionCallPermissionSchema>>;
 
 /** Configuration for garbage collection. */
 export type GCConfig = z.infer<ReturnType<typeof schemas.GCConfigSchema>>;
 
 export type GasKeyView = z.infer<ReturnType<typeof schemas.GasKeyViewSchema>>;
 
-export type GenesisConfig = z.infer<
-  ReturnType<typeof schemas.GenesisConfigSchema>
->;
+export type GenesisConfig = z.infer<ReturnType<typeof schemas.GenesisConfigSchema>>;
 
-export type GenesisConfigRequest = z.infer<
-  ReturnType<typeof schemas.GenesisConfigRequestSchema>
->;
+export type GenesisConfigRequest = z.infer<ReturnType<typeof schemas.GenesisConfigRequestSchema>>;
 
-export type GlobalContractDeployMode = z.infer<
-  ReturnType<typeof schemas.GlobalContractDeployModeSchema>
->;
+export type GlobalContractDeployMode = z.infer<ReturnType<typeof schemas.GlobalContractDeployModeSchema>>;
 
-export type GlobalContractIdentifier = z.infer<
-  ReturnType<typeof schemas.GlobalContractIdentifierSchema>
->;
+export type GlobalContractIdentifier = z.infer<ReturnType<typeof schemas.GlobalContractIdentifierSchema>>;
 
 export type HostError = z.infer<ReturnType<typeof schemas.HostErrorSchema>>;
 
-export type InvalidAccessKeyError = z.infer<
-  ReturnType<typeof schemas.InvalidAccessKeyErrorSchema>
->;
+export type InvalidAccessKeyError = z.infer<ReturnType<typeof schemas.InvalidAccessKeyErrorSchema>>;
 
 /** An error happened during TX execution */
-export type InvalidTxError = z.infer<
-  ReturnType<typeof schemas.InvalidTxErrorSchema>
->;
+export type InvalidTxError = z.infer<ReturnType<typeof schemas.InvalidTxErrorSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALChanges = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALChangesSchema>
->;
+export type JsonRpcRequestFor_EXPERIMENTALChanges = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALChangesSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALChangesInBlock = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALChangesInBlockSchema>
->;
+export type JsonRpcRequestFor_EXPERIMENTALChangesInBlock = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALChangesInBlockSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALCongestionLevel = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALCongestionLevelSchema>
->;
+export type JsonRpcRequestFor_EXPERIMENTALCongestionLevel = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALCongestionLevelSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALGenesisConfig = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALGenesisConfigSchema>
->;
+export type JsonRpcRequestFor_EXPERIMENTALGenesisConfig = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALGenesisConfigSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALLightClientBlockProof = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientBlockProofSchema
-  >
->;
+export type JsonRpcRequestFor_EXPERIMENTALLightClientBlockProof = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientBlockProofSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALLightClientProof = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientProofSchema
-  >
->;
+export type JsonRpcRequestFor_EXPERIMENTALLightClientProof = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientProofSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALMaintenanceWindows = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcRequestFor_EXPERIMENTALMaintenanceWindowsSchema
-  >
->;
+export type JsonRpcRequestFor_EXPERIMENTALMaintenanceWindows = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALMaintenanceWindowsSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALProtocolConfig = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALProtocolConfigSchema>
->;
+export type JsonRpcRequestFor_EXPERIMENTALProtocolConfig = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALProtocolConfigSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALReceipt = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALReceiptSchema>
->;
+export type JsonRpcRequestFor_EXPERIMENTALReceipt = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALReceiptSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALSplitStorageInfo = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcRequestFor_EXPERIMENTALSplitStorageInfoSchema
-  >
->;
+export type JsonRpcRequestFor_EXPERIMENTALSplitStorageInfo = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALSplitStorageInfoSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALTxStatus = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALTxStatusSchema>
->;
+export type JsonRpcRequestFor_EXPERIMENTALTxStatus = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALTxStatusSchema>>;
 
-export type JsonRpcRequestFor_EXPERIMENTALValidatorsOrdered = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcRequestFor_EXPERIMENTALValidatorsOrderedSchema
-  >
->;
+export type JsonRpcRequestFor_EXPERIMENTALValidatorsOrdered = z.infer<ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALValidatorsOrderedSchema>>;
 
-export type JsonRpcRequestForBlock = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForBlockSchema>
->;
+export type JsonRpcRequestForBlock = z.infer<ReturnType<typeof schemas.JsonRpcRequestForBlockSchema>>;
 
-export type JsonRpcRequestForBroadcastTxAsync = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForBroadcastTxAsyncSchema>
->;
+export type JsonRpcRequestForBroadcastTxAsync = z.infer<ReturnType<typeof schemas.JsonRpcRequestForBroadcastTxAsyncSchema>>;
 
-export type JsonRpcRequestForBroadcastTxCommit = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForBroadcastTxCommitSchema>
->;
+export type JsonRpcRequestForBroadcastTxCommit = z.infer<ReturnType<typeof schemas.JsonRpcRequestForBroadcastTxCommitSchema>>;
 
-export type JsonRpcRequestForChanges = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForChangesSchema>
->;
+export type JsonRpcRequestForChanges = z.infer<ReturnType<typeof schemas.JsonRpcRequestForChangesSchema>>;
 
-export type JsonRpcRequestForChunk = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForChunkSchema>
->;
+export type JsonRpcRequestForChunk = z.infer<ReturnType<typeof schemas.JsonRpcRequestForChunkSchema>>;
 
-export type JsonRpcRequestForClientConfig = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForClientConfigSchema>
->;
+export type JsonRpcRequestForClientConfig = z.infer<ReturnType<typeof schemas.JsonRpcRequestForClientConfigSchema>>;
 
-export type JsonRpcRequestForGasPrice = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForGasPriceSchema>
->;
+export type JsonRpcRequestForGasPrice = z.infer<ReturnType<typeof schemas.JsonRpcRequestForGasPriceSchema>>;
 
-export type JsonRpcRequestForHealth = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForHealthSchema>
->;
+export type JsonRpcRequestForHealth = z.infer<ReturnType<typeof schemas.JsonRpcRequestForHealthSchema>>;
 
-export type JsonRpcRequestForLightClientProof = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForLightClientProofSchema>
->;
+export type JsonRpcRequestForLightClientProof = z.infer<ReturnType<typeof schemas.JsonRpcRequestForLightClientProofSchema>>;
 
-export type JsonRpcRequestForNetworkInfo = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForNetworkInfoSchema>
->;
+export type JsonRpcRequestForNetworkInfo = z.infer<ReturnType<typeof schemas.JsonRpcRequestForNetworkInfoSchema>>;
 
-export type JsonRpcRequestForNextLightClientBlock = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForNextLightClientBlockSchema>
->;
+export type JsonRpcRequestForNextLightClientBlock = z.infer<ReturnType<typeof schemas.JsonRpcRequestForNextLightClientBlockSchema>>;
 
-export type JsonRpcRequestForQuery = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForQuerySchema>
->;
+export type JsonRpcRequestForQuery = z.infer<ReturnType<typeof schemas.JsonRpcRequestForQuerySchema>>;
 
-export type JsonRpcRequestForSendTx = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForSendTxSchema>
->;
+export type JsonRpcRequestForSendTx = z.infer<ReturnType<typeof schemas.JsonRpcRequestForSendTxSchema>>;
 
-export type JsonRpcRequestForStatus = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForStatusSchema>
->;
+export type JsonRpcRequestForStatus = z.infer<ReturnType<typeof schemas.JsonRpcRequestForStatusSchema>>;
 
-export type JsonRpcRequestForTx = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForTxSchema>
->;
+export type JsonRpcRequestForTx = z.infer<ReturnType<typeof schemas.JsonRpcRequestForTxSchema>>;
 
-export type JsonRpcRequestForValidators = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestForValidatorsSchema>
->;
+export type JsonRpcRequestForValidators = z.infer<ReturnType<typeof schemas.JsonRpcRequestForValidatorsSchema>>;
 
-export type JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_CryptoHashAnd_RpcError = z.infer<
-  ReturnType<typeof schemas.JsonRpcResponseFor_CryptoHashAnd_RpcErrorSchema>
->;
+export type JsonRpcResponseFor_CryptoHashAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_CryptoHashAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_GenesisConfigAnd_RpcError = z.infer<
-  ReturnType<typeof schemas.JsonRpcResponseFor_GenesisConfigAnd_RpcErrorSchema>
->;
+export type JsonRpcResponseFor_GenesisConfigAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_GenesisConfigAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcBlockResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcBlockResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcBlockResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcBlockResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcChunkResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcChunkResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcChunkResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcChunkResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcErrorSchema
-    >
-  >;
+export type JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcErrorSchema
-    >
-  >;
+export type JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcErrorSchema
-    >
-  >;
+export type JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcQueryResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcQueryResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcQueryResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcQueryResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcReceiptResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcReceiptResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcReceiptResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcReceiptResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcErrorSchema
-    >
-  >;
+export type JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcErrorSchema
-    >
-  >;
+export type JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema
-    >
-  >;
+export type JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcStatusResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcStatusResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcStatusResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcStatusResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcTransactionResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcTransactionResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema>>;
 
-export type JsonRpcResponseFor_RpcValidatorResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcValidatorResponseAnd_RpcErrorSchema
-  >
->;
+export type JsonRpcResponseFor_RpcValidatorResponseAnd_RpcError = z.infer<ReturnType<typeof schemas.JsonRpcResponseFor_RpcValidatorResponseAnd_RpcErrorSchema>>;
 
 /**
  * Information about a Producer: its account name, peer_id and a list of
  * connected peers that the node can use to send message for this producer.
  */
-export type KnownProducerView = z.infer<
-  ReturnType<typeof schemas.KnownProducerViewSchema>
->;
+export type KnownProducerView = z.infer<ReturnType<typeof schemas.KnownProducerViewSchema>>;
 
-export type LightClientBlockLiteView = z.infer<
-  ReturnType<typeof schemas.LightClientBlockLiteViewSchema>
->;
+export type LightClientBlockLiteView = z.infer<ReturnType<typeof schemas.LightClientBlockLiteViewSchema>>;
 
 /**
  * Describes limits for VM and Runtime. TODO #4139: consider switching to
@@ -656,38 +372,22 @@ export type LightClientBlockLiteView = z.infer<
  */
 export type LimitConfig = z.infer<ReturnType<typeof schemas.LimitConfigSchema>>;
 
-export type LogSummaryStyle = z.infer<
-  ReturnType<typeof schemas.LogSummaryStyleSchema>
->;
+export type LogSummaryStyle = z.infer<ReturnType<typeof schemas.LogSummaryStyleSchema>>;
 
-export type MerklePathItem = z.infer<
-  ReturnType<typeof schemas.MerklePathItemSchema>
->;
+export type MerklePathItem = z.infer<ReturnType<typeof schemas.MerklePathItemSchema>>;
 
-export type MethodResolveError = z.infer<
-  ReturnType<typeof schemas.MethodResolveErrorSchema>
->;
+export type MethodResolveError = z.infer<ReturnType<typeof schemas.MethodResolveErrorSchema>>;
 
-export type MissingTrieValue = z.infer<
-  ReturnType<typeof schemas.MissingTrieValueSchema>
->;
+export type MissingTrieValue = z.infer<ReturnType<typeof schemas.MissingTrieValueSchema>>;
 
 /** Contexts in which `StorageError::MissingTrieValue` error might occur. */
-export type MissingTrieValueContext = z.infer<
-  ReturnType<typeof schemas.MissingTrieValueContextSchema>
->;
+export type MissingTrieValueContext = z.infer<ReturnType<typeof schemas.MissingTrieValueContextSchema>>;
 
-export type MutableConfigValue = z.infer<
-  ReturnType<typeof schemas.MutableConfigValueSchema>
->;
+export type MutableConfigValue = z.infer<ReturnType<typeof schemas.MutableConfigValueSchema>>;
 
-export type NetworkInfoView = z.infer<
-  ReturnType<typeof schemas.NetworkInfoViewSchema>
->;
+export type NetworkInfoView = z.infer<ReturnType<typeof schemas.NetworkInfoViewSchema>>;
 
-export type NextEpochValidatorInfo = z.infer<
-  ReturnType<typeof schemas.NextEpochValidatorInfoSchema>
->;
+export type NextEpochValidatorInfo = z.infer<ReturnType<typeof schemas.NextEpochValidatorInfoSchema>>;
 
 /**
  * This is Action which mustn't contain DelegateAction. This struct is needed
@@ -700,71 +400,43 @@ export type NextEpochValidatorInfo = z.infer<
  * `Transaction` or `Receipt` that we can serialize but deserializing it back
  * causes a parsing error.
  */
-export type NonDelegateAction = z.infer<
-  ReturnType<typeof schemas.NonDelegateActionSchema>
->;
+export type NonDelegateAction = z.infer<ReturnType<typeof schemas.NonDelegateActionSchema>>;
 
 /** Peer id is the public key. */
 export type PeerId = z.infer<ReturnType<typeof schemas.PeerIdSchema>>;
 
-export type PeerInfoView = z.infer<
-  ReturnType<typeof schemas.PeerInfoViewSchema>
->;
+export type PeerInfoView = z.infer<ReturnType<typeof schemas.PeerInfoViewSchema>>;
 
 /** Error that can occur while preparing or executing Wasm smart-contract. */
-export type PrepareError = z.infer<
-  ReturnType<typeof schemas.PrepareErrorSchema>
->;
+export type PrepareError = z.infer<ReturnType<typeof schemas.PrepareErrorSchema>>;
 
 export type PublicKey = z.infer<ReturnType<typeof schemas.PublicKeySchema>>;
 
-export type RangeOfUint64 = z.infer<
-  ReturnType<typeof schemas.RangeOfUint64Schema>
->;
+export type RangeOfUint64 = z.infer<ReturnType<typeof schemas.RangeOfUint64Schema>>;
 
-export type ReceiptEnumView = z.infer<
-  ReturnType<typeof schemas.ReceiptEnumViewSchema>
->;
+export type ReceiptEnumView = z.infer<ReturnType<typeof schemas.ReceiptEnumViewSchema>>;
 
 /** Describes the error for validating a receipt. */
-export type ReceiptValidationError = z.infer<
-  ReturnType<typeof schemas.ReceiptValidationErrorSchema>
->;
+export type ReceiptValidationError = z.infer<ReturnType<typeof schemas.ReceiptValidationErrorSchema>>;
 
 export type ReceiptView = z.infer<ReturnType<typeof schemas.ReceiptViewSchema>>;
 
-export type RpcBlockRequest = z.infer<
-  ReturnType<typeof schemas.RpcBlockRequestSchema>
->;
+export type RpcBlockRequest = z.infer<ReturnType<typeof schemas.RpcBlockRequestSchema>>;
 
-export type RpcBlockResponse = z.infer<
-  ReturnType<typeof schemas.RpcBlockResponseSchema>
->;
+export type RpcBlockResponse = z.infer<ReturnType<typeof schemas.RpcBlockResponseSchema>>;
 
-export type RpcChunkRequest = z.infer<
-  ReturnType<typeof schemas.RpcChunkRequestSchema>
->;
+export type RpcChunkRequest = z.infer<ReturnType<typeof schemas.RpcChunkRequestSchema>>;
 
-export type RpcChunkResponse = z.infer<
-  ReturnType<typeof schemas.RpcChunkResponseSchema>
->;
+export type RpcChunkResponse = z.infer<ReturnType<typeof schemas.RpcChunkResponseSchema>>;
 
-export type RpcClientConfigRequest = z.infer<
-  ReturnType<typeof schemas.RpcClientConfigRequestSchema>
->;
+export type RpcClientConfigRequest = z.infer<ReturnType<typeof schemas.RpcClientConfigRequestSchema>>;
 
 /** ClientConfig where some fields can be updated at runtime. */
-export type RpcClientConfigResponse = z.infer<
-  ReturnType<typeof schemas.RpcClientConfigResponseSchema>
->;
+export type RpcClientConfigResponse = z.infer<ReturnType<typeof schemas.RpcClientConfigResponseSchema>>;
 
-export type RpcCongestionLevelRequest = z.infer<
-  ReturnType<typeof schemas.RpcCongestionLevelRequestSchema>
->;
+export type RpcCongestionLevelRequest = z.infer<ReturnType<typeof schemas.RpcCongestionLevelRequestSchema>>;
 
-export type RpcCongestionLevelResponse = z.infer<
-  ReturnType<typeof schemas.RpcCongestionLevelResponseSchema>
->;
+export type RpcCongestionLevelResponse = z.infer<ReturnType<typeof schemas.RpcCongestionLevelResponseSchema>>;
 
 /**
  * This struct may be returned from JSON RPC server in case of error It is
@@ -773,163 +445,89 @@ export type RpcCongestionLevelResponse = z.infer<
  */
 export type RpcError = z.infer<ReturnType<typeof schemas.RpcErrorSchema>>;
 
-export type RpcGasPriceRequest = z.infer<
-  ReturnType<typeof schemas.RpcGasPriceRequestSchema>
->;
+export type RpcGasPriceRequest = z.infer<ReturnType<typeof schemas.RpcGasPriceRequestSchema>>;
 
-export type RpcGasPriceResponse = z.infer<
-  ReturnType<typeof schemas.RpcGasPriceResponseSchema>
->;
+export type RpcGasPriceResponse = z.infer<ReturnType<typeof schemas.RpcGasPriceResponseSchema>>;
 
-export type RpcHealthRequest = z.infer<
-  ReturnType<typeof schemas.RpcHealthRequestSchema>
->;
+export type RpcHealthRequest = z.infer<ReturnType<typeof schemas.RpcHealthRequestSchema>>;
 
-export type RpcHealthResponse = z.infer<
-  ReturnType<typeof schemas.RpcHealthResponseSchema>
->;
+export type RpcHealthResponse = z.infer<ReturnType<typeof schemas.RpcHealthResponseSchema>>;
 
-export type RpcKnownProducer = z.infer<
-  ReturnType<typeof schemas.RpcKnownProducerSchema>
->;
+export type RpcKnownProducer = z.infer<ReturnType<typeof schemas.RpcKnownProducerSchema>>;
 
-export type RpcLightClientBlockProofRequest = z.infer<
-  ReturnType<typeof schemas.RpcLightClientBlockProofRequestSchema>
->;
+export type RpcLightClientBlockProofRequest = z.infer<ReturnType<typeof schemas.RpcLightClientBlockProofRequestSchema>>;
 
-export type RpcLightClientBlockProofResponse = z.infer<
-  ReturnType<typeof schemas.RpcLightClientBlockProofResponseSchema>
->;
+export type RpcLightClientBlockProofResponse = z.infer<ReturnType<typeof schemas.RpcLightClientBlockProofResponseSchema>>;
 
-export type RpcLightClientExecutionProofRequest = z.infer<
-  ReturnType<typeof schemas.RpcLightClientExecutionProofRequestSchema>
->;
+export type RpcLightClientExecutionProofRequest = z.infer<ReturnType<typeof schemas.RpcLightClientExecutionProofRequestSchema>>;
 
-export type RpcLightClientExecutionProofResponse = z.infer<
-  ReturnType<typeof schemas.RpcLightClientExecutionProofResponseSchema>
->;
+export type RpcLightClientExecutionProofResponse = z.infer<ReturnType<typeof schemas.RpcLightClientExecutionProofResponseSchema>>;
 
-export type RpcLightClientNextBlockRequest = z.infer<
-  ReturnType<typeof schemas.RpcLightClientNextBlockRequestSchema>
->;
+export type RpcLightClientNextBlockRequest = z.infer<ReturnType<typeof schemas.RpcLightClientNextBlockRequestSchema>>;
 
-export type RpcLightClientNextBlockResponse = z.infer<
-  ReturnType<typeof schemas.RpcLightClientNextBlockResponseSchema>
->;
+export type RpcLightClientNextBlockResponse = z.infer<ReturnType<typeof schemas.RpcLightClientNextBlockResponseSchema>>;
 
-export type RpcMaintenanceWindowsRequest = z.infer<
-  ReturnType<typeof schemas.RpcMaintenanceWindowsRequestSchema>
->;
+export type RpcMaintenanceWindowsRequest = z.infer<ReturnType<typeof schemas.RpcMaintenanceWindowsRequestSchema>>;
 
-export type RpcNetworkInfoRequest = z.infer<
-  ReturnType<typeof schemas.RpcNetworkInfoRequestSchema>
->;
+export type RpcNetworkInfoRequest = z.infer<ReturnType<typeof schemas.RpcNetworkInfoRequestSchema>>;
 
-export type RpcNetworkInfoResponse = z.infer<
-  ReturnType<typeof schemas.RpcNetworkInfoResponseSchema>
->;
+export type RpcNetworkInfoResponse = z.infer<ReturnType<typeof schemas.RpcNetworkInfoResponseSchema>>;
 
 export type RpcPeerInfo = z.infer<ReturnType<typeof schemas.RpcPeerInfoSchema>>;
 
-export type RpcProtocolConfigRequest = z.infer<
-  ReturnType<typeof schemas.RpcProtocolConfigRequestSchema>
->;
+export type RpcProtocolConfigRequest = z.infer<ReturnType<typeof schemas.RpcProtocolConfigRequestSchema>>;
 
-export type RpcProtocolConfigResponse = z.infer<
-  ReturnType<typeof schemas.RpcProtocolConfigResponseSchema>
->;
+export type RpcProtocolConfigResponse = z.infer<ReturnType<typeof schemas.RpcProtocolConfigResponseSchema>>;
 
-export type RpcQueryRequest = z.infer<
-  ReturnType<typeof schemas.RpcQueryRequestSchema>
->;
+export type RpcQueryRequest = z.infer<ReturnType<typeof schemas.RpcQueryRequestSchema>>;
 
-export type RpcQueryResponse = z.infer<
-  ReturnType<typeof schemas.RpcQueryResponseSchema>
->;
+export type RpcQueryResponse = z.infer<ReturnType<typeof schemas.RpcQueryResponseSchema>>;
 
-export type RpcReceiptRequest = z.infer<
-  ReturnType<typeof schemas.RpcReceiptRequestSchema>
->;
+export type RpcReceiptRequest = z.infer<ReturnType<typeof schemas.RpcReceiptRequestSchema>>;
 
-export type RpcReceiptResponse = z.infer<
-  ReturnType<typeof schemas.RpcReceiptResponseSchema>
->;
+export type RpcReceiptResponse = z.infer<ReturnType<typeof schemas.RpcReceiptResponseSchema>>;
 
-export type RpcRequestValidationErrorKind = z.infer<
-  ReturnType<typeof schemas.RpcRequestValidationErrorKindSchema>
->;
+export type RpcRequestValidationErrorKind = z.infer<ReturnType<typeof schemas.RpcRequestValidationErrorKindSchema>>;
 
-export type RpcSendTransactionRequest = z.infer<
-  ReturnType<typeof schemas.RpcSendTransactionRequestSchema>
->;
+export type RpcSendTransactionRequest = z.infer<ReturnType<typeof schemas.RpcSendTransactionRequestSchema>>;
 
-export type RpcSplitStorageInfoRequest = z.infer<
-  ReturnType<typeof schemas.RpcSplitStorageInfoRequestSchema>
->;
+export type RpcSplitStorageInfoRequest = z.infer<ReturnType<typeof schemas.RpcSplitStorageInfoRequestSchema>>;
 
 /** Contains the split storage information. */
-export type RpcSplitStorageInfoResponse = z.infer<
-  ReturnType<typeof schemas.RpcSplitStorageInfoResponseSchema>
->;
+export type RpcSplitStorageInfoResponse = z.infer<ReturnType<typeof schemas.RpcSplitStorageInfoResponseSchema>>;
 
 /**
  * It is a [serializable view] of [`StateChangesRequest`]. [serializable
  * view]: ./index.html [`StateChangesRequest`]:
  * ../types/struct.StateChangesRequest.html
  */
-export type RpcStateChangesInBlockByTypeRequest = z.infer<
-  ReturnType<typeof schemas.RpcStateChangesInBlockByTypeRequestSchema>
->;
+export type RpcStateChangesInBlockByTypeRequest = z.infer<ReturnType<typeof schemas.RpcStateChangesInBlockByTypeRequestSchema>>;
 
-export type RpcStateChangesInBlockByTypeResponse = z.infer<
-  ReturnType<typeof schemas.RpcStateChangesInBlockByTypeResponseSchema>
->;
+export type RpcStateChangesInBlockByTypeResponse = z.infer<ReturnType<typeof schemas.RpcStateChangesInBlockByTypeResponseSchema>>;
 
-export type RpcStateChangesInBlockRequest = z.infer<
-  ReturnType<typeof schemas.RpcStateChangesInBlockRequestSchema>
->;
+export type RpcStateChangesInBlockRequest = z.infer<ReturnType<typeof schemas.RpcStateChangesInBlockRequestSchema>>;
 
-export type RpcStateChangesInBlockResponse = z.infer<
-  ReturnType<typeof schemas.RpcStateChangesInBlockResponseSchema>
->;
+export type RpcStateChangesInBlockResponse = z.infer<ReturnType<typeof schemas.RpcStateChangesInBlockResponseSchema>>;
 
-export type RpcStatusRequest = z.infer<
-  ReturnType<typeof schemas.RpcStatusRequestSchema>
->;
+export type RpcStatusRequest = z.infer<ReturnType<typeof schemas.RpcStatusRequestSchema>>;
 
-export type RpcStatusResponse = z.infer<
-  ReturnType<typeof schemas.RpcStatusResponseSchema>
->;
+export type RpcStatusResponse = z.infer<ReturnType<typeof schemas.RpcStatusResponseSchema>>;
 
-export type RpcTransactionResponse = z.infer<
-  ReturnType<typeof schemas.RpcTransactionResponseSchema>
->;
+export type RpcTransactionResponse = z.infer<ReturnType<typeof schemas.RpcTransactionResponseSchema>>;
 
-export type RpcTransactionStatusRequest = z.infer<
-  ReturnType<typeof schemas.RpcTransactionStatusRequestSchema>
->;
+export type RpcTransactionStatusRequest = z.infer<ReturnType<typeof schemas.RpcTransactionStatusRequestSchema>>;
 
-export type RpcValidatorRequest = z.infer<
-  ReturnType<typeof schemas.RpcValidatorRequestSchema>
->;
+export type RpcValidatorRequest = z.infer<ReturnType<typeof schemas.RpcValidatorRequestSchema>>;
 
 /** Information about this epoch validators and next epoch validators */
-export type RpcValidatorResponse = z.infer<
-  ReturnType<typeof schemas.RpcValidatorResponseSchema>
->;
+export type RpcValidatorResponse = z.infer<ReturnType<typeof schemas.RpcValidatorResponseSchema>>;
 
-export type RpcValidatorsOrderedRequest = z.infer<
-  ReturnType<typeof schemas.RpcValidatorsOrderedRequestSchema>
->;
+export type RpcValidatorsOrderedRequest = z.infer<ReturnType<typeof schemas.RpcValidatorsOrderedRequestSchema>>;
 
 /** View that preserves JSON format of the runtime config. */
-export type RuntimeConfigView = z.infer<
-  ReturnType<typeof schemas.RuntimeConfigViewSchema>
->;
+export type RuntimeConfigView = z.infer<ReturnType<typeof schemas.RuntimeConfigViewSchema>>;
 
-export type RuntimeFeesConfigView = z.infer<
-  ReturnType<typeof schemas.RuntimeFeesConfigViewSchema>
->;
+export type RuntimeFeesConfigView = z.infer<ReturnType<typeof schemas.RuntimeFeesConfigViewSchema>>;
 
 /**
  * The shard identifier. It may be an arbitrary number - it does not need to
@@ -960,21 +558,15 @@ export type ShardLayout = z.infer<ReturnType<typeof schemas.ShardLayoutSchema>>;
  * for some existing tests. `parent_shards` for `ShardLayoutV1` is always
  * `None`, meaning it can only be the first shard layout a chain uses.
  */
-export type ShardLayoutV0 = z.infer<
-  ReturnType<typeof schemas.ShardLayoutV0Schema>
->;
+export type ShardLayoutV0 = z.infer<ReturnType<typeof schemas.ShardLayoutV0Schema>>;
 
-export type ShardLayoutV1 = z.infer<
-  ReturnType<typeof schemas.ShardLayoutV1Schema>
->;
+export type ShardLayoutV1 = z.infer<ReturnType<typeof schemas.ShardLayoutV1Schema>>;
 
 /**
  * Counterpart to `ShardLayoutV2` composed of maps with string keys to aid
  * serde serialization.
  */
-export type ShardLayoutV2 = z.infer<
-  ReturnType<typeof schemas.ShardLayoutV2Schema>
->;
+export type ShardLayoutV2 = z.infer<ReturnType<typeof schemas.ShardLayoutV2Schema>>;
 
 /**
  * `ShardUId` is a unique representation for shards from different shard
@@ -992,41 +584,27 @@ export type ShardUId = z.infer<ReturnType<typeof schemas.ShardUIdSchema>>;
 
 export type Signature = z.infer<ReturnType<typeof schemas.SignatureSchema>>;
 
-export type SignedDelegateAction = z.infer<
-  ReturnType<typeof schemas.SignedDelegateActionSchema>
->;
+export type SignedDelegateAction = z.infer<ReturnType<typeof schemas.SignedDelegateActionSchema>>;
 
-export type SignedTransaction = z.infer<
-  ReturnType<typeof schemas.SignedTransactionSchema>
->;
+export type SignedTransaction = z.infer<ReturnType<typeof schemas.SignedTransactionSchema>>;
 
-export type SignedTransactionView = z.infer<
-  ReturnType<typeof schemas.SignedTransactionViewSchema>
->;
+export type SignedTransactionView = z.infer<ReturnType<typeof schemas.SignedTransactionViewSchema>>;
 
-export type SlashedValidator = z.infer<
-  ReturnType<typeof schemas.SlashedValidatorSchema>
->;
+export type SlashedValidator = z.infer<ReturnType<typeof schemas.SlashedValidatorSchema>>;
 
 /** An action which stakes signer_id tokens and setup's validator public key */
 export type StakeAction = z.infer<ReturnType<typeof schemas.StakeActionSchema>>;
 
 /** See crate::types::StateChangeCause for details. */
-export type StateChangeCauseView = z.infer<
-  ReturnType<typeof schemas.StateChangeCauseViewSchema>
->;
+export type StateChangeCauseView = z.infer<ReturnType<typeof schemas.StateChangeCauseViewSchema>>;
 
 /**
  * It is a [serializable view] of [`StateChangeKind`]. [serializable view]:
  * ./index.html [`StateChangeKind`]: ../types/struct.StateChangeKind.html
  */
-export type StateChangeKindView = z.infer<
-  ReturnType<typeof schemas.StateChangeKindViewSchema>
->;
+export type StateChangeKindView = z.infer<ReturnType<typeof schemas.StateChangeKindViewSchema>>;
 
-export type StateChangeWithCauseView = z.infer<
-  ReturnType<typeof schemas.StateChangeWithCauseViewSchema>
->;
+export type StateChangeWithCauseView = z.infer<ReturnType<typeof schemas.StateChangeWithCauseViewSchema>>;
 
 /**
  * Item of the state, key and value are serialized in base64 and proof for
@@ -1035,335 +613,187 @@ export type StateChangeWithCauseView = z.infer<
 export type StateItem = z.infer<ReturnType<typeof schemas.StateItemSchema>>;
 
 /** Options for dumping state to S3. */
-export type StateSyncConfig = z.infer<
-  ReturnType<typeof schemas.StateSyncConfigSchema>
->;
+export type StateSyncConfig = z.infer<ReturnType<typeof schemas.StateSyncConfigSchema>>;
 
-export type StatusSyncInfo = z.infer<
-  ReturnType<typeof schemas.StatusSyncInfoSchema>
->;
+export type StatusSyncInfo = z.infer<ReturnType<typeof schemas.StatusSyncInfoSchema>>;
 
 /**
  * Errors which may occur during working with trie storages, storing trie
  * values (trie nodes and state values) by their hashes.
  */
-export type StorageError = z.infer<
-  ReturnType<typeof schemas.StorageErrorSchema>
->;
+export type StorageError = z.infer<ReturnType<typeof schemas.StorageErrorSchema>>;
 
 /**
  * This enum represents if a storage_get call will be performed through flat
  * storage or trie
  */
-export type StorageGetMode = z.infer<
-  ReturnType<typeof schemas.StorageGetModeSchema>
->;
+export type StorageGetMode = z.infer<ReturnType<typeof schemas.StorageGetModeSchema>>;
 
 /** Describes cost of storage per block */
-export type StorageUsageConfigView = z.infer<
-  ReturnType<typeof schemas.StorageUsageConfigViewSchema>
->;
+export type StorageUsageConfigView = z.infer<ReturnType<typeof schemas.StorageUsageConfigViewSchema>>;
 
-export type SyncCheckpoint = z.infer<
-  ReturnType<typeof schemas.SyncCheckpointSchema>
->;
+export type SyncCheckpoint = z.infer<ReturnType<typeof schemas.SyncCheckpointSchema>>;
 
 /** Configures how to fetch state parts during state sync. */
 export type SyncConfig = z.infer<ReturnType<typeof schemas.SyncConfigSchema>>;
 
-export type Tier1ProxyView = z.infer<
-  ReturnType<typeof schemas.Tier1ProxyViewSchema>
->;
+export type Tier1ProxyView = z.infer<ReturnType<typeof schemas.Tier1ProxyViewSchema>>;
 
 /**
  * Describes the expected behavior of the node regarding shard tracking. If
  * the node is an active validator, it will also track the shards it is
  * responsible for as a validator.
  */
-export type TrackedShardsConfig = z.infer<
-  ReturnType<typeof schemas.TrackedShardsConfigSchema>
->;
+export type TrackedShardsConfig = z.infer<ReturnType<typeof schemas.TrackedShardsConfigSchema>>;
 
-export type TransferAction = z.infer<
-  ReturnType<typeof schemas.TransferActionSchema>
->;
+export type TransferAction = z.infer<ReturnType<typeof schemas.TransferActionSchema>>;
 
 /** Error returned in the ExecutionOutcome in case of failure */
-export type TxExecutionError = z.infer<
-  ReturnType<typeof schemas.TxExecutionErrorSchema>
->;
+export type TxExecutionError = z.infer<ReturnType<typeof schemas.TxExecutionErrorSchema>>;
 
-export type TxExecutionStatus = z.infer<
-  ReturnType<typeof schemas.TxExecutionStatusSchema>
->;
+export type TxExecutionStatus = z.infer<ReturnType<typeof schemas.TxExecutionStatusSchema>>;
 
 /** Use global contract action */
-export type UseGlobalContractAction = z.infer<
-  ReturnType<typeof schemas.UseGlobalContractActionSchema>
->;
+export type UseGlobalContractAction = z.infer<ReturnType<typeof schemas.UseGlobalContractActionSchema>>;
 
-export type VMConfigView = z.infer<
-  ReturnType<typeof schemas.VMConfigViewSchema>
->;
+export type VMConfigView = z.infer<ReturnType<typeof schemas.VMConfigViewSchema>>;
 
 export type VMKind = z.infer<ReturnType<typeof schemas.VMKindSchema>>;
 
-export type ValidatorInfo = z.infer<
-  ReturnType<typeof schemas.ValidatorInfoSchema>
->;
+export type ValidatorInfo = z.infer<ReturnType<typeof schemas.ValidatorInfoSchema>>;
 
 /** Reasons for removing a validator from the validator set. */
-export type ValidatorKickoutReason = z.infer<
-  ReturnType<typeof schemas.ValidatorKickoutReasonSchema>
->;
+export type ValidatorKickoutReason = z.infer<ReturnType<typeof schemas.ValidatorKickoutReasonSchema>>;
 
-export type ValidatorKickoutView = z.infer<
-  ReturnType<typeof schemas.ValidatorKickoutViewSchema>
->;
+export type ValidatorKickoutView = z.infer<ReturnType<typeof schemas.ValidatorKickoutViewSchema>>;
 
-export type ValidatorStakeView = z.infer<
-  ReturnType<typeof schemas.ValidatorStakeViewSchema>
->;
+export type ValidatorStakeView = z.infer<ReturnType<typeof schemas.ValidatorStakeViewSchema>>;
 
-export type ValidatorStakeViewV1 = z.infer<
-  ReturnType<typeof schemas.ValidatorStakeViewV1Schema>
->;
+export type ValidatorStakeViewV1 = z.infer<ReturnType<typeof schemas.ValidatorStakeViewV1Schema>>;
 
 /** Data structure for semver version and github tag or commit. */
 export type Version = z.infer<ReturnType<typeof schemas.VersionSchema>>;
 
-export type ViewStateResult = z.infer<
-  ReturnType<typeof schemas.ViewStateResultSchema>
->;
+export type ViewStateResult = z.infer<ReturnType<typeof schemas.ViewStateResultSchema>>;
 
 /** A kind of a trap happened during execution of a binary */
 export type WasmTrap = z.infer<ReturnType<typeof schemas.WasmTrapSchema>>;
 
 /** Configuration specific to ChunkStateWitness. */
-export type WitnessConfigView = z.infer<
-  ReturnType<typeof schemas.WitnessConfigViewSchema>
->;
+export type WitnessConfigView = z.infer<ReturnType<typeof schemas.WitnessConfigViewSchema>>;
 
 // Method-specific types
-export type EXPERIMENTALChangesRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALChangesRequestSchema>
->;
+export type EXPERIMENTALChangesRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALChangesRequestSchema>>;
 
-export type EXPERIMENTALChangesResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALChangesResponseSchema>
->;
+export type EXPERIMENTALChangesResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALChangesResponseSchema>>;
 
-export type EXPERIMENTALChangesInBlockRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALChangesInBlockRequestSchema>
->;
+export type EXPERIMENTALChangesInBlockRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALChangesInBlockRequestSchema>>;
 
-export type EXPERIMENTALChangesInBlockResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALChangesInBlockResponseSchema>
->;
+export type EXPERIMENTALChangesInBlockResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALChangesInBlockResponseSchema>>;
 
-export type EXPERIMENTALCongestionLevelRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALCongestionLevelRequestSchema>
->;
+export type EXPERIMENTALCongestionLevelRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALCongestionLevelRequestSchema>>;
 
-export type EXPERIMENTALCongestionLevelResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALCongestionLevelResponseSchema>
->;
+export type EXPERIMENTALCongestionLevelResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALCongestionLevelResponseSchema>>;
 
-export type EXPERIMENTALGenesisConfigRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALGenesisConfigRequestSchema>
->;
+export type EXPERIMENTALGenesisConfigRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALGenesisConfigRequestSchema>>;
 
-export type EXPERIMENTALGenesisConfigResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALGenesisConfigResponseSchema>
->;
+export type EXPERIMENTALGenesisConfigResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALGenesisConfigResponseSchema>>;
 
-export type EXPERIMENTALLightClientBlockProofRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALLightClientBlockProofRequestSchema>
->;
+export type EXPERIMENTALLightClientBlockProofRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALLightClientBlockProofRequestSchema>>;
 
-export type EXPERIMENTALLightClientBlockProofResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALLightClientBlockProofResponseSchema>
->;
+export type EXPERIMENTALLightClientBlockProofResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALLightClientBlockProofResponseSchema>>;
 
-export type EXPERIMENTALLightClientProofRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALLightClientProofRequestSchema>
->;
+export type EXPERIMENTALLightClientProofRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALLightClientProofRequestSchema>>;
 
-export type EXPERIMENTALLightClientProofResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALLightClientProofResponseSchema>
->;
+export type EXPERIMENTALLightClientProofResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALLightClientProofResponseSchema>>;
 
-export type EXPERIMENTALMaintenanceWindowsRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALMaintenanceWindowsRequestSchema>
->;
+export type EXPERIMENTALMaintenanceWindowsRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALMaintenanceWindowsRequestSchema>>;
 
-export type EXPERIMENTALMaintenanceWindowsResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALMaintenanceWindowsResponseSchema>
->;
+export type EXPERIMENTALMaintenanceWindowsResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALMaintenanceWindowsResponseSchema>>;
 
-export type EXPERIMENTALProtocolConfigRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALProtocolConfigRequestSchema>
->;
+export type EXPERIMENTALProtocolConfigRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALProtocolConfigRequestSchema>>;
 
-export type EXPERIMENTALProtocolConfigResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALProtocolConfigResponseSchema>
->;
+export type EXPERIMENTALProtocolConfigResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALProtocolConfigResponseSchema>>;
 
-export type EXPERIMENTALReceiptRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALReceiptRequestSchema>
->;
+export type EXPERIMENTALReceiptRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALReceiptRequestSchema>>;
 
-export type EXPERIMENTALReceiptResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALReceiptResponseSchema>
->;
+export type EXPERIMENTALReceiptResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALReceiptResponseSchema>>;
 
-export type EXPERIMENTALSplitStorageInfoRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALSplitStorageInfoRequestSchema>
->;
+export type EXPERIMENTALSplitStorageInfoRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALSplitStorageInfoRequestSchema>>;
 
-export type EXPERIMENTALSplitStorageInfoResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALSplitStorageInfoResponseSchema>
->;
+export type EXPERIMENTALSplitStorageInfoResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALSplitStorageInfoResponseSchema>>;
 
-export type EXPERIMENTALTxStatusRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALTxStatusRequestSchema>
->;
+export type EXPERIMENTALTxStatusRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALTxStatusRequestSchema>>;
 
-export type EXPERIMENTALTxStatusResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALTxStatusResponseSchema>
->;
+export type EXPERIMENTALTxStatusResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALTxStatusResponseSchema>>;
 
-export type EXPERIMENTALValidatorsOrderedRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALValidatorsOrderedRequestSchema>
->;
+export type EXPERIMENTALValidatorsOrderedRequest = z.infer<ReturnType<typeof schemas.EXPERIMENTALValidatorsOrderedRequestSchema>>;
 
-export type EXPERIMENTALValidatorsOrderedResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALValidatorsOrderedResponseSchema>
->;
+export type EXPERIMENTALValidatorsOrderedResponse = z.infer<ReturnType<typeof schemas.EXPERIMENTALValidatorsOrderedResponseSchema>>;
 
-export type BlockRequest = z.infer<
-  ReturnType<typeof schemas.BlockRequestSchema>
->;
+export type BlockRequest = z.infer<ReturnType<typeof schemas.BlockRequestSchema>>;
 
-export type BlockResponse = z.infer<
-  ReturnType<typeof schemas.BlockResponseSchema>
->;
+export type BlockResponse = z.infer<ReturnType<typeof schemas.BlockResponseSchema>>;
 
-export type BroadcastTxAsyncRequest = z.infer<
-  ReturnType<typeof schemas.BroadcastTxAsyncRequestSchema>
->;
+export type BroadcastTxAsyncRequest = z.infer<ReturnType<typeof schemas.BroadcastTxAsyncRequestSchema>>;
 
-export type BroadcastTxAsyncResponse = z.infer<
-  ReturnType<typeof schemas.BroadcastTxAsyncResponseSchema>
->;
+export type BroadcastTxAsyncResponse = z.infer<ReturnType<typeof schemas.BroadcastTxAsyncResponseSchema>>;
 
-export type BroadcastTxCommitRequest = z.infer<
-  ReturnType<typeof schemas.BroadcastTxCommitRequestSchema>
->;
+export type BroadcastTxCommitRequest = z.infer<ReturnType<typeof schemas.BroadcastTxCommitRequestSchema>>;
 
-export type BroadcastTxCommitResponse = z.infer<
-  ReturnType<typeof schemas.BroadcastTxCommitResponseSchema>
->;
+export type BroadcastTxCommitResponse = z.infer<ReturnType<typeof schemas.BroadcastTxCommitResponseSchema>>;
 
-export type ChangesRequest = z.infer<
-  ReturnType<typeof schemas.ChangesRequestSchema>
->;
+export type ChangesRequest = z.infer<ReturnType<typeof schemas.ChangesRequestSchema>>;
 
-export type ChangesResponse = z.infer<
-  ReturnType<typeof schemas.ChangesResponseSchema>
->;
+export type ChangesResponse = z.infer<ReturnType<typeof schemas.ChangesResponseSchema>>;
 
-export type ChunkRequest = z.infer<
-  ReturnType<typeof schemas.ChunkRequestSchema>
->;
+export type ChunkRequest = z.infer<ReturnType<typeof schemas.ChunkRequestSchema>>;
 
-export type ChunkResponse = z.infer<
-  ReturnType<typeof schemas.ChunkResponseSchema>
->;
+export type ChunkResponse = z.infer<ReturnType<typeof schemas.ChunkResponseSchema>>;
 
-export type ClientConfigRequest = z.infer<
-  ReturnType<typeof schemas.ClientConfigRequestSchema>
->;
+export type ClientConfigRequest = z.infer<ReturnType<typeof schemas.ClientConfigRequestSchema>>;
 
-export type ClientConfigResponse = z.infer<
-  ReturnType<typeof schemas.ClientConfigResponseSchema>
->;
+export type ClientConfigResponse = z.infer<ReturnType<typeof schemas.ClientConfigResponseSchema>>;
 
-export type GasPriceRequest = z.infer<
-  ReturnType<typeof schemas.GasPriceRequestSchema>
->;
+export type GasPriceRequest = z.infer<ReturnType<typeof schemas.GasPriceRequestSchema>>;
 
-export type GasPriceResponse = z.infer<
-  ReturnType<typeof schemas.GasPriceResponseSchema>
->;
+export type GasPriceResponse = z.infer<ReturnType<typeof schemas.GasPriceResponseSchema>>;
 
-export type HealthRequest = z.infer<
-  ReturnType<typeof schemas.HealthRequestSchema>
->;
+export type HealthRequest = z.infer<ReturnType<typeof schemas.HealthRequestSchema>>;
 
-export type HealthResponse = z.infer<
-  ReturnType<typeof schemas.HealthResponseSchema>
->;
+export type HealthResponse = z.infer<ReturnType<typeof schemas.HealthResponseSchema>>;
 
-export type LightClientProofRequest = z.infer<
-  ReturnType<typeof schemas.LightClientProofRequestSchema>
->;
+export type LightClientProofRequest = z.infer<ReturnType<typeof schemas.LightClientProofRequestSchema>>;
 
-export type LightClientProofResponse = z.infer<
-  ReturnType<typeof schemas.LightClientProofResponseSchema>
->;
+export type LightClientProofResponse = z.infer<ReturnType<typeof schemas.LightClientProofResponseSchema>>;
 
-export type NetworkInfoRequest = z.infer<
-  ReturnType<typeof schemas.NetworkInfoRequestSchema>
->;
+export type NetworkInfoRequest = z.infer<ReturnType<typeof schemas.NetworkInfoRequestSchema>>;
 
-export type NetworkInfoResponse = z.infer<
-  ReturnType<typeof schemas.NetworkInfoResponseSchema>
->;
+export type NetworkInfoResponse = z.infer<ReturnType<typeof schemas.NetworkInfoResponseSchema>>;
 
-export type NextLightClientBlockRequest = z.infer<
-  ReturnType<typeof schemas.NextLightClientBlockRequestSchema>
->;
+export type NextLightClientBlockRequest = z.infer<ReturnType<typeof schemas.NextLightClientBlockRequestSchema>>;
 
-export type NextLightClientBlockResponse = z.infer<
-  ReturnType<typeof schemas.NextLightClientBlockResponseSchema>
->;
+export type NextLightClientBlockResponse = z.infer<ReturnType<typeof schemas.NextLightClientBlockResponseSchema>>;
 
-export type QueryRequest = z.infer<
-  ReturnType<typeof schemas.QueryRequestSchema>
->;
+export type QueryRequest = z.infer<ReturnType<typeof schemas.QueryRequestSchema>>;
 
-export type QueryResponse = z.infer<
-  ReturnType<typeof schemas.QueryResponseSchema>
->;
+export type QueryResponse = z.infer<ReturnType<typeof schemas.QueryResponseSchema>>;
 
-export type SendTxRequest = z.infer<
-  ReturnType<typeof schemas.SendTxRequestSchema>
->;
+export type SendTxRequest = z.infer<ReturnType<typeof schemas.SendTxRequestSchema>>;
 
-export type SendTxResponse = z.infer<
-  ReturnType<typeof schemas.SendTxResponseSchema>
->;
+export type SendTxResponse = z.infer<ReturnType<typeof schemas.SendTxResponseSchema>>;
 
-export type StatusRequest = z.infer<
-  ReturnType<typeof schemas.StatusRequestSchema>
->;
+export type StatusRequest = z.infer<ReturnType<typeof schemas.StatusRequestSchema>>;
 
-export type StatusResponse = z.infer<
-  ReturnType<typeof schemas.StatusResponseSchema>
->;
+export type StatusResponse = z.infer<ReturnType<typeof schemas.StatusResponseSchema>>;
 
 export type TxRequest = z.infer<ReturnType<typeof schemas.TxRequestSchema>>;
 
 export type TxResponse = z.infer<ReturnType<typeof schemas.TxResponseSchema>>;
 
-export type ValidatorsRequest = z.infer<
-  ReturnType<typeof schemas.ValidatorsRequestSchema>
->;
+export type ValidatorsRequest = z.infer<ReturnType<typeof schemas.ValidatorsRequestSchema>>;
 
-export type ValidatorsResponse = z.infer<
-  ReturnType<typeof schemas.ValidatorsResponseSchema>
->;
+export type ValidatorsResponse = z.infer<ReturnType<typeof schemas.ValidatorsResponseSchema>>;
 
 // Re-exports for convenience
 export * from './schemas';

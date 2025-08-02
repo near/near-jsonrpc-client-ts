@@ -65,13 +65,18 @@ async function getAvailableTypes(): Promise<Set<string>> {
     );
     const dtsContent = await fs.readFile(dtsPath, 'utf8');
 
-    // Extract all type declarations from the .d.ts file
-    const typeExportRegex = /^type (\w+)/gm;
+    // Extract all type names from the export statement
     const availableTypes = new Set<string>();
-
-    let match: RegExpExecArray | null;
-    while ((match = typeExportRegex.exec(dtsContent)) !== null) {
-      availableTypes.add(match[1]);
+    
+    // Match the export { ... } statement and extract all exported names
+    const exportMatch = dtsContent.match(/export\s*\{([^}]+)\}/);
+    if (exportMatch) {
+      const exportedNames = exportMatch[1]
+        .split(',')
+        .map(name => name.trim())
+        .filter(name => name && !name.endsWith('Schema')); // Exclude schema exports
+      
+      exportedNames.forEach(name => availableTypes.add(name));
     }
 
     console.log(

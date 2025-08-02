@@ -36,10 +36,7 @@ jobs:
         run: pnpm lint
 
       # need to test generate script after lint check, since the output from generate also would need to be linted
-      - name: Test generate script
-        run: pnpm generate
-
-      - name: Generate multi-version code
+      - name: Generate all versions
         run: |
           pnpm fetch-versions
           pnpm generate-all
