@@ -67,7 +67,7 @@ async function getAvailableTypes(): Promise<Set<string>> {
 
     // Extract all type names from the export statement
     const availableTypes = new Set<string>();
-    
+
     // Match the export { ... } statement and extract all exported names
     const exportMatch = dtsContent.match(/export\s*\{([^}]+)\}/);
     if (exportMatch) {
@@ -75,7 +75,7 @@ async function getAvailableTypes(): Promise<Set<string>> {
         .split(',')
         .map(name => name.trim())
         .filter(name => name && !name.endsWith('Schema')); // Exclude schema exports
-      
+
       exportedNames.forEach(name => availableTypes.add(name));
     }
 
