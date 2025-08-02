@@ -278,9 +278,12 @@ export async function generateValidationWrappers(
   allTypeImports.add('RpcQueryResponse');
 
   // Determine if we're generating for a version-specific directory or root
-  const isVersionSpecific = outputPath.includes('/v1.') || outputPath.includes('/latest/');
-  const clientImportPath = isVersionSpecific ? '../../client.js' : '../client.js';
-  
+  const isVersionSpecific =
+    outputPath.includes('/v1.') || outputPath.includes('/latest/');
+  const clientImportPath = isVersionSpecific
+    ? '../../client.js'
+    : '../client.js';
+
   // Generate the complete file content
   const content = `// Auto-generated validation wrapper functions
 // Generated at: ${new Date().toISOString()}
