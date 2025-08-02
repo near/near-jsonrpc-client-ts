@@ -39,6 +39,11 @@ jobs:
       - name: Test generate script
         run: pnpm generate
 
+      - name: Generate multi-version code
+        run: |
+          pnpm fetch-versions
+          pnpm generate-all
+
       - name: Build
         run: pnpm build
 
