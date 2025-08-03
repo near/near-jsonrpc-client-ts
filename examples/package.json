@@ -5,7 +5,8 @@
   },
   "dependencies": {
     "@near-js/jsonrpc-client": "workspace:*",
-    "@near-js/jsonrpc-types": "workspace:*"
+    "@near-js/jsonrpc-types": "workspace:*",
+    "near-api-js": "^5.0.0"
   },
   "devDependencies": {
     "glob": "^10.3.10",
