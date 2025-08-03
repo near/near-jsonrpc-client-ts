@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/petersalomonsen/near-rpc-typescript/compare/jsonrpc-types-v1.3.0...jsonrpc-types-v1.3.1) (2025-08-03)
+
+
+### Bug Fixes
+
+* enforce coverage thresholds and improve test coverage to meet requirements ([#60](https://github.com/petersalomonsen/near-rpc-typescript/issues/60)) ([edf6459](https://github.com/petersalomonsen/near-rpc-typescript/commit/edf64597d9da0702b48d8664abf97b243e38e0e2))
+
 ## [1.3.0](https://github.com/petersalomonsen/near-rpc-typescript/compare/jsonrpc-types-v1.2.0...jsonrpc-types-v1.3.0) (2025-08-03)
 
 
