@@ -23,7 +23,6 @@ import {
   experimentalChanges,
 } from '../generated-functions';
 import { viewAccount } from '../convenience';
-import { enableValidation } from '../validation';
 
 vi.setConfig({ testTimeout: 30000 });
 
@@ -202,10 +201,9 @@ describe('NearRpcClient', () => {
       );
     });
 
-    it('should handle validation disabled', async () => {
+    it('should handle requests without validation', async () => {
       const client = new NearRpcClient({
         endpoint: 'https://rpc.mainnet.fastnear.com',
-        validateResponses: false,
       });
 
       const result = await status(client);
