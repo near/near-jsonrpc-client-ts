@@ -166,6 +166,23 @@ async function fixGeneratedFiles(versionDir: string) {
     content = content.replace(/from '\.\/client'/g, "from '../client'");
     writeFileSync(genTypesPath, content);
   }
+
+  // Fix validated/index.ts to import client from correct path
+  const validatedPath = join(
+    ROOT_DIR,
+    'packages/jsonrpc-client/src',
+    versionDir,
+    'validated/index.ts'
+  );
+  if (existsSync(validatedPath)) {
+    let content = readFileSync(validatedPath, 'utf8');
+    // Fix the client import path for version-specific directories
+    content = content.replace(
+      /from '\.\.\/client\.js'/g,
+      "from '../../client.js'"
+    );
+    writeFileSync(validatedPath, content);
+  }
 }
 
 /**
