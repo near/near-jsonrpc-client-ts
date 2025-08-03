@@ -443,13 +443,22 @@ export async function generateTypes() {
 
       const methodNamePascal = pascalCase(methodName);
 
+      // Extract method description from OpenAPI spec
+      const methodDescription = post.description || '';
+
       // Generate request type using z.infer
       if (post.requestBody?.content?.['application/json']?.schema) {
         const typeName = `${methodNamePascal}Request`;
         // Check if this type already exists in the main types
         if (!exportedTypeNames.has(typeName)) {
+          // Add JSDoc comment if description exists
+          const requestDescription = methodDescription
+            ? formatComment(
+                `Request parameters for ${methodName}: ${methodDescription}`
+              )
+            : '';
           miniMethodTypes.push(
-            `export type ${typeName} = z.infer<ReturnType<typeof schemas.${methodNamePascal}RequestSchema>>;`
+            `${requestDescription}export type ${typeName} = z.infer<ReturnType<typeof schemas.${methodNamePascal}RequestSchema>>;`
           );
           exportedTypeNames.add(typeName);
         }
@@ -460,8 +469,14 @@ export async function generateTypes() {
         const typeName = `${methodNamePascal}Response`;
         // Check if this type already exists in the main types
         if (!exportedTypeNames.has(typeName)) {
+          // Add JSDoc comment if description exists
+          const responseDescription = methodDescription
+            ? formatComment(
+                `Response type for ${methodName}: ${methodDescription}`
+              )
+            : '';
           miniMethodTypes.push(
-            `export type ${typeName} = z.infer<ReturnType<typeof schemas.${methodNamePascal}ResponseSchema>>;`
+            `${responseDescription}export type ${typeName} = z.infer<ReturnType<typeof schemas.${methodNamePascal}ResponseSchema>>;`
           );
           exportedTypeNames.add(typeName);
         }
@@ -534,6 +549,9 @@ export * from './schemas';
         {};
       validationMapping[methodName] = methodEntry;
 
+      // Extract method description from OpenAPI spec
+      const methodDescription = post.description || '';
+
       // Generate request schema
       if (post.requestBody?.content?.['application/json']?.schema) {
         const requestSchema =
@@ -543,8 +561,17 @@ export * from './schemas';
         // Check if this schema already exists in the main schemas
         if (!exportedSchemaNames.has(schemaName)) {
           const zodMiniSchema = generateZodSchema(requestSchema, schemas, 0);
+          // Add JSDoc comment if description exists
+          const requestDescription = methodDescription
+            ? formatComment(
+                `Request schema for ${methodName}: ${methodDescription}`
+              )
+                .replace(/\/\*\*/g, '//')
+                .replace(/\*\//g, '')
+                .replace(/\* /g, '// ')
+            : '';
           miniMethodSchemas.push(
-            `export const ${schemaName} = () => ${zodMiniSchema};`
+            `${requestDescription}export const ${schemaName} = () => ${zodMiniSchema};`
           );
           exportedSchemaNames.add(schemaName);
         }
@@ -560,8 +587,17 @@ export * from './schemas';
         // Check if this schema already exists in the main schemas
         if (!exportedSchemaNames.has(schemaName)) {
           const zodMiniSchema = generateZodSchema(responseSchema, schemas, 0);
+          // Add JSDoc comment if description exists
+          const responseDescription = methodDescription
+            ? formatComment(
+                `Response schema for ${methodName}: ${methodDescription}`
+              )
+                .replace(/\/\*\*/g, '//')
+                .replace(/\*\//g, '')
+                .replace(/\* /g, '// ')
+            : '';
           miniMethodSchemas.push(
-            `export const ${schemaName} = () => ${zodMiniSchema};`
+            `${responseDescription}export const ${schemaName} = () => ${zodMiniSchema};`
           );
           exportedSchemaNames.add(schemaName);
         }

@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-07-31T19:21:30.460Z
+// Generated on: 2025-08-03T18:51:26.264Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -3871,210 +3871,494 @@ export const WitnessConfigViewSchema = () =>
   });
 
 // Method-specific schemas
+//
+// Request schema for EXPERIMENTAL_changes: [Deprecated] Returns changes for a
+// given account, contract or contract code for given block height or hash.
+// Consider using changes instead.
+
 export const EXPERIMENTALChangesRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALChangesSchema());
+
+//
+// Response schema for EXPERIMENTAL_changes: [Deprecated] Returns changes for
+// a given account, contract or contract code for given block height or hash.
+// Consider using changes instead.
 
 export const EXPERIMENTALChangesResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for EXPERIMENTAL_changes_in_block: [Deprecated] Returns
+// changes in block for given block height or hash over all transactions for
+// all the types. Includes changes like account_touched, access_key_touched,
+// data_touched, contract_code_touched. Consider using block_effects instead
+
 export const EXPERIMENTALChangesInBlockRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALChangesInBlockSchema());
+
+//
+// Response schema for EXPERIMENTAL_changes_in_block: [Deprecated] Returns
+// changes in block for given block height or hash over all transactions for
+// all the types. Includes changes like account_touched, access_key_touched,
+// data_touched, contract_code_touched. Consider using block_effects instead
 
 export const EXPERIMENTALChangesInBlockResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for EXPERIMENTAL_congestion_level: Queries the congestion
+// level of a shard. More info about congestion
+// [here](https://near.github.io/nearcore/architecture/how/receipt-congestion.html?highlight=congestion#receipt-congestion)
+
 export const EXPERIMENTALCongestionLevelRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALCongestionLevelSchema());
+
+//
+// Response schema for EXPERIMENTAL_congestion_level: Queries the congestion
+// level of a shard. More info about congestion
+// [here](https://near.github.io/nearcore/architecture/how/receipt-congestion.html?highlight=congestion#receipt-congestion)
 
 export const EXPERIMENTALCongestionLevelResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for EXPERIMENTAL_genesis_config: [Deprecated] Get initial
+// state and parameters for the genesis block. Consider genesis_config
+// instead.
+
 export const EXPERIMENTALGenesisConfigRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALGenesisConfigSchema());
+
+//
+// Response schema for EXPERIMENTAL_genesis_config: [Deprecated] Get initial
+// state and parameters for the genesis block. Consider genesis_config
+// instead.
 
 export const EXPERIMENTALGenesisConfigResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_GenesisConfigAnd_RpcErrorSchema());
 
+//
+// Request schema for EXPERIMENTAL_light_client_block_proof: Returns the
+// proofs for a transaction execution.
+
 export const EXPERIMENTALLightClientBlockProofRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALLightClientBlockProofSchema());
+
+//
+// Response schema for EXPERIMENTAL_light_client_block_proof: Returns the
+// proofs for a transaction execution.
 
 export const EXPERIMENTALLightClientBlockProofResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for EXPERIMENTAL_light_client_proof: Returns the proofs for
+// a transaction execution.
+
 export const EXPERIMENTALLightClientProofRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALLightClientProofSchema());
+
+//
+// Response schema for EXPERIMENTAL_light_client_proof: Returns the proofs for
+// a transaction execution.
 
 export const EXPERIMENTALLightClientProofResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for EXPERIMENTAL_maintenance_windows: [Deprecated] Returns
+// the future windows for maintenance in current epoch for the specified
+// account. In the maintenance windows, the node will not be block producer or
+// chunk producer. Consider using maintenance_windows instead.
+
 export const EXPERIMENTALMaintenanceWindowsRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALMaintenanceWindowsSchema());
+
+//
+// Response schema for EXPERIMENTAL_maintenance_windows: [Deprecated] Returns
+// the future windows for maintenance in current epoch for the specified
+// account. In the maintenance windows, the node will not be block producer or
+// chunk producer. Consider using maintenance_windows instead.
 
 export const EXPERIMENTALMaintenanceWindowsResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcErrorSchema());
 
+//
+// Request schema for EXPERIMENTAL_protocol_config: A configuration that
+// defines the protocol-level parameters such as gas/storage costs, limits,
+// feature flags, other settings
+
 export const EXPERIMENTALProtocolConfigRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALProtocolConfigSchema());
+
+//
+// Response schema for EXPERIMENTAL_protocol_config: A configuration that
+// defines the protocol-level parameters such as gas/storage costs, limits,
+// feature flags, other settings
 
 export const EXPERIMENTALProtocolConfigResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for EXPERIMENTAL_receipt: Fetches a receipt by its ID (as
+// is, without a status or execution outcome)
+
 export const EXPERIMENTALReceiptRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALReceiptSchema());
+
+//
+// Response schema for EXPERIMENTAL_receipt: Fetches a receipt by its ID (as
+// is, without a status or execution outcome)
 
 export const EXPERIMENTALReceiptResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcReceiptResponseAnd_RpcErrorSchema());
 
+//
+// Request schema for EXPERIMENTAL_split_storage_info: Contains the split
+// storage information. More info on split storage
+// [here](https://near-nodes.io/archival/split-storage-archival)
+
 export const EXPERIMENTALSplitStorageInfoRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALSplitStorageInfoSchema());
+
+//
+// Response schema for EXPERIMENTAL_split_storage_info: Contains the split
+// storage information. More info on split storage
+// [here](https://near-nodes.io/archival/split-storage-archival)
 
 export const EXPERIMENTALSplitStorageInfoResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for EXPERIMENTAL_tx_status: Queries status of a transaction
+// by hash, returning the final transaction result and details of all
+// receipts.
+
 export const EXPERIMENTALTxStatusRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALTxStatusSchema());
+
+//
+// Response schema for EXPERIMENTAL_tx_status: Queries status of a transaction
+// by hash, returning the final transaction result and details of all
+// receipts.
 
 export const EXPERIMENTALTxStatusResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema());
 
+//
+// Request schema for EXPERIMENTAL_validators_ordered: Returns the current
+// epoch validators ordered in the block producer order with repetition. This
+// endpoint is solely used for bridge currently and is not intended for other
+// external use cases.
+
 export const EXPERIMENTALValidatorsOrderedRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALValidatorsOrderedSchema());
+
+//
+// Response schema for EXPERIMENTAL_validators_ordered: Returns the current
+// epoch validators ordered in the block producer order with repetition. This
+// endpoint is solely used for bridge currently and is not intended for other
+// external use cases.
 
 export const EXPERIMENTALValidatorsOrderedResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcErrorSchema()
   );
 
+// Request schema for block: Returns block details for given height or hash
 export const BlockRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForBlockSchema());
 
+// Response schema for block: Returns block details for given height or hash
 export const BlockResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcBlockResponseAnd_RpcErrorSchema());
 
+//
+// Request schema for block_effects: Returns changes in block for given block
+// height or hash over all transactions for all the types. Includes changes
+// like account_touched, access_key_touched, data_touched,
+// contract_code_touched.
+
 export const BlockEffectsRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForBlockEffectsSchema());
+
+//
+// Response schema for block_effects: Returns changes in block for given block
+// height or hash over all transactions for all the types. Includes changes
+// like account_touched, access_key_touched, data_touched,
+// contract_code_touched.
 
 export const BlockEffectsResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for broadcast_tx_async: [Deprecated] Sends a transaction and
+// immediately returns transaction hash. Consider using send_tx instead.
+
 export const BroadcastTxAsyncRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForBroadcastTxAsyncSchema());
+
+//
+// Response schema for broadcast_tx_async: [Deprecated] Sends a transaction
+// and immediately returns transaction hash. Consider using send_tx instead.
 
 export const BroadcastTxAsyncResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_CryptoHashAnd_RpcErrorSchema());
 
+//
+// Request schema for broadcast_tx_commit: [Deprecated] Sends a transaction
+// and waits until transaction is fully complete. (Has a 10 second timeout).
+// Consider using send_tx instead.
+
 export const BroadcastTxCommitRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForBroadcastTxCommitSchema());
+
+//
+// Response schema for broadcast_tx_commit: [Deprecated] Sends a transaction
+// and waits until transaction is fully complete. (Has a 10 second timeout).
+// Consider using send_tx instead.
 
 export const BroadcastTxCommitResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema());
 
+//
+// Request schema for changes: Returns changes for a given account, contract
+// or contract code for given block height or hash.
+
 export const ChangesRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForChangesSchema());
+
+//
+// Response schema for changes: Returns changes for a given account, contract
+// or contract code for given block height or hash.
 
 export const ChangesResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for chunk: Returns details of a specific chunk. You can run
+// a block details query to get a valid chunk hash.
+
 export const ChunkRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForChunkSchema());
+
+//
+// Response schema for chunk: Returns details of a specific chunk. You can run
+// a block details query to get a valid chunk hash.
 
 export const ChunkResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcChunkResponseAnd_RpcErrorSchema());
 
+// Request schema for client_config: Queries client node configuration
 export const ClientConfigRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForClientConfigSchema());
 
+// Response schema for client_config: Queries client node configuration
 export const ClientConfigResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcErrorSchema());
+
+//
+// Request schema for gas_price: Returns gas price for a specific block_height
+// or block_hash. Using [null] will return the most recent block's gas price.
 
 export const GasPriceRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForGasPriceSchema());
 
+//
+// Response schema for gas_price: Returns gas price for a specific
+// block_height or block_hash. Using [null] will return the most recent
+// block's gas price.
+
 export const GasPriceResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcErrorSchema());
+
+//
+// Response schema for genesis_config: Get initial state and parameters for
+// the genesis block
 
 export const GenesisConfigResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_GenesisConfigAnd_RpcErrorSchema());
 
+//
+// Request schema for health: Returns the current health status of the RPC
+// node the client connects to.
+
 export const HealthRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForHealthSchema());
+
+//
+// Response schema for health: Returns the current health status of the RPC
+// node the client connects to.
 
 export const HealthResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for light_client_proof: Returns the proofs for a transaction
+// execution.
+
 export const LightClientProofRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForLightClientProofSchema());
+
+//
+// Response schema for light_client_proof: Returns the proofs for a
+// transaction execution.
 
 export const LightClientProofResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for maintenance_windows: Returns the future windows for
+// maintenance in current epoch for the specified account. In the maintenance
+// windows, the node will not be block producer or chunk producer.
+
 export const MaintenanceWindowsRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForMaintenanceWindowsSchema());
+
+//
+// Response schema for maintenance_windows: Returns the future windows for
+// maintenance in current epoch for the specified account. In the maintenance
+// windows, the node will not be block producer or chunk producer.
 
 export const MaintenanceWindowsResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcErrorSchema());
 
+//
+// Request schema for network_info: Queries the current state of node network
+// connections. This includes information about active peers, transmitted
+// data, known producers, etc.
+
 export const NetworkInfoRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForNetworkInfoSchema());
+
+//
+// Response schema for network_info: Queries the current state of node network
+// connections. This includes information about active peers, transmitted
+// data, known producers, etc.
 
 export const NetworkInfoResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcErrorSchema());
 
+// Request schema for next_light_client_block: Returns the next light client block.
 export const NextLightClientBlockRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForNextLightClientBlockSchema());
+
+//
+// Response schema for next_light_client_block: Returns the next light client
+// block.
 
 export const NextLightClientBlockResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcErrorSchema()
   );
 
+//
+// Request schema for query: This module allows you to make generic requests
+// to the network. The `RpcQueryRequest` struct takes in a
+// [`BlockReference`](https://docs.rs/near-primitives/0.12.0/near_primitives/types/enum.BlockReference.html)
+// and a
+// [`QueryRequest`](https://docs.rs/near-primitives/0.12.0/near_primitives/views/enum.QueryRequest.html).
+// The `BlockReference` enum allows you to specify a block by `Finality`,
+// `BlockId` or `SyncCheckpoint`. The `QueryRequest` enum provides multiple
+// variants for performing the following actions: - View an account's details
+// - View a contract's code - View the state of an account - View the
+// `AccessKey` of an account - View the `AccessKeyList` of an account - Call a
+// function in a contract deployed on the network.
+
 export const QueryRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForQuerySchema());
+
+//
+// Response schema for query: This module allows you to make generic requests
+// to the network. The `RpcQueryRequest` struct takes in a
+// [`BlockReference`](https://docs.rs/near-primitives/0.12.0/near_primitives/types/enum.BlockReference.html)
+// and a
+// [`QueryRequest`](https://docs.rs/near-primitives/0.12.0/near_primitives/views/enum.QueryRequest.html).
+// The `BlockReference` enum allows you to specify a block by `Finality`,
+// `BlockId` or `SyncCheckpoint`. The `QueryRequest` enum provides multiple
+// variants for performing the following actions: - View an account's details
+// - View a contract's code - View the state of an account - View the
+// `AccessKey` of an account - View the `AccessKeyList` of an account - Call a
+// function in a contract deployed on the network.
 
 export const QueryResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcQueryResponseAnd_RpcErrorSchema());
 
+//
+// Request schema for send_tx: Sends transaction. Returns the guaranteed
+// execution status and the results the blockchain can provide at the moment.
+
 export const SendTxRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForSendTxSchema());
+
+//
+// Response schema for send_tx: Sends transaction. Returns the guaranteed
+// execution status and the results the blockchain can provide at the moment.
 
 export const SendTxResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema());
 
+//
+// Request schema for status: Requests the status of the connected RPC node.
+// This includes information about sync status, nearcore node version,
+// protocol version, the current set of validators, etc.
+
 export const StatusRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForStatusSchema());
+
+//
+// Response schema for status: Requests the status of the connected RPC node.
+// This includes information about sync status, nearcore node version,
+// protocol version, the current set of validators, etc.
 
 export const StatusResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcStatusResponseAnd_RpcErrorSchema());
 
+//
+// Request schema for tx: Queries status of a transaction by hash and returns
+// the final transaction result.
+
 export const TxRequestSchema = () => z.lazy(() => JsonRpcRequestForTxSchema());
+
+//
+// Response schema for tx: Queries status of a transaction by hash and returns
+// the final transaction result.
 
 export const TxResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema());
 
+//
+// Request schema for validators: Queries active validators on the network.
+// Returns details and the state of validation on the blockchain.
+
 export const ValidatorsRequestSchema = () =>
   z.lazy(() => JsonRpcRequestForValidatorsSchema());
+
+//
+// Response schema for validators: Queries active validators on the network.
+// Returns details and the state of validation on the blockchain.
 
 export const ValidatorsResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_RpcValidatorResponseAnd_RpcErrorSchema());

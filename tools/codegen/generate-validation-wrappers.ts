@@ -12,6 +12,39 @@ interface MethodInfo {
   responseType: string;
   requestSchema?: string;
   responseSchema?: string;
+  description?: string;
+}
+
+// Format JSDoc comment
+function formatComment(description: string): string {
+  if (!description) return '';
+
+  // Clean up the description
+  const cleanDescription = description
+    .replace(/\n/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (cleanDescription.length <= 80) {
+    return `/** ${cleanDescription} */\n`;
+  }
+
+  // Multi-line comment
+  const words = cleanDescription.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    if ((currentLine + ' ' + word).length <= 75) {
+      currentLine = currentLine ? currentLine + ' ' + word : word;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+
+  return `/**\n${lines.map(line => ` * ${line}`).join('\n')}\n */\n`;
 }
 
 // Convert RPC method name to camelCase TypeScript method name
@@ -78,6 +111,7 @@ function extractValidationInfo(
       clientMethodName,
       requestType: defaultRequestType,
       responseType: defaultResponseType,
+      description: post.description,
     };
 
     // Check if request schema exists
@@ -220,7 +254,7 @@ function generateValidationWrapper(method: MethodInfo): string {
   return baseFunctions.${method.clientMethodName}(client, params);`;
   }
 
-  return `export async function ${method.clientMethodName}(
+  return `${method.description ? formatComment(method.description) : ''}export async function ${method.clientMethodName}(
   client: NearRpcClient,
   ${paramsArg}
 ): Promise<${method.responseType}> {${validationCode}
