@@ -4,7 +4,11 @@ import fs from 'fs';
 import path from 'path';
 
 // Read coverage summary from the coverage output
-const coveragePath = path.join(process.cwd(), 'coverage', 'coverage-summary.json');
+const coveragePath = path.join(
+  process.cwd(),
+  'coverage',
+  'coverage-summary.json'
+);
 
 if (!fs.existsSync(coveragePath)) {
   console.error('Coverage summary not found. Run tests with coverage first.');
@@ -32,11 +36,11 @@ const results = [];
 for (const [metric, threshold] of Object.entries(thresholds)) {
   const actual = coverage[metric];
   const passed = actual >= threshold;
-  
+
   if (!passed) {
     failed = true;
   }
-  
+
   results.push({
     metric,
     threshold,
