@@ -90,6 +90,18 @@ jobs:
       - name: Run TypeScript convenience-functions-error-handling example
         run: pnpm tsx examples/typescript/convenience-functions-error-handling.ts
 
+      - name: Run TypeScript send-function-call-transaction example
+        env:
+          NEAR_ACCOUNT_ID: ${{ secrets.NEAR_TESTNET_ACCOUNT_ID }}
+          NEAR_PRIVATE_KEY: ${{ secrets.NEAR_TESTNET_PRIVATE_KEY }}
+        run: |
+          if [ -n "$NEAR_ACCOUNT_ID" ] && [ -n "$NEAR_PRIVATE_KEY" ]; then
+            pnpm tsx examples/typescript/send-function-call-transaction.ts
+          else
+            echo "⚠️  Skipping send-function-call-transaction.ts - NEAR credentials not configured"
+            echo "   To enable this test, add NEAR_TESTNET_ACCOUNT_ID and NEAR_TESTNET_PRIVATE_KEY to GitHub secrets"
+          fi
+
       # ESM JavaScript examples
       - name: Run ESM basic-usage example
         run: node examples/javascript-esm/basic-usage.js

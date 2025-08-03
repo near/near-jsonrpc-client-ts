@@ -25,6 +25,7 @@ The client provides identical functionality to traditional instance methods but 
 - **[typescript/status-and-account-demo.ts](typescript/status-and-account-demo.ts)** - Network status and account viewing
 - **[typescript/call-contract-method.ts](typescript/call-contract-method.ts)** - Contract method calls
 - **[typescript/call-contract-method-view-function.ts](typescript/call-contract-method-view-function.ts)** - View function calls
+- **[typescript/send-function-call-transaction.ts](typescript/send-function-call-transaction.ts)** - Complete example of signing and sending a real transaction on testnet
 
 ### JavaScript Examples
 
@@ -240,6 +241,9 @@ const client = new NearRpcClient({ endpoint: 'https://rpc.testnet.fastnear.com' 
 - `gasPrice(client, params)` - Current gas price
 - `query(client, params)` - Generic queries
 - `sendTx(client, params)` - Send transactions
+- `broadcastTxAsync(client, params)` - Send transaction async (returns hash immediately)
+- `broadcastTxCommit(client, params)` - Send transaction and wait for execution
+- `tx(client, params)` - Get transaction status
 ```
 
 The client provides full functionality with case conversion behavior for optimal developer experience.
