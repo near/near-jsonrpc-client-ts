@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/petersalomonsen/near-rpc-typescript/compare/jsonrpc-client-v1.2.0...jsonrpc-client-v1.3.0) (2025-08-03)
+
+
+### Features
+
+* add JSDoc descriptions from OpenAPI spec to generated code ([#58](https://github.com/petersalomonsen/near-rpc-typescript/issues/58)) ([ce2409f](https://github.com/petersalomonsen/near-rpc-typescript/commit/ce2409f0b8dce71193a0be0a33bb7decd80d7467))
+
 ## [1.2.0](https://github.com/petersalomonsen/near-rpc-typescript/compare/jsonrpc-client-v1.1.0...jsonrpc-client-v1.2.0) (2025-07-31)
 
 
