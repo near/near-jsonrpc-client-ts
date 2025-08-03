@@ -1,5 +1,4 @@
 // JSON-RPC client with static function architecture (configuration only)
-import type { ValidationResult } from './validation.js';
 
 // Case conversion utilities
 function camelToSnake(str: string): string {
@@ -53,7 +52,6 @@ export interface ClientConfig {
   headers?: Record<string, string>;
   timeout?: number;
   retries?: number;
-  validation?: ValidationResult;
 }
 
 // JSON-RPC request structure
@@ -112,7 +110,6 @@ export class NearRpcClient {
   public readonly headers: Record<string, string>;
   public readonly timeout: number;
   public readonly retries: number;
-  private readonly validation: ValidationResult | undefined;
 
   constructor(config: string | ClientConfig) {
     if (typeof config === 'string') {
@@ -125,9 +122,6 @@ export class NearRpcClient {
       this.headers = config.headers || {};
       this.timeout = config.timeout || 30000;
       this.retries = config.retries || 3;
-      if (config.validation) {
-        this.validation = config.validation;
-      }
     }
   }
 
@@ -139,23 +133,6 @@ export class NearRpcClient {
     method: string,
     params?: TParams
   ): Promise<TResult> {
-    // Create request with original camelCase params for validation
-    const requestForValidation: JsonRpcRequest<TParams | null> = {
-      jsonrpc: '2.0',
-      id: REQUEST_ID,
-      method,
-      params: params !== undefined ? params : null,
-    };
-
-    // Validate request if validation is enabled (before snake_case conversion)
-    if (this.validation) {
-      if ('validateMethodRequest' in this.validation) {
-        this.validation.validateMethodRequest(method, requestForValidation);
-      } else {
-        this.validation.validateRequest(requestForValidation);
-      }
-    }
-
     // Convert camelCase params to snake_case for the RPC call
     // Also convert undefined to null for methods that expect null params
     const snakeCaseParams =
@@ -222,11 +199,6 @@ export class NearRpcClient {
           );
         }
 
-        // Validate basic JSON-RPC response structure
-        if (this.validation) {
-          this.validation.validateResponse(jsonResponse);
-        }
-
         // Convert snake_case response back to camelCase
         const camelCaseResult = jsonResponse.result
           ? convertKeysToCamelCase(jsonResponse.result)
@@ -245,16 +217,6 @@ export class NearRpcClient {
             -32000, // Generic RPC error code
             camelCaseResult
           );
-        }
-
-        // Validate method-specific response structure after camelCase conversion
-        if (this.validation && 'validateMethodResponse' in this.validation) {
-          // Create a camelCase version of the response for validation
-          const camelCaseResponse = {
-            ...jsonResponse,
-            result: camelCaseResult,
-          };
-          this.validation.validateMethodResponse(method, camelCaseResponse);
         }
 
         return camelCaseResult as TResult;
@@ -293,11 +255,6 @@ export class NearRpcClient {
       headers: config.headers ?? this.headers,
       timeout: config.timeout ?? this.timeout,
       retries: config.retries ?? this.retries,
-      ...(config.validation !== undefined
-        ? { validation: config.validation }
-        : this.validation !== undefined
-          ? { validation: this.validation }
-          : {}),
     });
   }
 }

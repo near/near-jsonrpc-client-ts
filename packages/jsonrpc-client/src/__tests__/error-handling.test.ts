@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NearRpcClient, JsonRpcClientError } from '../client.js';
 import { viewFunction, viewAccount, viewAccessKey } from '../convenience.js';
-import { enableValidation } from '../validation.js';
 
 // Mock fetch for testing
 const mockFetch = vi.fn();
@@ -68,7 +67,6 @@ describe('Error Handling', () => {
     it('should throw error with server message when validation is enabled', async () => {
       const client = new NearRpcClient({
         endpoint: 'https://rpc.test.near.org',
-        validation: enableValidation(),
       });
 
       // Mock RPC error response

@@ -23,7 +23,6 @@ describe('Client Types', () => {
         },
         timeout: 10000,
         retries: 5,
-        validateResponses: false,
       };
 
       expect(config.endpoint).toBe('https://rpc.testnet.fastnear.com');
@@ -33,7 +32,6 @@ describe('Client Types', () => {
       });
       expect(config.timeout).toBe(10000);
       expect(config.retries).toBe(5);
-      expect(config.validateResponses).toBe(false);
     });
 
     it('should allow optional fields to be undefined', () => {
@@ -42,14 +40,12 @@ describe('Client Types', () => {
         headers: undefined,
         timeout: undefined,
         retries: undefined,
-        validateResponses: undefined,
       };
 
       expect(config.endpoint).toBe('https://rpc.testnet.fastnear.com');
       expect(config.headers).toBeUndefined();
       expect(config.timeout).toBeUndefined();
       expect(config.retries).toBeUndefined();
-      expect(config.validateResponses).toBeUndefined();
     });
   });
 

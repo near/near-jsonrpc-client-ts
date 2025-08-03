@@ -32,7 +32,7 @@
     "format": "prettier --write 'src/**/*.{ts,js}' '*.{ts,js}'",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage && node ../../scripts/check-coverage.js"
   },
   "dependencies": {
     "@near-js/jsonrpc-types": "workspace:*"

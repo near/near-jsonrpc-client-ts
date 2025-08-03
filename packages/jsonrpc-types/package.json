@@ -24,7 +24,7 @@
     "format": "prettier --write 'src/**/*.{ts,js}'",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage && node ../../scripts/check-coverage.js",
     "generate": "tsx ../../tools/codegen/generate.ts"
   },
   "dependencies": {

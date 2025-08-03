@@ -10,8 +10,9 @@ export default defineConfig({
     pool: 'threads',
     testTimeout: 10000, // 10 seconds timeout for tests
     coverage: {
+      enabled: true,
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'json-summary', 'html'],
       exclude: [
         'node_modules/',
         'dist/',
