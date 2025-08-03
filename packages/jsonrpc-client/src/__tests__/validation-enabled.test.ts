@@ -1,8 +1,7 @@
-// Test RPC methods with validation enabled
+// Test RPC methods with validation using validated imports
 // These tests use real API endpoints to ensure validation works correctly
 import { describe, it, expect } from 'vitest';
 import { NearRpcClient } from '../client';
-import { enableValidation } from '../validation';
 import {
   status,
   gasPrice,
@@ -10,12 +9,11 @@ import {
   block,
   networkInfo,
   validators,
-} from '../generated-functions';
+} from '../validated';
 
-describe('RPC Methods with Validation Enabled', () => {
+describe('RPC Methods with Validated Functions', () => {
   const client = new NearRpcClient({
     endpoint: 'https://rpc.mainnet.fastnear.com',
-    validation: enableValidation(),
   });
 
   describe('Simple RPC methods', () => {
