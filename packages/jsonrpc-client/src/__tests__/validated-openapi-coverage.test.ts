@@ -16,7 +16,6 @@ interface OpenAPISpec {
 
 describe('Validated Functions OpenAPI Coverage', () => {
   let spec: OpenAPISpec;
-  let mockClient: NearRpcClient;
 
   beforeAll(async () => {
     // Download the OpenAPI spec
@@ -24,32 +23,6 @@ describe('Validated Functions OpenAPI Coverage', () => {
       'https://raw.githubusercontent.com/near/nearcore/master/chain/jsonrpc/openapi/openapi.json'
     );
     spec = await response.json();
-
-    // Create a mock client that returns example responses from the spec
-    mockClient = {
-      call: vi.fn().mockImplementation(async (method: string) => {
-        // Find the path for this method
-        const pathEntry = Object.entries(spec.paths).find(
-          ([_, pathSpec]) => pathSpec.post?.operationId === method
-        );
-
-        if (!pathEntry) {
-          return { result: null };
-        }
-
-        const [_, pathSpec] = pathEntry;
-        const responseSchema =
-          pathSpec.post?.responses?.['200']?.content?.['application/json']
-            ?.schema;
-
-        // Generate a mock response based on the schema
-        if (responseSchema) {
-          return { result: generateMockFromSchema(responseSchema, spec) };
-        }
-
-        return { result: null };
-      }),
-    } as unknown as NearRpcClient;
   });
 
   // Helper function to generate mock data from OpenAPI schema
@@ -124,110 +97,276 @@ describe('Validated Functions OpenAPI Coverage', () => {
   }
 
   // Generate test cases for each method in the spec
-  it('should test all validated functions from OpenAPI spec', async () => {
-    const testedFunctions = new Set<string>();
-    const skippedFunctions = new Set<string>();
+  describe('Happy path - valid requests and responses', () => {
+    it('should test all validated functions with valid data', async () => {
+      // Create a mock client that returns example responses from the spec
+      const mockClient = {
+        makeRequest: vi.fn().mockImplementation(async (method: string) => {
+          // Find the path for this method
+          const pathEntry = Object.entries(spec.paths).find(
+            ([_, pathSpec]) => pathSpec.post?.operationId === method
+          );
 
-    for (const [, pathSpec] of Object.entries(spec.paths)) {
-      const method = pathSpec.post?.operationId;
-      if (!method) continue;
+          if (!pathEntry) {
+            return null;
+          }
 
-      // Convert method name to camelCase for validated functions
-      const functionName = toCamelCase(method);
+          const [_, pathSpec] = pathEntry;
+          const responseSchema =
+            pathSpec.post?.responses?.['200']?.content?.['application/json']
+              ?.schema;
 
-      // Check if this function exists in validated exports
-      if (!(functionName in validated)) {
-        skippedFunctions.add(functionName);
-        continue;
+          // Generate a mock response based on the schema
+          if (responseSchema && responseSchema.properties?.result) {
+            return generateMockFromSchema(
+              responseSchema.properties.result,
+              spec
+            );
+          }
+
+          return null;
+        }),
+      } as unknown as NearRpcClient;
+
+      const testedFunctions = new Set<string>();
+
+      for (const [, pathSpec] of Object.entries(spec.paths)) {
+        const method = pathSpec.post?.operationId;
+        if (!method) continue;
+
+        // Convert method name to camelCase for validated functions
+        const functionName = toCamelCase(method);
+
+        // Check if this function exists in validated exports
+        if (!(functionName in validated)) {
+          continue;
+        }
+
+        // Get request schema
+        const requestSchema =
+          pathSpec.post?.requestBody?.content?.['application/json']?.schema;
+
+        try {
+          // Generate mock parameters based on the request schema
+          let params: any = undefined;
+
+          if (requestSchema && requestSchema.properties?.params) {
+            const paramsSchema = requestSchema.properties.params;
+
+            // Special handling for convenience functions
+            if (
+              ['viewAccount', 'viewFunction', 'viewAccessKey'].includes(
+                functionName
+              )
+            ) {
+              // These convenience functions use camelCase parameters
+              if (functionName === 'viewAccount') {
+                params = { accountId: 'test.near', finality: 'final' };
+              } else if (functionName === 'viewFunction') {
+                params = {
+                  accountId: 'test.near',
+                  methodName: 'test',
+                  argsBase64: '',
+                  finality: 'final',
+                };
+              } else if (functionName === 'viewAccessKey') {
+                params = {
+                  accountId: 'test.near',
+                  publicKey: 'ed25519:test',
+                  finality: 'final',
+                };
+              }
+            } else if (paramsSchema.type === 'array') {
+              // Methods like validators that take array params
+              params = 'latest';
+            } else {
+              // Generate params from schema
+              params = generateMockFromSchema(paramsSchema, spec);
+            }
+          }
+
+          // Call the validated function
+          await (validated as any)[functionName](mockClient, params);
+
+          testedFunctions.add(functionName);
+        } catch (error) {
+          // Some functions might fail due to parameter mismatches
+          // We still count them as tested since we're checking coverage
+          testedFunctions.add(functionName);
+        }
       }
 
-      // Get request schema
-      const requestSchema =
-        pathSpec.post?.requestBody?.content?.['application/json']?.schema;
+      console.log(
+        `Tested ${testedFunctions.size} validated functions - happy path`
+      );
+      expect(testedFunctions.size).toBeGreaterThan(25);
+    });
+  });
 
-      try {
-        // Generate mock parameters based on the request schema
-        let params: any = {};
+  describe('Invalid requests - should trigger request validation errors', () => {
+    it('should test all validated functions with invalid requests', async () => {
+      // Create a mock client
+      const mockClient = {
+        makeRequest: vi.fn().mockResolvedValue(null),
+      } as unknown as NearRpcClient;
 
-        if (requestSchema && requestSchema.properties?.params) {
-          const paramsSchema = requestSchema.properties.params;
+      const testedFunctions = new Set<string>();
+      const validationErrors = new Set<string>();
 
-          // Special handling for convenience functions
+      for (const [, pathSpec] of Object.entries(spec.paths)) {
+        const method = pathSpec.post?.operationId;
+        if (!method) continue;
+
+        // Convert method name to camelCase for validated functions
+        const functionName = toCamelCase(method);
+
+        // Check if this function exists in validated exports
+        if (!(functionName in validated)) {
+          continue;
+        }
+
+        try {
+          // Call with invalid parameters to trigger validation errors
+          let invalidParams: any = undefined;
+
+          // Generate invalid params based on function type
           if (
             ['viewAccount', 'viewFunction', 'viewAccessKey'].includes(
               functionName
             )
           ) {
-            // These convenience functions use camelCase parameters
-            if (functionName === 'viewAccount') {
-              params = { accountId: 'test.near', finality: 'final' };
-            } else if (functionName === 'viewFunction') {
-              params = {
-                accountId: 'test.near',
-                methodName: 'test',
-                argsBase64: '',
-                finality: 'final',
-              };
-            } else if (functionName === 'viewAccessKey') {
-              params = {
-                accountId: 'test.near',
-                publicKey: 'ed25519:test',
-                finality: 'final',
-              };
-            }
-          } else if (paramsSchema.type === 'array') {
-            // Methods like validators that take array params
-            params = 'latest';
+            // Pass invalid types for these convenience functions
+            invalidParams = {
+              accountId: 123, // Should be string
+              finality: 'invalid-finality', // Invalid enum value
+              blockId: 'not-a-number', // Should be number
+            };
+          } else if (functionName === 'validators') {
+            // Pass invalid type (should be string or null)
+            invalidParams = { invalid: 'params' };
           } else {
-            // Generate params from schema
-            params = generateMockFromSchema(paramsSchema, spec);
+            // Pass wrong type for other functions
+            invalidParams = 'invalid-string-instead-of-object';
           }
-        }
 
-        // Call the validated function
-        await (validated as any)[functionName](mockClient, params);
+          // This should throw validation error
+          await (validated as any)[functionName](mockClient, invalidParams);
 
-        testedFunctions.add(functionName);
-      } catch (error) {
-        // Some functions might fail due to parameter mismatches
-        // We still count them as tested since we're checking coverage
-        testedFunctions.add(functionName);
-      }
-    }
-
-    // Also test methods that might not be in the spec but are in validated
-    const allValidatedFunctions = Object.keys(validated);
-    for (const funcName of allValidatedFunctions) {
-      if (
-        !testedFunctions.has(funcName) &&
-        typeof (validated as any)[funcName] === 'function'
-      ) {
-        try {
-          // Try calling with minimal/no params
-          await (validated as any)[funcName](mockClient);
-          testedFunctions.add(funcName);
-        } catch {
-          // Try with empty object
-          try {
-            await (validated as any)[funcName](mockClient, {});
-            testedFunctions.add(funcName);
-          } catch {
-            // Mark as tested anyway for coverage
-            testedFunctions.add(funcName);
+          // If we get here, validation didn't catch the error
+          console.warn(
+            `No validation error for ${functionName} with invalid params`
+          );
+        } catch (error: any) {
+          // We expect validation errors here
+          if (error.message.includes('validation failed')) {
+            validationErrors.add(functionName);
           }
+          testedFunctions.add(functionName);
         }
       }
-    }
 
-    console.log(`Tested ${testedFunctions.size} validated functions`);
-    if (skippedFunctions.size > 0) {
       console.log(
-        `Skipped ${skippedFunctions.size} functions not found in validated exports:`,
-        Array.from(skippedFunctions)
+        `Tested ${testedFunctions.size} functions with invalid requests`
       );
-    }
+      console.log(`Caught ${validationErrors.size} request validation errors`);
 
-    // Ensure we tested a reasonable number of functions
-    expect(testedFunctions.size).toBeGreaterThan(25);
+      expect(testedFunctions.size).toBeGreaterThan(25);
+      expect(validationErrors.size).toBeGreaterThan(20);
+    });
+  });
+
+  describe('Invalid responses - should trigger response validation errors', () => {
+    it('should test all validated functions with invalid responses', async () => {
+      // Create a mock client that returns invalid responses
+      const mockClient = {
+        makeRequest: vi.fn().mockImplementation(async () => {
+          // Return an invalid response that doesn't match the expected schema
+          return {
+            invalidField: 'This response does not match any schema',
+            wrongType: 123,
+            missingRequiredFields: true,
+          };
+        }),
+      } as unknown as NearRpcClient;
+
+      const testedFunctions = new Set<string>();
+      const validationErrors = new Set<string>();
+
+      for (const [, pathSpec] of Object.entries(spec.paths)) {
+        const method = pathSpec.post?.operationId;
+        if (!method) continue;
+
+        // Convert method name to camelCase for validated functions
+        const functionName = toCamelCase(method);
+
+        // Check if this function exists in validated exports
+        if (!(functionName in validated)) {
+          continue;
+        }
+
+        // Get request schema
+        const requestSchema =
+          pathSpec.post?.requestBody?.content?.['application/json']?.schema;
+
+        try {
+          // Generate valid parameters
+          let params: any = undefined;
+
+          if (requestSchema && requestSchema.properties?.params) {
+            const paramsSchema = requestSchema.properties.params;
+
+            // Special handling for convenience functions
+            if (
+              ['viewAccount', 'viewFunction', 'viewAccessKey'].includes(
+                functionName
+              )
+            ) {
+              if (functionName === 'viewAccount') {
+                params = { accountId: 'test.near', finality: 'final' };
+              } else if (functionName === 'viewFunction') {
+                params = {
+                  accountId: 'test.near',
+                  methodName: 'test',
+                  argsBase64: '',
+                  finality: 'final',
+                };
+              } else if (functionName === 'viewAccessKey') {
+                params = {
+                  accountId: 'test.near',
+                  publicKey: 'ed25519:test',
+                  finality: 'final',
+                };
+              }
+            } else if (paramsSchema.type === 'array') {
+              params = 'latest';
+            } else {
+              params = generateMockFromSchema(paramsSchema, spec);
+            }
+          }
+
+          // This should throw response validation error
+          await (validated as any)[functionName](mockClient, params);
+
+          // If we get here, validation didn't catch the error
+          console.warn(
+            `No validation error for ${functionName} with invalid response`
+          );
+        } catch (error: any) {
+          // We expect validation errors here
+          if (error.message.includes('Response validation failed')) {
+            validationErrors.add(functionName);
+          }
+          testedFunctions.add(functionName);
+        }
+      }
+
+      console.log(
+        `Tested ${testedFunctions.size} functions with invalid responses`
+      );
+      console.log(`Caught ${validationErrors.size} response validation errors`);
+
+      expect(testedFunctions.size).toBeGreaterThan(25);
+      expect(validationErrors.size).toBeGreaterThan(20);
+    });
   });
 });
