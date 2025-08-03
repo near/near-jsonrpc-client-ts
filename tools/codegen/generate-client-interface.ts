@@ -376,6 +376,38 @@ function pascalCase(str: string): string {
     .join('');
 }
 
+// Format JSDoc comment
+function formatComment(description: string): string {
+  if (!description) return '';
+
+  // Clean up the description
+  const cleanDescription = description
+    .replace(/\n/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (cleanDescription.length <= 80) {
+    return `/** ${cleanDescription} */\n`;
+  }
+
+  // Multi-line comment
+  const words = cleanDescription.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    if ((currentLine + ' ' + word).length <= 75) {
+      currentLine = currentLine ? currentLine + ' ' + word : word;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+
+  return `/**\n${lines.map(line => ` * ${line}`).join('\n')}\n */\n`;
+}
+
 // Generate fallback request type name (the old approach)
 function generateFallbackRequestType(method: string): string {
   if (method.startsWith('EXPERIMENTAL_')) {
@@ -540,13 +572,18 @@ export interface CompleteClientInterface extends DynamicRpcMethods, ConvenienceM
 }
 
 // Generate individual static functions for tree-shaking (mini version)
-function generateStaticFunctions(mappings: MethodMapping[]): string {
+function generateStaticFunctions(
+  mappings: MethodMapping[],
+  methodDescriptions?: Record<string, string>
+): string {
   const timestamp = new Date().toISOString();
 
   // Generate individual function exports for each RPC method
   const staticFunctions = mappings.map(mapping => {
-    return `// ${mapping.rpcMethod} static function
-export async function ${mapping.clientMethodName}(
+    const description = methodDescriptions?.[mapping.rpcMethod] || '';
+    const jsDoc = description ? formatComment(description) : '';
+
+    return `${jsDoc}export async function ${mapping.clientMethodName}(
   client: NearRpcClient,
   params?: ${mapping.requestType}
 ): Promise<${mapping.responseType}> {
@@ -574,10 +611,16 @@ import type { NearRpcClient } from './client';`;
 // Dynamic RPC methods interface with proper typing
 export interface DynamicRpcMethods {
 ${mappings
-  .map(
-    mapping =>
-      `  ${mapping.clientMethodName}(params?: ${mapping.requestType}): Promise<${mapping.responseType}>;`
-  )
+  .map(mapping => {
+    const description = methodDescriptions?.[mapping.rpcMethod] || '';
+    const jsDoc = description
+      ? formatComment(description)
+          .split('\n')
+          .map(line => '  ' + line)
+          .join('\n')
+      : '';
+    return `${jsDoc}  ${mapping.clientMethodName}(params?: ${mapping.requestType}): Promise<${mapping.responseType}>;`;
+  })
   .join('\n')}
 }
 
@@ -646,8 +689,23 @@ export async function generateClientInterface(
   );
   console.log(`   Found ${mappings.length} RPC methods to generate`);
 
+  // Extract method descriptions from OpenAPI spec
+  const methodDescriptions: Record<string, string> = {};
+  if (openApiSpec && pathToMethodMap) {
+    Object.entries(pathToMethodMap).forEach(([path, method]) => {
+      const pathSpec = openApiSpec.paths?.[path];
+      const description = pathSpec?.post?.description;
+      if (description) {
+        methodDescriptions[method] = description;
+      }
+    });
+  }
+
   // Generate static functions (mini is now the default and only version)
-  const staticFunctionsContent = generateStaticFunctions(mappings);
+  const staticFunctionsContent = generateStaticFunctions(
+    mappings,
+    methodDescriptions
+  );
 
   // Ensure output directory exists
   await fs.mkdir(dirname(outputPath), { recursive: true });

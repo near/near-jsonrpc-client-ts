@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-07-31T19:21:30.451Z
+// Generated on: 2025-08-03T18:51:26.260Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -1240,242 +1240,526 @@ export type WitnessConfigView = z.infer<
 >;
 
 // Method-specific types
+/**
+ * Request parameters for EXPERIMENTAL_changes: [Deprecated] Returns changes
+ * for a given account, contract or contract code for given block height or
+ * hash. Consider using changes instead.
+ */
 export type EXPERIMENTALChangesRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALChangesRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_changes: [Deprecated] Returns changes for a
+ * given account, contract or contract code for given block height or hash.
+ * Consider using changes instead.
+ */
 export type EXPERIMENTALChangesResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALChangesResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_changes_in_block: [Deprecated] Returns
+ * changes in block for given block height or hash over all transactions for
+ * all the types. Includes changes like account_touched, access_key_touched,
+ * data_touched, contract_code_touched. Consider using block_effects instead
+ */
 export type EXPERIMENTALChangesInBlockRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALChangesInBlockRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_changes_in_block: [Deprecated] Returns
+ * changes in block for given block height or hash over all transactions for
+ * all the types. Includes changes like account_touched, access_key_touched,
+ * data_touched, contract_code_touched. Consider using block_effects instead
+ */
 export type EXPERIMENTALChangesInBlockResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALChangesInBlockResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_congestion_level: Queries the
+ * congestion level of a shard. More info about congestion
+ * [here](https://near.github.io/nearcore/architecture/how/receipt-congestion.html?highlight=congestion#receipt-congestion)
+ */
 export type EXPERIMENTALCongestionLevelRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALCongestionLevelRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_congestion_level: Queries the congestion
+ * level of a shard. More info about congestion
+ * [here](https://near.github.io/nearcore/architecture/how/receipt-congestion.html?highlight=congestion#receipt-congestion)
+ */
 export type EXPERIMENTALCongestionLevelResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALCongestionLevelResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_genesis_config: [Deprecated] Get
+ * initial state and parameters for the genesis block. Consider genesis_config
+ * instead.
+ */
 export type EXPERIMENTALGenesisConfigRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALGenesisConfigRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_genesis_config: [Deprecated] Get initial
+ * state and parameters for the genesis block. Consider genesis_config
+ * instead.
+ */
 export type EXPERIMENTALGenesisConfigResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALGenesisConfigResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_light_client_block_proof: Returns the
+ * proofs for a transaction execution.
+ */
 export type EXPERIMENTALLightClientBlockProofRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALLightClientBlockProofRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_light_client_block_proof: Returns the proofs
+ * for a transaction execution.
+ */
 export type EXPERIMENTALLightClientBlockProofResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALLightClientBlockProofResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_light_client_proof: Returns the proofs
+ * for a transaction execution.
+ */
 export type EXPERIMENTALLightClientProofRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALLightClientProofRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_light_client_proof: Returns the proofs for a
+ * transaction execution.
+ */
 export type EXPERIMENTALLightClientProofResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALLightClientProofResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_maintenance_windows: [Deprecated]
+ * Returns the future windows for maintenance in current epoch for the
+ * specified account. In the maintenance windows, the node will not be block
+ * producer or chunk producer. Consider using maintenance_windows instead.
+ */
 export type EXPERIMENTALMaintenanceWindowsRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALMaintenanceWindowsRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_maintenance_windows: [Deprecated] Returns
+ * the future windows for maintenance in current epoch for the specified
+ * account. In the maintenance windows, the node will not be block producer or
+ * chunk producer. Consider using maintenance_windows instead.
+ */
 export type EXPERIMENTALMaintenanceWindowsResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALMaintenanceWindowsResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_protocol_config: A configuration that
+ * defines the protocol-level parameters such as gas/storage costs, limits,
+ * feature flags, other settings
+ */
 export type EXPERIMENTALProtocolConfigRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALProtocolConfigRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_protocol_config: A configuration that
+ * defines the protocol-level parameters such as gas/storage costs, limits,
+ * feature flags, other settings
+ */
 export type EXPERIMENTALProtocolConfigResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALProtocolConfigResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_receipt: Fetches a receipt by its ID
+ * (as is, without a status or execution outcome)
+ */
 export type EXPERIMENTALReceiptRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALReceiptRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_receipt: Fetches a receipt by its ID (as is,
+ * without a status or execution outcome)
+ */
 export type EXPERIMENTALReceiptResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALReceiptResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_split_storage_info: Contains the split
+ * storage information. More info on split storage
+ * [here](https://near-nodes.io/archival/split-storage-archival)
+ */
 export type EXPERIMENTALSplitStorageInfoRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALSplitStorageInfoRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_split_storage_info: Contains the split
+ * storage information. More info on split storage
+ * [here](https://near-nodes.io/archival/split-storage-archival)
+ */
 export type EXPERIMENTALSplitStorageInfoResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALSplitStorageInfoResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_tx_status: Queries status of a
+ * transaction by hash, returning the final transaction result and details of
+ * all receipts.
+ */
 export type EXPERIMENTALTxStatusRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALTxStatusRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_tx_status: Queries status of a transaction
+ * by hash, returning the final transaction result and details of all
+ * receipts.
+ */
 export type EXPERIMENTALTxStatusResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALTxStatusResponseSchema>
 >;
 
+/**
+ * Request parameters for EXPERIMENTAL_validators_ordered: Returns the current
+ * epoch validators ordered in the block producer order with repetition. This
+ * endpoint is solely used for bridge currently and is not intended for other
+ * external use cases.
+ */
 export type EXPERIMENTALValidatorsOrderedRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALValidatorsOrderedRequestSchema>
 >;
 
+/**
+ * Response type for EXPERIMENTAL_validators_ordered: Returns the current
+ * epoch validators ordered in the block producer order with repetition. This
+ * endpoint is solely used for bridge currently and is not intended for other
+ * external use cases.
+ */
 export type EXPERIMENTALValidatorsOrderedResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALValidatorsOrderedResponseSchema>
 >;
 
+/** Request parameters for block: Returns block details for given height or hash */
 export type BlockRequest = z.infer<
   ReturnType<typeof schemas.BlockRequestSchema>
 >;
 
+/** Response type for block: Returns block details for given height or hash */
 export type BlockResponse = z.infer<
   ReturnType<typeof schemas.BlockResponseSchema>
 >;
 
+/**
+ * Request parameters for block_effects: Returns changes in block for given
+ * block height or hash over all transactions for all the types. Includes
+ * changes like account_touched, access_key_touched, data_touched,
+ * contract_code_touched.
+ */
 export type BlockEffectsRequest = z.infer<
   ReturnType<typeof schemas.BlockEffectsRequestSchema>
 >;
 
+/**
+ * Response type for block_effects: Returns changes in block for given block
+ * height or hash over all transactions for all the types. Includes changes
+ * like account_touched, access_key_touched, data_touched,
+ * contract_code_touched.
+ */
 export type BlockEffectsResponse = z.infer<
   ReturnType<typeof schemas.BlockEffectsResponseSchema>
 >;
 
+/**
+ * Request parameters for broadcast_tx_async: [Deprecated] Sends a transaction
+ * and immediately returns transaction hash. Consider using send_tx instead.
+ */
 export type BroadcastTxAsyncRequest = z.infer<
   ReturnType<typeof schemas.BroadcastTxAsyncRequestSchema>
 >;
 
+/**
+ * Response type for broadcast_tx_async: [Deprecated] Sends a transaction and
+ * immediately returns transaction hash. Consider using send_tx instead.
+ */
 export type BroadcastTxAsyncResponse = z.infer<
   ReturnType<typeof schemas.BroadcastTxAsyncResponseSchema>
 >;
 
+/**
+ * Request parameters for broadcast_tx_commit: [Deprecated] Sends a
+ * transaction and waits until transaction is fully complete. (Has a 10 second
+ * timeout). Consider using send_tx instead.
+ */
 export type BroadcastTxCommitRequest = z.infer<
   ReturnType<typeof schemas.BroadcastTxCommitRequestSchema>
 >;
 
+/**
+ * Response type for broadcast_tx_commit: [Deprecated] Sends a transaction and
+ * waits until transaction is fully complete. (Has a 10 second timeout).
+ * Consider using send_tx instead.
+ */
 export type BroadcastTxCommitResponse = z.infer<
   ReturnType<typeof schemas.BroadcastTxCommitResponseSchema>
 >;
 
+/**
+ * Request parameters for changes: Returns changes for a given account,
+ * contract or contract code for given block height or hash.
+ */
 export type ChangesRequest = z.infer<
   ReturnType<typeof schemas.ChangesRequestSchema>
 >;
 
+/**
+ * Response type for changes: Returns changes for a given account, contract or
+ * contract code for given block height or hash.
+ */
 export type ChangesResponse = z.infer<
   ReturnType<typeof schemas.ChangesResponseSchema>
 >;
 
+/**
+ * Request parameters for chunk: Returns details of a specific chunk. You can
+ * run a block details query to get a valid chunk hash.
+ */
 export type ChunkRequest = z.infer<
   ReturnType<typeof schemas.ChunkRequestSchema>
 >;
 
+/**
+ * Response type for chunk: Returns details of a specific chunk. You can run a
+ * block details query to get a valid chunk hash.
+ */
 export type ChunkResponse = z.infer<
   ReturnType<typeof schemas.ChunkResponseSchema>
 >;
 
+/** Request parameters for client_config: Queries client node configuration */
 export type ClientConfigRequest = z.infer<
   ReturnType<typeof schemas.ClientConfigRequestSchema>
 >;
 
+/** Response type for client_config: Queries client node configuration */
 export type ClientConfigResponse = z.infer<
   ReturnType<typeof schemas.ClientConfigResponseSchema>
 >;
 
+/**
+ * Request parameters for gas_price: Returns gas price for a specific
+ * block_height or block_hash. Using [null] will return the most recent
+ * block's gas price.
+ */
 export type GasPriceRequest = z.infer<
   ReturnType<typeof schemas.GasPriceRequestSchema>
 >;
 
+/**
+ * Response type for gas_price: Returns gas price for a specific block_height
+ * or block_hash. Using [null] will return the most recent block's gas price.
+ */
 export type GasPriceResponse = z.infer<
   ReturnType<typeof schemas.GasPriceResponseSchema>
 >;
 
+/**
+ * Response type for genesis_config: Get initial state and parameters for the
+ * genesis block
+ */
 export type GenesisConfigResponse = z.infer<
   ReturnType<typeof schemas.GenesisConfigResponseSchema>
 >;
 
+/**
+ * Request parameters for health: Returns the current health status of the RPC
+ * node the client connects to.
+ */
 export type HealthRequest = z.infer<
   ReturnType<typeof schemas.HealthRequestSchema>
 >;
 
+/**
+ * Response type for health: Returns the current health status of the RPC node
+ * the client connects to.
+ */
 export type HealthResponse = z.infer<
   ReturnType<typeof schemas.HealthResponseSchema>
 >;
 
+/**
+ * Request parameters for light_client_proof: Returns the proofs for a
+ * transaction execution.
+ */
 export type LightClientProofRequest = z.infer<
   ReturnType<typeof schemas.LightClientProofRequestSchema>
 >;
 
+/**
+ * Response type for light_client_proof: Returns the proofs for a transaction
+ * execution.
+ */
 export type LightClientProofResponse = z.infer<
   ReturnType<typeof schemas.LightClientProofResponseSchema>
 >;
 
+/**
+ * Request parameters for maintenance_windows: Returns the future windows for
+ * maintenance in current epoch for the specified account. In the maintenance
+ * windows, the node will not be block producer or chunk producer.
+ */
 export type MaintenanceWindowsRequest = z.infer<
   ReturnType<typeof schemas.MaintenanceWindowsRequestSchema>
 >;
 
+/**
+ * Response type for maintenance_windows: Returns the future windows for
+ * maintenance in current epoch for the specified account. In the maintenance
+ * windows, the node will not be block producer or chunk producer.
+ */
 export type MaintenanceWindowsResponse = z.infer<
   ReturnType<typeof schemas.MaintenanceWindowsResponseSchema>
 >;
 
+/**
+ * Request parameters for network_info: Queries the current state of node
+ * network connections. This includes information about active peers,
+ * transmitted data, known producers, etc.
+ */
 export type NetworkInfoRequest = z.infer<
   ReturnType<typeof schemas.NetworkInfoRequestSchema>
 >;
 
+/**
+ * Response type for network_info: Queries the current state of node network
+ * connections. This includes information about active peers, transmitted
+ * data, known producers, etc.
+ */
 export type NetworkInfoResponse = z.infer<
   ReturnType<typeof schemas.NetworkInfoResponseSchema>
 >;
 
+/**
+ * Request parameters for next_light_client_block: Returns the next light
+ * client block.
+ */
 export type NextLightClientBlockRequest = z.infer<
   ReturnType<typeof schemas.NextLightClientBlockRequestSchema>
 >;
 
+/** Response type for next_light_client_block: Returns the next light client block. */
 export type NextLightClientBlockResponse = z.infer<
   ReturnType<typeof schemas.NextLightClientBlockResponseSchema>
 >;
 
+/**
+ * Request parameters for query: This module allows you to make generic
+ * requests to the network. The `RpcQueryRequest` struct takes in a
+ * [`BlockReference`](https://docs.rs/near-primitives/0.12.0/near_primitives/types/enum.BlockReference.html)
+ * and a
+ * [`QueryRequest`](https://docs.rs/near-primitives/0.12.0/near_primitives/views/enum.QueryRequest.html).
+ * The `BlockReference` enum allows you to specify a block by `Finality`,
+ * `BlockId` or `SyncCheckpoint`. The `QueryRequest` enum provides multiple
+ * variants for performing the following actions: - View an account's details
+ * - View a contract's code - View the state of an account - View the
+ * `AccessKey` of an account - View the `AccessKeyList` of an account - Call a
+ * function in a contract deployed on the network.
+ */
 export type QueryRequest = z.infer<
   ReturnType<typeof schemas.QueryRequestSchema>
 >;
 
+/**
+ * Response type for query: This module allows you to make generic requests to
+ * the network. The `RpcQueryRequest` struct takes in a
+ * [`BlockReference`](https://docs.rs/near-primitives/0.12.0/near_primitives/types/enum.BlockReference.html)
+ * and a
+ * [`QueryRequest`](https://docs.rs/near-primitives/0.12.0/near_primitives/views/enum.QueryRequest.html).
+ * The `BlockReference` enum allows you to specify a block by `Finality`,
+ * `BlockId` or `SyncCheckpoint`. The `QueryRequest` enum provides multiple
+ * variants for performing the following actions: - View an account's details
+ * - View a contract's code - View the state of an account - View the
+ * `AccessKey` of an account - View the `AccessKeyList` of an account - Call a
+ * function in a contract deployed on the network.
+ */
 export type QueryResponse = z.infer<
   ReturnType<typeof schemas.QueryResponseSchema>
 >;
 
+/**
+ * Request parameters for send_tx: Sends transaction. Returns the guaranteed
+ * execution status and the results the blockchain can provide at the moment.
+ */
 export type SendTxRequest = z.infer<
   ReturnType<typeof schemas.SendTxRequestSchema>
 >;
 
+/**
+ * Response type for send_tx: Sends transaction. Returns the guaranteed
+ * execution status and the results the blockchain can provide at the moment.
+ */
 export type SendTxResponse = z.infer<
   ReturnType<typeof schemas.SendTxResponseSchema>
 >;
 
+/**
+ * Request parameters for status: Requests the status of the connected RPC
+ * node. This includes information about sync status, nearcore node version,
+ * protocol version, the current set of validators, etc.
+ */
 export type StatusRequest = z.infer<
   ReturnType<typeof schemas.StatusRequestSchema>
 >;
 
+/**
+ * Response type for status: Requests the status of the connected RPC node.
+ * This includes information about sync status, nearcore node version,
+ * protocol version, the current set of validators, etc.
+ */
 export type StatusResponse = z.infer<
   ReturnType<typeof schemas.StatusResponseSchema>
 >;
 
+/**
+ * Request parameters for tx: Queries status of a transaction by hash and
+ * returns the final transaction result.
+ */
 export type TxRequest = z.infer<ReturnType<typeof schemas.TxRequestSchema>>;
 
+/**
+ * Response type for tx: Queries status of a transaction by hash and returns
+ * the final transaction result.
+ */
 export type TxResponse = z.infer<ReturnType<typeof schemas.TxResponseSchema>>;
 
+/**
+ * Request parameters for validators: Queries active validators on the
+ * network. Returns details and the state of validation on the blockchain.
+ */
 export type ValidatorsRequest = z.infer<
   ReturnType<typeof schemas.ValidatorsRequestSchema>
 >;
 
+/**
+ * Response type for validators: Queries active validators on the network.
+ * Returns details and the state of validation on the blockchain.
+ */
 export type ValidatorsResponse = z.infer<
   ReturnType<typeof schemas.ValidatorsResponseSchema>
 >;
