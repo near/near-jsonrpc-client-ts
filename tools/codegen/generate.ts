@@ -208,7 +208,8 @@ function formatComment(description: string): string {
 function generateZodSchema(
   schema: Schema,
   schemas: Record<string, Schema>,
-  depth = 0
+  depth = 0,
+  schemaName?: string
 ): string {
   if (depth > 10) return 'z.unknown()'; // Prevent infinite recursion
 
@@ -374,20 +375,6 @@ function generateZodSchema(
   return baseSchema;
 }
 
-// Add explicit types for problematic schemas
-function getSchemaExplicitType(schemaName: string): string | null {
-  const circularSchemas = [
-    'Action',
-    'DelegateAction',
-    'NonDelegateAction',
-    'SignedDelegateAction',
-  ];
-  if (circularSchemas.includes(schemaName)) {
-    // zod/mini doesn't export ZodType, so we use a different approach
-    return ': any';
-  }
-  return null;
-}
 export async function generateTypes() {
   console.log('🔄 Starting OpenAPI spec analysis and type generation...');
 
@@ -507,7 +494,33 @@ export * from './schemas';
 
     Object.entries(schemas).forEach(([schemaName, schema]) => {
       const schemaTypeName = `${pascalCase(schemaName)}Schema`;
-      const zodMiniSchema = generateZodSchema(schema, schemas, 0);
+
+      // Special handling for NonDelegateAction to break circular dependency
+      let zodMiniSchema: string;
+      if (schemaName === 'NonDelegateAction') {
+        // NonDelegateAction should explicitly list all actions except Delegate
+        // This breaks the circular dependency with DelegateAction
+        const actionSchema = schemas['Action'];
+        if (actionSchema && actionSchema.oneOf) {
+          // Filter out the Delegate action
+          const nonDelegateActions = actionSchema.oneOf.filter(
+            (action: any) => {
+              return !action.properties || !action.properties.Delegate;
+            }
+          );
+
+          // Generate the union of all non-delegate actions
+          const actionOptions = nonDelegateActions.map((action: any) =>
+            generateZodSchema(action, schemas, 1)
+          );
+          zodMiniSchema = `z.union([${actionOptions.join(', ')}])`;
+        } else {
+          // Fallback to normal generation if structure is unexpected
+          zodMiniSchema = generateZodSchema(schema, schemas, 0, schemaName);
+        }
+      } else {
+        zodMiniSchema = generateZodSchema(schema, schemas, 0, schemaName);
+      }
 
       // Add description as comment if available
       const description = schema.description
@@ -517,12 +530,8 @@ export * from './schemas';
             .replace(/\* /g, '// ')
         : '';
 
-      // Handle circular references with explicit types
-      const explicitTypeMini = getSchemaExplicitType(schemaName);
-      const typeAnnotationMini = explicitTypeMini || '';
-
       miniSchemaDefinitions.push(
-        `${description}export const ${schemaTypeName}${typeAnnotationMini} = () => ${zodMiniSchema};`
+        `${description}export const ${schemaTypeName} = () => ${zodMiniSchema};`
       );
       schemaExports.push(schemaTypeName);
     });
