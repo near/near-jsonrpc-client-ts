@@ -76,7 +76,7 @@ async function fetchOpenAPISpec(): Promise<OpenAPISpec> {
     throw new Error(`Failed to fetch OpenAPI spec: ${response.status}`);
   }
   return response.json();
-  
+
   // Original code - use this when fix is merged to master
   // const response = await fetch(
   //   'https://raw.githubusercontent.com/near/nearcore/master/chain/jsonrpc/openapi/openapi.json'
