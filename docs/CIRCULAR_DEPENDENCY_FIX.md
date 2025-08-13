@@ -1,5 +1,10 @@
 # NonDelegateAction Circular Dependency Fix
 
+> **✅ FIXED**: The fix has been implemented in nearcore PR by @petersalomonsen
+> 
+> This branch now uses the fixed OpenAPI spec from that PR:
+> https://raw.githubusercontent.com/petersalomonsen/nearcore/0c5d2f7d45321341a2b367a60e930dceb44cbe9d/chain/jsonrpc/openapi/openapi.json
+
 ## Problem
 
 The NEAR OpenAPI specification has a circular dependency between `Action`, `DelegateAction`, and `NonDelegateAction` schemas that causes TypeScript to lose type inference, requiring `: any` type annotations.

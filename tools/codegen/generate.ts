@@ -67,13 +67,20 @@ function pascalCase(str: string): string {
 
 // Fetch OpenAPI spec
 async function fetchOpenAPISpec(): Promise<OpenAPISpec> {
+  // Use the fixed OpenAPI spec from PR to nearcore
+  // PR: https://github.com/near/nearcore/pull/[PR_NUMBER]
   const response = await fetch(
-    'https://raw.githubusercontent.com/near/nearcore/master/chain/jsonrpc/openapi/openapi.json'
+    'https://raw.githubusercontent.com/petersalomonsen/nearcore/0c5d2f7d45321341a2b367a60e930dceb44cbe9d/chain/jsonrpc/openapi/openapi.json'
   );
   if (!response.ok) {
     throw new Error(`Failed to fetch OpenAPI spec: ${response.status}`);
   }
   return response.json();
+  
+  // Original code - use this when fix is merged to master
+  // const response = await fetch(
+  //   'https://raw.githubusercontent.com/near/nearcore/master/chain/jsonrpc/openapi/openapi.json'
+  // );
 }
 
 // Type generation utilities
@@ -208,8 +215,7 @@ function formatComment(description: string): string {
 function generateZodSchema(
   schema: Schema,
   schemas: Record<string, Schema>,
-  depth = 0,
-  schemaName?: string
+  depth = 0
 ): string {
   if (depth > 10) return 'z.unknown()'; // Prevent infinite recursion
 
@@ -495,32 +501,8 @@ export * from './schemas';
     Object.entries(schemas).forEach(([schemaName, schema]) => {
       const schemaTypeName = `${pascalCase(schemaName)}Schema`;
 
-      // Special handling for NonDelegateAction to break circular dependency
-      let zodMiniSchema: string;
-      if (schemaName === 'NonDelegateAction') {
-        // NonDelegateAction should explicitly list all actions except Delegate
-        // This breaks the circular dependency with DelegateAction
-        const actionSchema = schemas['Action'];
-        if (actionSchema && actionSchema.oneOf) {
-          // Filter out the Delegate action
-          const nonDelegateActions = actionSchema.oneOf.filter(
-            (action: any) => {
-              return !action.properties || !action.properties.Delegate;
-            }
-          );
-
-          // Generate the union of all non-delegate actions
-          const actionOptions = nonDelegateActions.map((action: any) =>
-            generateZodSchema(action, schemas, 1)
-          );
-          zodMiniSchema = `z.union([${actionOptions.join(', ')}])`;
-        } else {
-          // Fallback to normal generation if structure is unexpected
-          zodMiniSchema = generateZodSchema(schema, schemas, 0, schemaName);
-        }
-      } else {
-        zodMiniSchema = generateZodSchema(schema, schemas, 0, schemaName);
-      }
+      // Generate schema normally - no special handling needed since spec is fixed
+      const zodMiniSchema = generateZodSchema(schema, schemas, 0);
 
       // Add description as comment if available
       const description = schema.description
