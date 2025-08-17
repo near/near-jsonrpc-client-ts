@@ -68,9 +68,9 @@ function pascalCase(str: string): string {
 // Fetch OpenAPI spec
 async function fetchOpenAPISpec(): Promise<OpenAPISpec> {
   // Use the fixed OpenAPI spec from PR to nearcore
-  // PR: https://github.com/near/nearcore/pull/[PR_NUMBER]
+  // PR: https://github.com/near/nearcore/pull/14061
   const response = await fetch(
-    'https://raw.githubusercontent.com/petersalomonsen/nearcore/0c5d2f7d45321341a2b367a60e930dceb44cbe9d/chain/jsonrpc/openapi/openapi.json'
+    'https://raw.githubusercontent.com/petersalomonsen/nearcore/fix/openapi-non-delegate-action-schema/chain/jsonrpc/openapi/openapi.json'
   );
   if (!response.ok) {
     throw new Error(`Failed to fetch OpenAPI spec: ${response.status}`);

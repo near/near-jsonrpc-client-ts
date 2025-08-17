@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-08-13T16:12:23.439Z
+// Generated on: 2025-08-17T16:43:14.715Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -92,8 +92,6 @@ export type AccountView = z.infer<ReturnType<typeof schemas.AccountViewSchema>>;
 export type AccountWithPublicKey = z.infer<
   ReturnType<typeof schemas.AccountWithPublicKeySchema>
 >;
-
-export type Action = z.infer<ReturnType<typeof schemas.ActionSchema>>;
 
 /**
  * Describes the cost of creating a specific action, `Action`. Includes all

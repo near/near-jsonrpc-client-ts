@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-08-13T16:12:23.442Z
+// Generated on: 2025-08-17T16:43:14.719Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -141,43 +141,6 @@ export const AccountWithPublicKeySchema = () =>
     accountId: z.lazy(() => AccountIdSchema()),
     publicKey: z.lazy(() => PublicKeySchema()),
   });
-
-export const ActionSchema = () =>
-  z.union([
-    z.object({
-      CreateAccount: z.lazy(() => CreateAccountActionSchema()),
-    }),
-    z.object({
-      DeployContract: z.lazy(() => DeployContractActionSchema()),
-    }),
-    z.object({
-      FunctionCall: z.lazy(() => FunctionCallActionSchema()),
-    }),
-    z.object({
-      Transfer: z.lazy(() => TransferActionSchema()),
-    }),
-    z.object({
-      Stake: z.lazy(() => StakeActionSchema()),
-    }),
-    z.object({
-      AddKey: z.lazy(() => AddKeyActionSchema()),
-    }),
-    z.object({
-      DeleteKey: z.lazy(() => DeleteKeyActionSchema()),
-    }),
-    z.object({
-      DeleteAccount: z.lazy(() => DeleteAccountActionSchema()),
-    }),
-    z.object({
-      Delegate: z.lazy(() => SignedDelegateActionSchema()),
-    }),
-    z.object({
-      DeployGlobalContract: z.lazy(() => DeployGlobalContractActionSchema()),
-    }),
-    z.object({
-      UseGlobalContract: z.lazy(() => UseGlobalContractActionSchema()),
-    }),
-  ]);
 
 //
 // Describes the cost of creating a specific action, `Action`. Includes all
