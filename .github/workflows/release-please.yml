@@ -11,8 +11,8 @@ permissions:
   issues: write
 
 env:
-  # Temporary scope configuration - change these when migrating to @near-js
-  PUBLISH_SCOPE: '@psalomo'
+  # Scope configuration for @near-js packages
+  PUBLISH_SCOPE: '@near-js'
   ORIGINAL_SCOPE: '@near-js'
 
 jobs:
@@ -91,16 +91,9 @@ jobs:
 
       - name: Prepare and publish packages
         run: |
-          if [ "${{ env.PUBLISH_SCOPE }}" != "${{ env.ORIGINAL_SCOPE }}" ]; then
-            echo "Publishing to temporary scope ${{ env.PUBLISH_SCOPE }}"
-            # Run the publish-temp script to prepare packages
-            node scripts/publish-temp.js
-            # Publish the prepared packages
-            (cd temp-publish/jsonrpc-types && npm publish --access public)
-            (cd temp-publish/jsonrpc-client && npm publish --access public)
-          else
-            echo "Publishing to original scope ${{ env.ORIGINAL_SCOPE }}"
-            pnpm -r publish --access public --no-git-checks
-          fi
+          echo "Publishing to ${{ env.PUBLISH_SCOPE }}"
+          # Only publish the main packages, not examples
+          pnpm --filter "@near-js/jsonrpc-types" publish --access public --no-git-checks
+          pnpm --filter "@near-js/jsonrpc-client" publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

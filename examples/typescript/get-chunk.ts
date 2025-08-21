@@ -56,7 +56,8 @@ if (recentBlock.chunks && recentBlock.chunks.length > 0) {
   }
 
   // Example 2: Get chunk by block ID and shard ID
-  const shardId = 0; // Get chunk from shard 0
+  // Use the actual shard ID from the first chunk
+  const shardId = recentBlock.chunks[0].shardId;
   console.log(
     `\n📦 Getting chunk for shard ${shardId} at block height ${recentBlock.header.height}...`
   );
