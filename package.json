@@ -13,14 +13,13 @@
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "test:browser": "playwright test",
-    "lint": "prettier --check '*.{ts,js}' 'tools/**/*.{ts,js}' 'tests/**/*.{ts,js}' 'examples/**/*.{ts,js}' 'scripts/**/*.{ts,js}' && pnpm -r lint",
-    "format": "prettier --write '*.{ts,js}' 'tools/**/*.{ts,js}' 'tests/**/*.{ts,js}' 'examples/**/*.{ts,js}' 'scripts/**/*.{ts,js}' && pnpm -r format",
+    "lint": "prettier --check '*.{ts,js}' 'tools/**/*.{ts,js}' 'tests/**/*.{ts,js}' 'examples/**/*.{ts,js}' 'scripts/**/*.js' && pnpm -r lint",
+    "format": "prettier --write '*.{ts,js}' 'tools/**/*.{ts,js}' 'tests/**/*.{ts,js}' 'examples/**/*.{ts,js}' 'scripts/**/*.js' && pnpm -r format",
     "clean": "pnpm -r clean",
     "generate": "pnpm --filter @near-js/jsonrpc-types generate",
     "typecheck": "pnpm -r typecheck",
     "type-coverage": "typescript-coverage-report",
-    "dev": "pnpm -r --parallel dev",
-    "publish:temp": "node scripts/publish-temp.js"
+    "dev": "pnpm -r --parallel dev"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.1",

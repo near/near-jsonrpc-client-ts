@@ -27,23 +27,155 @@ jobs:
       - name: Build packages
         run: pnpm build
 
-      - name: Prepare packages for publishing
-        run: node scripts/publish-temp.js
+      - name: Create package tarballs (dry-run)
+        run: |
+          echo "📦 Creating package tarballs exactly as they would be published..."
+          
+          # Pack jsonrpc-types
+          cd packages/jsonrpc-types
+          npm pack
+          echo "✅ Created jsonrpc-types tarball"
+          
+          # Pack jsonrpc-client (need to handle workspace dependency)
+          cd ../jsonrpc-client
+          
+          # Get version from types package
+          TYPES_VERSION=$(node -p "require('../jsonrpc-types/package.json').version")
+          
+          # Temporarily replace workspace:* with actual version for packing
+          cp package.json package.json.backup
+          node -e "
+            const pkg = require('./package.json');
+            if (pkg.dependencies['@near-js/jsonrpc-types'] === 'workspace:*') {
+              pkg.dependencies['@near-js/jsonrpc-types'] = '^$TYPES_VERSION';
+            }
+            require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+          "
+          
+          npm pack
+          echo "✅ Created jsonrpc-client tarball"
+          
+          # Restore original package.json
+          mv package.json.backup package.json
+          
+          cd ../..
 
-      - name: Test prepared packages
-        run: node scripts/test-published-packages.js
+      - name: Test package installation from tarballs
+        run: |
+          echo "🧪 Testing package installation from tarballs..."
+          
+          # Create test directory
+          mkdir -p test-install
+          cd test-install
+          
+          # Create test package.json
+          cat > package.json << EOF
+          {
+            "name": "test-package-install",
+            "version": "1.0.0",
+            "dependencies": {
+              "@near-js/jsonrpc-types": "file:../packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz",
+              "@near-js/jsonrpc-client": "file:../packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz"
+            }
+          }
+          EOF
+          
+          # Install from tarballs
+          npm install ../packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz
+          npm install ../packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz
+          
+          echo "✅ Packages installed successfully from tarballs"
+          
+          cd ..
 
-      - name: Test TypeScript definitions
-        run: npx tsx scripts/test-published-typescript.ts
+      - name: Test TypeScript compilation
+        run: |
+          echo "🔍 Testing TypeScript compilation with installed packages..."
+          
+          cd test-install
+          
+          # Create TypeScript test file
+          cat > test.ts << 'EOF'
+          import { NearRpcClient, block, status } from '@near-js/jsonrpc-client';
+          import { RPC_METHODS, RpcBlockResponse } from '@near-js/jsonrpc-types';
+          
+          async function test() {
+            const client = new NearRpcClient('https://rpc.testnet.fastnear.com');
+            const blockResult: RpcBlockResponse = await block(client, { finality: 'final' });
+            console.log('Methods count:', RPC_METHODS.length);
+            console.log('✅ TypeScript compilation test passed');
+          }
+          EOF
+          
+          # Create tsconfig.json
+          cat > tsconfig.json << EOF
+          {
+            "compilerOptions": {
+              "target": "ES2022",
+              "module": "commonjs",
+              "strict": true,
+              "esModuleInterop": true,
+              "skipLibCheck": true,
+              "moduleResolution": "node",
+              "noEmit": true
+            }
+          }
+          EOF
+          
+          # Install TypeScript
+          npm install --save-dev typescript @types/node
+          
+          # Type check
+          npx tsc --noEmit
+          echo "✅ TypeScript compilation successful"
+          
+          cd ..
 
       - name: Verify package contents
         run: |
-          echo "📦 Checking package contents..."
+          echo "📋 Verifying package contents..."
+          
+          # List tarball contents
+          echo "📦 jsonrpc-types tarball contents:"
+          tar -tzf packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz | head -20
+          
           echo ""
-          echo "jsonrpc-types package.json:"
-          cat temp-publish/jsonrpc-types/package.json | jq '.name, .version, .dependencies'
+          echo "📦 jsonrpc-client tarball contents:"
+          tar -tzf packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz | head -20
+          
+          # Verify no source files are included
           echo ""
-          echo "jsonrpc-client package.json:"
-          cat temp-publish/jsonrpc-client/package.json | jq '.name, .version, .dependencies'
-          echo ""
-          echo "✅ Package preparation test completed"
+          echo "🔍 Checking for source files (should not be in tarballs)..."
+          
+          if tar -tzf packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz | grep -E "src/|__tests__/|\.test\." > /dev/null; then
+            echo "❌ ERROR: Found source or test files in jsonrpc-types tarball!"
+            exit 1
+          fi
+          
+          if tar -tzf packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz | grep -E "src/|__tests__/|\.test\." > /dev/null; then
+            echo "❌ ERROR: Found source or test files in jsonrpc-client tarball!"
+            exit 1
+          fi
+          
+          echo "✅ Package contents verified - only distribution files included"
+
+      - name: Test package size
+        run: |
+          echo "📏 Checking package sizes..."
+          
+          TYPES_SIZE=$(stat -c%s packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz)
+          CLIENT_SIZE=$(stat -c%s packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz)
+          
+          echo "jsonrpc-types: $(($TYPES_SIZE / 1024))KB"
+          echo "jsonrpc-client: $(($CLIENT_SIZE / 1024))KB"
+          
+          # Warn if packages are too large
+          if [ $TYPES_SIZE -gt 1048576 ]; then  # 1MB
+            echo "⚠️  Warning: jsonrpc-types package is larger than 1MB"
+          fi
+          
+          if [ $CLIENT_SIZE -gt 1048576 ]; then  # 1MB
+            echo "⚠️  Warning: jsonrpc-client package is larger than 1MB"
+          fi
+          
+          echo "✅ Package size check completed"
