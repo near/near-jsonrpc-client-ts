@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.3.2...jsonrpc-client-v1.3.3) (2025-08-21)
+
+
+### Miscellaneous
+
+* Fixed publishing pipeline
+
 ## [1.3.2](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.3.1...jsonrpc-client-v1.3.2) (2025-08-21)
 
 
