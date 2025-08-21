@@ -1,7 +1,7 @@
 # NEAR Protocol TypeScript RPC Client
 
-[![CI](https://github.com/petersalomonsen/near-rpc-typescript/actions/workflows/ci.yml/badge.svg)](https://github.com/petersalomonsen/near-rpc-typescript/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/petersalomonsen/near-rpc-typescript/branch/main/graph/badge.svg)](https://codecov.io/gh/petersalomonsen/near-rpc-typescript)
+[![CI](https://github.com/near/near-jsonrpc-client-ts/actions/workflows/ci.yml/badge.svg)](https://github.com/near/near-jsonrpc-client-ts/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/near/near-jsonrpc-client-ts/branch/main/graph/badge.svg)](https://codecov.io/gh/near/near-jsonrpc-client-ts)
 
 An automated, type-safe TypeScript client for NEAR Protocol's JSON-RPC API, generated from the official OpenAPI specification.
 
@@ -17,15 +17,13 @@ This monorepo contains two packages:
 ### Installation
 
 ```bash
-npm install @psalomo/jsonrpc-client
+npm install @near-js/jsonrpc-client
 ```
-
-> **Note**: Currently published under `@psalomo` scope temporarily. If chosen for the [NEAR DevHub bounty](https://nearn.io/devhub/13/), packages will be republished under the official `@near-js` namespace.
 
 ### Node.js (Vanilla)
 
 ```javascript
-import { NearRpcClient, block } from '@psalomo/jsonrpc-client';
+import { NearRpcClient, block } from '@near-js/jsonrpc-client';
 
 const client = new NearRpcClient({
   endpoint: 'https://rpc.testnet.fastnear.com',
@@ -56,7 +54,7 @@ const account = await viewAccount(client, {
 ```html
 <script type="module">
   const { NearRpcClient, block } = await import(
-    'https://unpkg.com/@psalomo/jsonrpc-client@latest/dist/browser-standalone.min.js'
+    'https://unpkg.com/@near-js/jsonrpc-client@latest/dist/browser-standalone.min.js'
   );
   const client = new NearRpcClient({
     endpoint: 'https://rpc.mainnet.near.org',
@@ -72,14 +70,12 @@ Paste this directly into any browser's developer console on any webpage:
 
 ```javascript
 const { NearRpcClient, block } = await import(
-  'https://unpkg.com/@psalomo/jsonrpc-client@latest/dist/browser-standalone.min.js'
+  'https://unpkg.com/@near-js/jsonrpc-client@latest/dist/browser-standalone.min.js'
 );
 const client = new NearRpcClient({ endpoint: 'https://rpc.mainnet.near.org' });
 const blockResult = await block(client, { finality: 'final' });
 console.log('Latest block height:', blockResult.header.height);
 ```
-
-> **Note**: Currently published under `@psalomo` scope temporarily. If chosen for the [NEAR DevHub bounty](https://nearn.io/devhub/13/), packages will be republished under the official `@near-js` namespace.
 
 ## ✨ Features
 

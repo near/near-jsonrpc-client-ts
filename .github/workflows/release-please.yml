@@ -11,8 +11,8 @@ permissions:
   issues: write
 
 env:
-  # Temporary scope configuration - change these when migrating to @near-js
-  PUBLISH_SCOPE: '@psalomo'
+  # Scope configuration for @near-js packages
+  PUBLISH_SCOPE: '@near-js'
   ORIGINAL_SCOPE: '@near-js'
 
 jobs:

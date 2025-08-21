@@ -1,7 +1,6 @@
 #!/usr/bin/env tsx
 
-// Test script to verify TypeScript definitions work correctly with published packages
-// This tests that all @near-js references are properly replaced with @psalomo
+// Test script to verify TypeScript definitions work correctly with test packages
 
 import { existsSync, readFileSync, mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
@@ -15,12 +14,12 @@ if (existsSync(testDir)) {
 }
 mkdirSync(testDir, { recursive: true });
 
-console.log('🧪 Testing TypeScript compatibility with published packages...\n');
+console.log('🧪 Testing TypeScript compatibility with test packages...\n');
 
 // Create a test TypeScript file
 const testContent = `
-import { NearRpcClient, block, status, viewAccount } from '@psalomo/jsonrpc-client';
-import { RPC_METHODS, RpcBlockResponse, RpcStatusResponse } from '@psalomo/jsonrpc-types';
+import { NearRpcClient, block, status, viewAccount } from '@near-js/jsonrpc-client';
+import { RPC_METHODS, RpcBlockResponse, RpcStatusResponse } from '@near-js/jsonrpc-types';
 
 async function test() {
   const client = new NearRpcClient('https://rpc.testnet.fastnear.com');
@@ -74,8 +73,8 @@ const packageJson = {
   name: 'temp-typescript-test',
   version: '1.0.0',
   dependencies: {
-    '@psalomo/jsonrpc-client': 'file:../temp-publish/jsonrpc-client',
-    '@psalomo/jsonrpc-types': 'file:../temp-publish/jsonrpc-types',
+    '@near-js/jsonrpc-client': 'file:../temp-publish/jsonrpc-client',
+    '@near-js/jsonrpc-types': 'file:../temp-publish/jsonrpc-types',
   },
   devDependencies: {
     typescript: '^5.0.0',
@@ -100,19 +99,25 @@ try {
   process.exit(1);
 }
 
-console.log('\n🔍 Checking for @near-js references in node_modules...');
-const checkForOldReferences = execSync(
-  `grep -r "@near-js" node_modules/@psalomo --include="*.d.ts" --include="*.d.mts" || true`,
-  { cwd: testDir, encoding: 'utf8' }
+console.log('\n🔍 Checking package integrity...');
+const typesPackageJson = JSON.parse(
+  readFileSync(join(testDir, 'node_modules/@near-js/jsonrpc-types/package.json'), 'utf8')
+);
+const clientPackageJson = JSON.parse(
+  readFileSync(join(testDir, 'node_modules/@near-js/jsonrpc-client/package.json'), 'utf8')
 );
 
-if (checkForOldReferences.trim()) {
-  console.error('❌ Found @near-js references in TypeScript definitions:');
-  console.error(checkForOldReferences);
+if (typesPackageJson.name !== '@near-js/jsonrpc-types') {
+  console.error('❌ Types package has incorrect name:', typesPackageJson.name);
   process.exit(1);
-} else {
-  console.log('✅ No @near-js references found in TypeScript definitions!');
 }
+
+if (clientPackageJson.name !== '@near-js/jsonrpc-client') {
+  console.error('❌ Client package has incorrect name:', clientPackageJson.name);
+  process.exit(1);
+}
+
+console.log('✅ Package names are correct!');
 
 console.log(
   '\n🎉 All tests passed! TypeScript definitions are working correctly.'
