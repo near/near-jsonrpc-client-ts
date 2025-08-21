@@ -1,12 +1,6 @@
 #!/usr/bin/env node
 
-import {
-  readFileSync,
-  writeFileSync,
-  mkdirSync,
-  cpSync,
-  rmSync,
-} from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';

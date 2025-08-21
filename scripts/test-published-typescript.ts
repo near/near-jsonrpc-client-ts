@@ -101,10 +101,16 @@ try {
 
 console.log('\n🔍 Checking package integrity...');
 const typesPackageJson = JSON.parse(
-  readFileSync(join(testDir, 'node_modules/@near-js/jsonrpc-types/package.json'), 'utf8')
+  readFileSync(
+    join(testDir, 'node_modules/@near-js/jsonrpc-types/package.json'),
+    'utf8'
+  )
 );
 const clientPackageJson = JSON.parse(
-  readFileSync(join(testDir, 'node_modules/@near-js/jsonrpc-client/package.json'), 'utf8')
+  readFileSync(
+    join(testDir, 'node_modules/@near-js/jsonrpc-client/package.json'),
+    'utf8'
+  )
 );
 
 if (typesPackageJson.name !== '@near-js/jsonrpc-types') {
@@ -113,7 +119,10 @@ if (typesPackageJson.name !== '@near-js/jsonrpc-types') {
 }
 
 if (clientPackageJson.name !== '@near-js/jsonrpc-client') {
-  console.error('❌ Client package has incorrect name:', clientPackageJson.name);
+  console.error(
+    '❌ Client package has incorrect name:',
+    clientPackageJson.name
+  );
   process.exit(1);
 }
 
