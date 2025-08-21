@@ -156,14 +156,24 @@ jobs:
           echo ""
           echo "🔍 Checking for source files (should not be in tarballs)..."
           
-          if tar -tzf "$TYPES_TARBALL" | grep -E "src/|__tests__/|\.test\." > /dev/null; then
+          # Check for actual source files (not dist files)
+          if tar -tzf "$TYPES_TARBALL" | grep -E "package/src/|package/__tests__/|\.test\.[jt]s$" > /dev/null; then
             echo "❌ ERROR: Found source or test files in jsonrpc-types tarball!"
+            tar -tzf "$TYPES_TARBALL" | grep -E "package/src/|package/__tests__/|\.test\.[jt]s$" || true
             exit 1
           fi
           
-          if tar -tzf "$CLIENT_TARBALL" | grep -E "src/|__tests__/|\.test\." > /dev/null; then
+          if tar -tzf "$CLIENT_TARBALL" | grep -E "package/src/|package/__tests__/|\.test\.[jt]s$" > /dev/null; then
             echo "❌ ERROR: Found source or test files in jsonrpc-client tarball!"
+            tar -tzf "$CLIENT_TARBALL" | grep -E "package/src/|package/__tests__/|\.test\.[jt]s$" || true
             exit 1
+          fi
+          
+          # Also check that test-related files aren't in dist
+          if tar -tzf "$CLIENT_TARBALL" | grep -E "package/dist/.*__tests__" > /dev/null; then
+            echo "⚠️  Warning: Found test-related files in dist folder"
+            echo "   These files will increase package size unnecessarily:"
+            tar -tzf "$CLIENT_TARBALL" | grep -E "package/dist/.*__tests__" || true
           fi
           
           echo "✅ Package contents verified - only distribution files included"
@@ -182,13 +192,17 @@ jobs:
           echo "jsonrpc-types: $(($TYPES_SIZE / 1024))KB"
           echo "jsonrpc-client: $(($CLIENT_SIZE / 1024))KB"
           
-          # Warn if packages are too large
-          if [ $TYPES_SIZE -gt 1048576 ]; then  # 1MB
-            echo "⚠️  Warning: jsonrpc-types package is larger than 1MB"
+          # Warn if packages grow significantly beyond current sizes
+          # Current sizes: types ~240KB, client ~65KB
+          # Alert if they grow more than 50% beyond current size
+          if [ $TYPES_SIZE -gt 368640 ]; then  # 360KB (240KB + 50%)
+            echo "⚠️  Warning: jsonrpc-types package is larger than expected (>360KB)"
+            echo "   Consider checking if unnecessary files were included"
           fi
           
-          if [ $CLIENT_SIZE -gt 1048576 ]; then  # 1MB
-            echo "⚠️  Warning: jsonrpc-client package is larger than 1MB"
+          if [ $CLIENT_SIZE -gt 102400 ]; then  # 100KB (65KB + ~50%)
+            echo "⚠️  Warning: jsonrpc-client package is larger than expected (>100KB)"
+            echo "   Consider checking if unnecessary files were included"
           fi
           
           echo "✅ Package size check completed"
