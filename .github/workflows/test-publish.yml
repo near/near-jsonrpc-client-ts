@@ -31,34 +31,12 @@ jobs:
         run: |
           echo "📦 Creating package tarballs exactly as they would be published..."
           
-          # Pack jsonrpc-types
-          cd packages/jsonrpc-types
-          npm pack
+          # Use pnpm pack which handles workspace dependencies automatically
+          (cd packages/jsonrpc-types && pnpm pack)
           echo "✅ Created jsonrpc-types tarball"
           
-          # Pack jsonrpc-client (need to handle workspace dependency)
-          cd ../jsonrpc-client
-          
-          # Get version from types package
-          TYPES_VERSION=$(node -p "require('../jsonrpc-types/package.json').version")
-          
-          # Temporarily replace workspace:* with actual version for packing
-          cp package.json package.json.backup
-          node -e "
-            const pkg = require('./package.json');
-            if (pkg.dependencies['@near-js/jsonrpc-types'] === 'workspace:*') {
-              pkg.dependencies['@near-js/jsonrpc-types'] = '^$TYPES_VERSION';
-            }
-            require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));
-          "
-          
-          npm pack
+          (cd packages/jsonrpc-client && pnpm pack)
           echo "✅ Created jsonrpc-client tarball"
-          
-          # Restore original package.json
-          mv package.json.backup package.json
-          
-          cd ../..
 
       - name: Test package installation from tarballs
         run: |
@@ -74,50 +52,54 @@ jobs:
           
           # Create test directory
           mkdir -p test-install
-          cd test-install
           
-          # Create test package.json
-          cat > package.json << EOF
+          # Install packages in test directory
+          (
+            cd test-install
+            
+            # Create test package.json
+            cat > package.json << EOF
           {
             "name": "test-package-install",
             "version": "1.0.0",
+            "type": "module",
             "dependencies": {}
           }
           EOF
-          
-          # Install from tarballs
-          npm install "../$TYPES_TARBALL"
-          npm install "../$CLIENT_TARBALL"
+            
+            # Install from tarballs
+            npm install "../$TYPES_TARBALL"
+            npm install "../$CLIENT_TARBALL"
+          )
           
           echo "✅ Packages installed successfully from tarballs"
-          
-          cd ..
 
       - name: Test TypeScript compilation
         run: |
           echo "🔍 Testing TypeScript compilation with installed packages..."
           
-          cd test-install
-          
-          # Create TypeScript test file
-          cat > test.ts << 'EOF'
+          (
+            cd test-install
+            
+            # Create TypeScript test file
+            cat > test.ts << 'EOF'
           import { NearRpcClient, block, status } from '@near-js/jsonrpc-client';
           import { RPC_METHODS, RpcBlockResponse } from '@near-js/jsonrpc-types';
           
-          async function test() {
-            const client = new NearRpcClient('https://rpc.testnet.fastnear.com');
-            const blockResult: RpcBlockResponse = await block(client, { finality: 'final' });
-            console.log('Methods count:', RPC_METHODS.length);
-            console.log('✅ TypeScript compilation test passed');
-          }
+          // Using top-level await
+          const client = new NearRpcClient('https://rpc.testnet.fastnear.com');
+          const blockResult: RpcBlockResponse = await block(client, { finality: 'final' });
+          console.log('Methods count:', RPC_METHODS.length);
+          console.log('Block height:', blockResult.header.height);
+          console.log('✅ TypeScript compilation and runtime test passed');
           EOF
-          
-          # Create tsconfig.json
-          cat > tsconfig.json << EOF
+            
+            # Create tsconfig.json
+            cat > tsconfig.json << EOF
           {
             "compilerOptions": {
               "target": "ES2022",
-              "module": "commonjs",
+              "module": "ES2022",
               "strict": true,
               "esModuleInterop": true,
               "skipLibCheck": true,
@@ -126,15 +108,21 @@ jobs:
             }
           }
           EOF
+            
+            # Install TypeScript and tsx for running TypeScript
+            npm install --save-dev typescript @types/node tsx
+            
+            # Type check
+            npx tsc --noEmit
+            echo "✅ TypeScript compilation successful"
+            
+            # Actually run the TypeScript code to ensure it works
+            echo ""
+            echo "🚀 Running TypeScript code..."
+            npx tsx test.ts
+          )
           
-          # Install TypeScript
-          npm install --save-dev typescript @types/node
-          
-          # Type check
-          npx tsc --noEmit
-          echo "✅ TypeScript compilation successful"
-          
-          cd ..
+          echo "✅ TypeScript code executed successfully"
 
       - name: Verify package contents
         run: |
