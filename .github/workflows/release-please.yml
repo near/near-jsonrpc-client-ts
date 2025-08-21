@@ -72,6 +72,7 @@ jobs:
     needs: release-please
     if: ${{ needs.release-please.outputs.releases_created == 'true' }}
     runs-on: ubuntu-latest
+    environment: NPM
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
