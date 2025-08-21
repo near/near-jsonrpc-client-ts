@@ -64,6 +64,14 @@ jobs:
         run: |
           echo "🧪 Testing package installation from tarballs..."
           
+          # Get the actual tarball filenames
+          TYPES_TARBALL=$(ls packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz)
+          CLIENT_TARBALL=$(ls packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz)
+          
+          echo "Found tarballs:"
+          echo "  - $TYPES_TARBALL"
+          echo "  - $CLIENT_TARBALL"
+          
           # Create test directory
           mkdir -p test-install
           cd test-install
@@ -73,16 +81,13 @@ jobs:
           {
             "name": "test-package-install",
             "version": "1.0.0",
-            "dependencies": {
-              "@near-js/jsonrpc-types": "file:../packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz",
-              "@near-js/jsonrpc-client": "file:../packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz"
-            }
+            "dependencies": {}
           }
           EOF
           
           # Install from tarballs
-          npm install ../packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz
-          npm install ../packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz
+          npm install "../$TYPES_TARBALL"
+          npm install "../$CLIENT_TARBALL"
           
           echo "✅ Packages installed successfully from tarballs"
           
@@ -135,24 +140,28 @@ jobs:
         run: |
           echo "📋 Verifying package contents..."
           
+          # Get the actual tarball filenames
+          TYPES_TARBALL=$(ls packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz)
+          CLIENT_TARBALL=$(ls packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz)
+          
           # List tarball contents
           echo "📦 jsonrpc-types tarball contents:"
-          tar -tzf packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz | head -20
+          tar -tzf "$TYPES_TARBALL" | head -20
           
           echo ""
           echo "📦 jsonrpc-client tarball contents:"
-          tar -tzf packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz | head -20
+          tar -tzf "$CLIENT_TARBALL" | head -20
           
           # Verify no source files are included
           echo ""
           echo "🔍 Checking for source files (should not be in tarballs)..."
           
-          if tar -tzf packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz | grep -E "src/|__tests__/|\.test\." > /dev/null; then
+          if tar -tzf "$TYPES_TARBALL" | grep -E "src/|__tests__/|\.test\." > /dev/null; then
             echo "❌ ERROR: Found source or test files in jsonrpc-types tarball!"
             exit 1
           fi
           
-          if tar -tzf packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz | grep -E "src/|__tests__/|\.test\." > /dev/null; then
+          if tar -tzf "$CLIENT_TARBALL" | grep -E "src/|__tests__/|\.test\." > /dev/null; then
             echo "❌ ERROR: Found source or test files in jsonrpc-client tarball!"
             exit 1
           fi
@@ -163,8 +172,12 @@ jobs:
         run: |
           echo "📏 Checking package sizes..."
           
-          TYPES_SIZE=$(stat -c%s packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz)
-          CLIENT_SIZE=$(stat -c%s packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz)
+          # Get the actual tarball filenames
+          TYPES_TARBALL=$(ls packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz)
+          CLIENT_TARBALL=$(ls packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz)
+          
+          TYPES_SIZE=$(stat -c%s "$TYPES_TARBALL")
+          CLIENT_SIZE=$(stat -c%s "$CLIENT_TARBALL")
           
           echo "jsonrpc-types: $(($TYPES_SIZE / 1024))KB"
           echo "jsonrpc-client: $(($CLIENT_SIZE / 1024))KB"
