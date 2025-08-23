@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-08-03T18:51:26.260Z
+// Generated on: 2025-08-23T11:17:01.582Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -92,8 +92,6 @@ export type AccountView = z.infer<ReturnType<typeof schemas.AccountViewSchema>>;
 export type AccountWithPublicKey = z.infer<
   ReturnType<typeof schemas.AccountWithPublicKeySchema>
 >;
-
-export type Action = z.infer<ReturnType<typeof schemas.ActionSchema>>;
 
 /**
  * Describes the cost of creating a specific action, `Action`. Includes all
@@ -760,15 +758,9 @@ export type NextEpochValidatorInfo = z.infer<
 >;
 
 /**
- * This is Action which mustn't contain DelegateAction. This struct is needed
- * to avoid the recursion when Action/DelegateAction is deserialized.
- * Important: Don't make the inner Action public, this must only be
- * constructed through the correct interface that ensures the inner Action is
- * actually not a delegate action. That would break an assumption of this
- * type, which we use in several places. For example, borsh de-/serialization
- * relies on it. If the invariant is broken, we may end up with a
- * `Transaction` or `Receipt` that we can serialize but deserializing it back
- * causes a parsing error.
+ * An Action that can be included in a transaction or receipt, excluding
+ * delegate actions. This type represents all possible action types except
+ * DelegateAction to prevent infinite recursion in meta-transactions.
  */
 export type NonDelegateAction = z.infer<
   ReturnType<typeof schemas.NonDelegateActionSchema>

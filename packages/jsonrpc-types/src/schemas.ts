@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-08-03T18:51:26.264Z
+// Generated on: 2025-08-23T11:17:01.585Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -141,43 +141,6 @@ export const AccountWithPublicKeySchema = () =>
     accountId: z.lazy(() => AccountIdSchema()),
     publicKey: z.lazy(() => PublicKeySchema()),
   });
-
-export const ActionSchema: any = () =>
-  z.union([
-    z.object({
-      CreateAccount: z.lazy(() => CreateAccountActionSchema()),
-    }),
-    z.object({
-      DeployContract: z.lazy(() => DeployContractActionSchema()),
-    }),
-    z.object({
-      FunctionCall: z.lazy(() => FunctionCallActionSchema()),
-    }),
-    z.object({
-      Transfer: z.lazy(() => TransferActionSchema()),
-    }),
-    z.object({
-      Stake: z.lazy(() => StakeActionSchema()),
-    }),
-    z.object({
-      AddKey: z.lazy(() => AddKeyActionSchema()),
-    }),
-    z.object({
-      DeleteKey: z.lazy(() => DeleteKeyActionSchema()),
-    }),
-    z.object({
-      DeleteAccount: z.lazy(() => DeleteAccountActionSchema()),
-    }),
-    z.object({
-      Delegate: z.lazy(() => SignedDelegateActionSchema()),
-    }),
-    z.object({
-      DeployGlobalContract: z.lazy(() => DeployGlobalContractActionSchema()),
-    }),
-    z.object({
-      UseGlobalContract: z.lazy(() => UseGlobalContractActionSchema()),
-    }),
-  ]);
 
 //
 // Describes the cost of creating a specific action, `Action`. Includes all
@@ -2093,6 +2056,9 @@ export const LimitConfigSchema = () =>
     maxActionsPerReceipt: z.number(),
     maxArgumentsLength: z.number(),
     maxContractSize: z.number(),
+    maxElementsPerContractTable: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     maxFunctionsNumberPerContract: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
@@ -2113,6 +2079,9 @@ export const LimitConfigSchema = () =>
     maxReceiptSize: z.number(),
     maxRegisterSize: z.number(),
     maxStackHeight: z.number(),
+    maxTablesPerContract: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     maxTotalLogLength: z.number(),
     maxTotalPrepaidGas: z.number(),
     maxTransactionSize: z.number(),
@@ -2170,17 +2139,43 @@ export const NextEpochValidatorInfoSchema = () =>
   });
 
 //
-// This is Action which mustn't contain DelegateAction. This struct is needed
-// to avoid the recursion when Action/DelegateAction is deserialized.
-// Important: Don't make the inner Action public, this must only be
-// constructed through the correct interface that ensures the inner Action is
-// actually not a delegate action. That would break an assumption of this
-// type, which we use in several places. For example, borsh de-/serialization
-// relies on it. If the invariant is broken, we may end up with a
-// `Transaction` or `Receipt` that we can serialize but deserializing it back
-// causes a parsing error.
+// An Action that can be included in a transaction or receipt, excluding
+// delegate actions. This type represents all possible action types except
+// DelegateAction to prevent infinite recursion in meta-transactions.
 
-export const NonDelegateActionSchema: any = () => z.lazy(() => ActionSchema());
+export const NonDelegateActionSchema: any = () =>
+  z.union([
+    z.object({
+      CreateAccount: z.lazy(() => CreateAccountActionSchema()),
+    }),
+    z.object({
+      DeployContract: z.lazy(() => DeployContractActionSchema()),
+    }),
+    z.object({
+      FunctionCall: z.lazy(() => FunctionCallActionSchema()),
+    }),
+    z.object({
+      Transfer: z.lazy(() => TransferActionSchema()),
+    }),
+    z.object({
+      Stake: z.lazy(() => StakeActionSchema()),
+    }),
+    z.object({
+      AddKey: z.lazy(() => AddKeyActionSchema()),
+    }),
+    z.object({
+      DeleteKey: z.lazy(() => DeleteKeyActionSchema()),
+    }),
+    z.object({
+      DeleteAccount: z.lazy(() => DeleteAccountActionSchema()),
+    }),
+    z.object({
+      DeployGlobalContract: z.lazy(() => DeployGlobalContractActionSchema()),
+    }),
+    z.object({
+      UseGlobalContract: z.lazy(() => UseGlobalContractActionSchema()),
+    }),
+  ]);
 
 // Peer id is the public key.
 export const PeerIdSchema = () => z.lazy(() => PublicKeySchema());
@@ -2218,6 +2213,8 @@ export const PrepareErrorSchema = () =>
     z.enum(['Memory']),
     z.enum(['TooManyFunctions']),
     z.enum(['TooManyLocals']),
+    z.enum(['TooManyTables']),
+    z.enum(['TooManyTableElements']),
   ]);
 
 export const PublicKeySchema = () => z.string();
@@ -2871,14 +2868,20 @@ export const RpcQueryRequestSchema = () =>
   ]);
 
 export const RpcQueryResponseSchema = () =>
-  z.union([
-    z.lazy(() => AccountViewSchema()),
-    z.lazy(() => ContractCodeViewSchema()),
-    z.lazy(() => ViewStateResultSchema()),
-    z.lazy(() => CallResultSchema()),
-    z.lazy(() => AccessKeyViewSchema()),
-    z.lazy(() => AccessKeyListSchema()),
-  ]);
+  z.intersection(
+    z.union([
+      z.lazy(() => AccountViewSchema()),
+      z.lazy(() => ContractCodeViewSchema()),
+      z.lazy(() => ViewStateResultSchema()),
+      z.lazy(() => CallResultSchema()),
+      z.lazy(() => AccessKeyViewSchema()),
+      z.lazy(() => AccessKeyListSchema()),
+    ]),
+    z.object({
+      blockHash: z.lazy(() => CryptoHashSchema()),
+      blockHeight: z.number(),
+    })
+  );
 
 export const RpcReceiptRequestSchema = () =>
   z.object({
@@ -3187,21 +3190,31 @@ export const RpcStatusResponseSchema = () =>
   });
 
 export const RpcTransactionResponseSchema = () =>
-  z.union([
-    z.lazy(() => FinalExecutionOutcomeWithReceiptViewSchema()),
-    z.lazy(() => FinalExecutionOutcomeViewSchema()),
-  ]);
+  z.intersection(
+    z.union([
+      z.lazy(() => FinalExecutionOutcomeWithReceiptViewSchema()),
+      z.lazy(() => FinalExecutionOutcomeViewSchema()),
+    ]),
+    z.object({
+      finalExecutionStatus: z.lazy(() => TxExecutionStatusSchema()),
+    })
+  );
 
 export const RpcTransactionStatusRequestSchema = () =>
-  z.union([
+  z.intersection(
+    z.union([
+      z.object({
+        signedTxBase64: z.lazy(() => SignedTransactionSchema()),
+      }),
+      z.object({
+        senderAccountId: z.lazy(() => AccountIdSchema()),
+        txHash: z.lazy(() => CryptoHashSchema()),
+      }),
+    ]),
     z.object({
-      signedTxBase64: z.lazy(() => SignedTransactionSchema()),
-    }),
-    z.object({
-      senderAccountId: z.lazy(() => AccountIdSchema()),
-      txHash: z.lazy(() => CryptoHashSchema()),
-    }),
-  ]);
+      waitUntil: z.optional(z.lazy(() => TxExecutionStatusSchema())),
+    })
+  );
 
 export const RpcValidatorRequestSchema = () =>
   z.union([
