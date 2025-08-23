@@ -303,20 +303,6 @@ function generateZodSchema(
   return baseSchema;
 }
 
-// Add explicit types for problematic schemas
-function getSchemaExplicitType(schemaName: string): string | null {
-  const circularSchemas = [
-    'Action',
-    'DelegateAction',
-    'NonDelegateAction',
-    'SignedDelegateAction',
-  ];
-  if (circularSchemas.includes(schemaName)) {
-    // zod/mini doesn't export ZodType, so we use a different approach
-    return ': any';
-  }
-  return null;
-}
 export async function generateTypes() {
   console.log('🔄 Starting OpenAPI spec analysis and type generation...');
 
@@ -436,6 +422,8 @@ export * from './schemas';
 
     Object.entries(schemas).forEach(([schemaName, schema]) => {
       const schemaTypeName = `${pascalCase(schemaName)}Schema`;
+
+      // Generate schema normally - no special handling needed since spec is fixed
       const zodMiniSchema = generateZodSchema(schema, schemas, 0);
 
       // Add description as comment if available
@@ -446,12 +434,8 @@ export * from './schemas';
             .replace(/\* /g, '// ')
         : '';
 
-      // Handle circular references with explicit types
-      const explicitTypeMini = getSchemaExplicitType(schemaName);
-      const typeAnnotationMini = explicitTypeMini || '';
-
       miniSchemaDefinitions.push(
-        `${description}export const ${schemaTypeName}${typeAnnotationMini} = () => ${zodMiniSchema};`
+        `${description}export const ${schemaTypeName} = () => ${zodMiniSchema};`
       );
       schemaExports.push(schemaTypeName);
     });

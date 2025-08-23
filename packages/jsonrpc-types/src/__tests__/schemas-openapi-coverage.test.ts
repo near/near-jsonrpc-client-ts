@@ -222,7 +222,7 @@ describe('Schema Functions OpenAPI Coverage', () => {
       const unionSchemas = [
         'RpcQueryResponseSchema',
         'AccessKeyPermissionSchema',
-        'ActionSchema',
+        'NonDelegateActionSchema', // ActionSchema no longer exists, replaced with NonDelegateActionSchema
         'TransactionExecutionOutcomeSchema',
       ];
 

@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-08-23T11:17:01.585Z
+// Generated on: 2025-08-23T15:21:57.925Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -722,7 +722,7 @@ export const DataReceiverViewSchema = () =>
   });
 
 // This action allows to execute the inner actions behalf of the defined sender.
-export const DelegateActionSchema: any = () =>
+export const DelegateActionSchema = () =>
   z.object({
     actions: z.array(z.lazy(() => NonDelegateActionSchema())),
     maxBlockHeight: z.number(),
@@ -2143,7 +2143,7 @@ export const NextEpochValidatorInfoSchema = () =>
 // delegate actions. This type represents all possible action types except
 // DelegateAction to prevent infinite recursion in meta-transactions.
 
-export const NonDelegateActionSchema: any = () =>
+export const NonDelegateActionSchema = () =>
   z.union([
     z.object({
       CreateAccount: z.lazy(() => CreateAccountActionSchema()),
@@ -3390,7 +3390,7 @@ export const ShardUIdSchema = () =>
 
 export const SignatureSchema = () => z.string();
 
-export const SignedDelegateActionSchema: any = () =>
+export const SignedDelegateActionSchema = () =>
   z.object({
     delegateAction: z.lazy(() => DelegateActionSchema()),
     signature: z.lazy(() => SignatureSchema()),
