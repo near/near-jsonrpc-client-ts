@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.4](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-types-v1.3.3...jsonrpc-types-v1.3.4) (2025-08-23)
+
+
+### Bug Fixes
+
+* handle anyOf schemas with additional properties in code generator ([#70](https://github.com/near/near-jsonrpc-client-ts/issues/70)) ([2c99e32](https://github.com/near/near-jsonrpc-client-ts/commit/2c99e3227e3c98dd8ffe11e63d0dc89da3294cd0))
+* remove circular dependency in NonDelegateAction schema ([#62](https://github.com/near/near-jsonrpc-client-ts/issues/62)) ([b673db0](https://github.com/near/near-jsonrpc-client-ts/commit/b673db0ae43e0cbf69a0745e4019e512874e8a8c))
+
+
+### Miscellaneous
+
+* trigger Release Please for v1.3.4 ([#73](https://github.com/near/near-jsonrpc-client-ts/issues/73)) ([871a84b](https://github.com/near/near-jsonrpc-client-ts/commit/871a84b4a0fc9c006b1fa26e61e4f40d57c5d701))
+
 ## [1.3.3](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-types-v1.3.2...jsonrpc-types-v1.3.3) (2025-08-21)
 
 
