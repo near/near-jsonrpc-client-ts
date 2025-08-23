@@ -90,6 +90,9 @@ jobs:
       - name: Run TypeScript convenience-functions-error-handling example
         run: pnpm tsx examples/typescript/convenience-functions-error-handling.ts
 
+      - name: Run TypeScript view-access-keys example
+        run: pnpm tsx examples/typescript/view-access-keys.ts
+
       - name: Run TypeScript send-function-call-transaction example
         env:
           NEAR_ACCOUNT_ID: ${{ secrets.NEAR_TESTNET_ACCOUNT_ID }}
