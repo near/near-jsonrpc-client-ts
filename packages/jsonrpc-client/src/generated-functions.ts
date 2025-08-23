@@ -1,5 +1,5 @@
 // Auto-generated exports for tree-shakable functions
-// Generated at: 2025-08-23T15:15:02.007Z
+// Generated at: 2025-08-23T15:22:01.322Z
 // Do not edit manually - changes will be overwritten
 
 export {
@@ -33,7 +33,7 @@ export {
   sendTx,
   status,
   tx,
-  validators
+  validators,
 } from './generated-types';
 
 // Re-export convenience functions
