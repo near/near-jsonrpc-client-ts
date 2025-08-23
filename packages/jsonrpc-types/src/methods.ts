@@ -1,41 +1,40 @@
 // Auto-generated method mapping from NEAR OpenAPI spec
-// Generated on: 2025-08-17T16:43:14.719Z
+// Generated on: 2025-08-23T15:14:58.725Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 // Maps OpenAPI paths to actual JSON-RPC method names
 export const PATH_TO_METHOD_MAP = {
-  '/EXPERIMENTAL_changes': 'EXPERIMENTAL_changes',
-  '/EXPERIMENTAL_changes_in_block': 'EXPERIMENTAL_changes_in_block',
-  '/EXPERIMENTAL_congestion_level': 'EXPERIMENTAL_congestion_level',
-  '/EXPERIMENTAL_genesis_config': 'EXPERIMENTAL_genesis_config',
-  '/EXPERIMENTAL_light_client_block_proof':
-    'EXPERIMENTAL_light_client_block_proof',
-  '/EXPERIMENTAL_light_client_proof': 'EXPERIMENTAL_light_client_proof',
-  '/EXPERIMENTAL_maintenance_windows': 'EXPERIMENTAL_maintenance_windows',
-  '/EXPERIMENTAL_protocol_config': 'EXPERIMENTAL_protocol_config',
-  '/EXPERIMENTAL_receipt': 'EXPERIMENTAL_receipt',
-  '/EXPERIMENTAL_split_storage_info': 'EXPERIMENTAL_split_storage_info',
-  '/EXPERIMENTAL_tx_status': 'EXPERIMENTAL_tx_status',
-  '/EXPERIMENTAL_validators_ordered': 'EXPERIMENTAL_validators_ordered',
-  '/block': 'block',
-  '/block_effects': 'block_effects',
-  '/broadcast_tx_async': 'broadcast_tx_async',
-  '/broadcast_tx_commit': 'broadcast_tx_commit',
-  '/changes': 'changes',
-  '/chunk': 'chunk',
-  '/client_config': 'client_config',
-  '/gas_price': 'gas_price',
-  '/genesis_config': 'genesis_config',
-  '/health': 'health',
-  '/light_client_proof': 'light_client_proof',
-  '/maintenance_windows': 'maintenance_windows',
-  '/network_info': 'network_info',
-  '/next_light_client_block': 'next_light_client_block',
-  '/query': 'query',
-  '/send_tx': 'send_tx',
-  '/status': 'status',
-  '/tx': 'tx',
-  '/validators': 'validators',
+  "/EXPERIMENTAL_changes": "EXPERIMENTAL_changes",
+  "/EXPERIMENTAL_changes_in_block": "EXPERIMENTAL_changes_in_block",
+  "/EXPERIMENTAL_congestion_level": "EXPERIMENTAL_congestion_level",
+  "/EXPERIMENTAL_genesis_config": "EXPERIMENTAL_genesis_config",
+  "/EXPERIMENTAL_light_client_block_proof": "EXPERIMENTAL_light_client_block_proof",
+  "/EXPERIMENTAL_light_client_proof": "EXPERIMENTAL_light_client_proof",
+  "/EXPERIMENTAL_maintenance_windows": "EXPERIMENTAL_maintenance_windows",
+  "/EXPERIMENTAL_protocol_config": "EXPERIMENTAL_protocol_config",
+  "/EXPERIMENTAL_receipt": "EXPERIMENTAL_receipt",
+  "/EXPERIMENTAL_split_storage_info": "EXPERIMENTAL_split_storage_info",
+  "/EXPERIMENTAL_tx_status": "EXPERIMENTAL_tx_status",
+  "/EXPERIMENTAL_validators_ordered": "EXPERIMENTAL_validators_ordered",
+  "/block": "block",
+  "/block_effects": "block_effects",
+  "/broadcast_tx_async": "broadcast_tx_async",
+  "/broadcast_tx_commit": "broadcast_tx_commit",
+  "/changes": "changes",
+  "/chunk": "chunk",
+  "/client_config": "client_config",
+  "/gas_price": "gas_price",
+  "/genesis_config": "genesis_config",
+  "/health": "health",
+  "/light_client_proof": "light_client_proof",
+  "/maintenance_windows": "maintenance_windows",
+  "/network_info": "network_info",
+  "/next_light_client_block": "next_light_client_block",
+  "/query": "query",
+  "/send_tx": "send_tx",
+  "/status": "status",
+  "/tx": "tx",
+  "/validators": "validators"
 };
 
 // Reverse mapping for convenience
@@ -46,4 +45,4 @@ Object.entries(PATH_TO_METHOD_MAP).forEach(([path, method]) => {
 
 // Available RPC methods
 export const RPC_METHODS = Object.values(PATH_TO_METHOD_MAP);
-export type RpcMethod = (typeof RPC_METHODS)[number];
+export type RpcMethod = typeof RPC_METHODS[number];

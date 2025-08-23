@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.3](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.3.2...jsonrpc-client-v1.3.3) (2025-08-21)
+
+
+### Miscellaneous
+
+* Fixed publishing pipeline
+
+## [1.3.2](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.3.1...jsonrpc-client-v1.3.2) (2025-08-21)
+
+
+### Miscellaneous
+
+* migrate to [@near-js](https://github.com/near-js) scope and update repository URLs ([#63](https://github.com/near/near-jsonrpc-client-ts/issues/63)) ([cf8adf3](https://github.com/near/near-jsonrpc-client-ts/commit/cf8adf32abb1c60ad7295f463777117ef4fc02b8))
+
 ## [1.3.1](https://github.com/petersalomonsen/near-rpc-typescript/compare/jsonrpc-client-v1.3.0...jsonrpc-client-v1.3.1) (2025-08-03)
 
 
