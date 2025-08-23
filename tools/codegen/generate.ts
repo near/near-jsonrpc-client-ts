@@ -56,10 +56,6 @@ function snakeToCamel(str: string): string {
   return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
-function camelToSnake(str: string): string {
-  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
-}
-
 function pascalCase(str: string): string {
   const camel = snakeToCamel(str);
   return camel.charAt(0).toUpperCase() + camel.slice(1);
@@ -74,104 +70,6 @@ async function fetchOpenAPISpec(): Promise<OpenAPISpec> {
     throw new Error(`Failed to fetch OpenAPI spec: ${response.status}`);
   }
   return response.json();
-}
-
-// Type generation utilities
-function resolveSchemaRef(
-  ref: string,
-  schemas: Record<string, Schema>
-): Schema {
-  const refName = ref.replace('#/components/schemas/', '');
-  return schemas[refName] || { type: 'unknown' };
-}
-
-function generateTypeScriptType(
-  schema: Schema,
-  schemas: Record<string, Schema>,
-  depth = 0
-): string {
-  if (depth > 10) return 'unknown'; // Prevent infinite recursion
-
-  if (schema.$ref) {
-    const refName = schema.$ref.replace('#/components/schemas/', '');
-    return pascalCase(refName);
-  }
-
-  if (schema.oneOf) {
-    return schema.oneOf
-      .map(s => generateTypeScriptType(s, schemas, depth + 1))
-      .join(' | ');
-  }
-
-  if (schema.anyOf) {
-    return schema.anyOf
-      .map(s => generateTypeScriptType(s, schemas, depth + 1))
-      .join(' | ');
-  }
-
-  if (schema.allOf) {
-    return schema.allOf
-      .map(s => generateTypeScriptType(s, schemas, depth + 1))
-      .join(' & ');
-  }
-
-  if (schema.enum) {
-    return schema.enum.map(val => `"${val}"`).join(' | ');
-  }
-
-  switch (schema.type) {
-    case 'string':
-      return 'string';
-    case 'number':
-    case 'integer':
-      return 'number';
-    case 'boolean':
-      return 'boolean';
-    case 'array':
-      const itemType = schema.items
-        ? generateTypeScriptType(schema.items, schemas, depth + 1)
-        : 'unknown';
-      return `${itemType}[]`;
-    case 'object':
-      if (!schema.properties) {
-        if (schema.additionalProperties === true) {
-          return 'Record<string, unknown>';
-        } else if (
-          schema.additionalProperties &&
-          typeof schema.additionalProperties === 'object'
-        ) {
-          const valueType = generateTypeScriptType(
-            schema.additionalProperties,
-            schemas,
-            depth + 1
-          );
-          return `Record<string, ${valueType}>`;
-        }
-        return 'Record<string, unknown>';
-      }
-
-      const properties = Object.entries(schema.properties).map(
-        ([key, prop]) => {
-          const isOptional = !schema.required?.includes(key);
-          const camelKey = snakeToCamel(key);
-          const type = generateTypeScriptType(prop, schemas, depth + 1);
-          return `  ${camelKey}${isOptional ? '?' : ''}: ${type};`;
-        }
-      );
-
-      return `{\n${properties.join('\n')}\n}`;
-    default:
-      return 'unknown';
-  }
-}
-
-function isComplexType(schema: Schema): boolean {
-  return !!(
-    schema.oneOf ||
-    schema.anyOf ||
-    schema.allOf ||
-    (schema.type === 'object' && schema.properties)
-  );
 }
 
 function formatComment(description: string): string {
@@ -266,14 +164,45 @@ function generateZodSchema(
     const options = schema.anyOf.map(s =>
       generateZodSchema(s, schemas, depth + 1)
     );
+    let unionSchema: string;
     if (options.length === 1) {
-      return options[0];
+      unionSchema = options[0];
+    } else {
+      // Replace z.enum(["null"]) with z.null() in unions
+      const processedOptions = options.map(opt =>
+        opt === 'z.enum(["null"])' ? 'z.null()' : opt
+      );
+      unionSchema = `z.union([${processedOptions.join(', ')}])`;
     }
-    // Replace z.enum(["null"]) with z.null() in unions
-    const processedOptions = options.map(opt =>
-      opt === 'z.enum(["null"])' ? 'z.null()' : opt
-    );
-    return `z.union([${processedOptions.join(', ')}])`;
+
+    // Check if there are additional properties at the root level
+    if (schema.properties && Object.keys(schema.properties).length > 0) {
+      // Generate the properties object
+      const properties = Object.entries(schema.properties).map(
+        ([key, prop]) => {
+          const isOptional = !schema.required?.includes(key);
+          const camelKey = snakeToCamel(key);
+          let zodSchema = generateZodSchema(prop, schemas, depth + 1);
+
+          // Handle nullable fields
+          if (prop.nullable) {
+            zodSchema = `z.union([${zodSchema}, z.null()])`;
+          }
+
+          // Handle optional fields
+          if (isOptional) {
+            return `  ${camelKey}: z.optional(${zodSchema})`;
+          }
+          return `  ${camelKey}: ${zodSchema}`;
+        }
+      );
+      const propertiesSchema = `z.object({\n${properties.join(',\n')}\n})`;
+
+      // Merge the union schema with the properties
+      return `z.intersection(${unionSchema}, ${propertiesSchema})`;
+    }
+
+    return unionSchema;
   }
 
   if (schema.allOf) {
