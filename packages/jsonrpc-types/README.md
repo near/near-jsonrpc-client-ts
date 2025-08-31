@@ -56,13 +56,8 @@ const accountData = {
   storagePaidAt: 0
 };
 
-const result = AccountViewSchema().safeParse(accountData);
-
-if (result.success) {
-  console.log('Valid account data:', result.data);
-} else {
-  console.error('Validation failed:', result.error);
-}
+const validated = AccountViewSchema().parse(accountData);
+console.log('Valid account data:', validated);
 ```
 
 ### RPC Request Types

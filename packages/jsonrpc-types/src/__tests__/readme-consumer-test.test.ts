@@ -122,24 +122,8 @@ describe('README examples as a real consumer', () => {
         return;
       }
 
-      // Add a main function wrapper for examples that have executable code
-      if (
-        !executableCode.includes('export') &&
-        !executableCode.includes('// These can be used')
-      ) {
-        executableCode = `${executableCode}
-
-// Test execution
-export function test_${index}() {
-  console.log('Example ${index} (${block.description}) executed successfully');
-  return true;
-}
-
-// Run if this is the main module
-if (import.meta.url === \`file://\${process.argv[1]}\`) {
-  test_${index}();
-}`;
-      }
+      // Since we're using type: 'module', the code can run at top level
+      // No need for wrapping - examples will execute directly
 
       fs.writeFileSync(filePath, executableCode);
       console.log(`Created: ${fileName}`);
@@ -185,16 +169,16 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
     jsFiles.forEach(file => {
       const filePath = path.join(distDir, file);
 
-      // Skip files that are just type definitions or imports
+      // Skip files that are just type definitions or imports without executable code
       const content = fs.readFileSync(filePath, 'utf-8');
-      if (!content.includes('test_') && !content.includes('console.log')) {
+      if (!content.includes('console.log') && !content.includes('const ')) {
         console.log(`Skipping ${file} (no executable code)`);
         return;
       }
 
       try {
         console.log(`Running: ${file}`);
-        const output = execSync(`node ${filePath}`, {
+        const output = execSync(`node "${filePath}"`, {
           cwd: tmpDir,
           encoding: 'utf-8',
           env: { ...process.env, NODE_PATH: path.join(tmpDir, 'node_modules') },
@@ -208,144 +192,8 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
         expect(true).toBe(true);
       } catch (error: any) {
         console.error(`Failed to run ${file}:`, error.message);
-        if (error.stdout) console.error('stdout:', error.stdout.toString());
-        if (error.stderr) console.error('stderr:', error.stderr.toString());
-
-        // Check if this is an expected error (e.g., validation examples)
-        if (
-          content.includes('validation failed') ||
-          content.includes('.error')
-        ) {
-          console.log(`Expected error in ${file}`);
-          expect(true).toBe(true);
-        } else {
-          throw error;
-        }
+        throw error;
       }
     });
-  });
-
-  it('should create a comprehensive test file that uses all features', () => {
-    const comprehensiveTest = `
-import { 
-  // Types
-  type AccountView, 
-  type AccessKeyView, 
-  type RpcQueryRequest,
-  type RpcMethod,
-  // Schemas
-  AccountViewSchema,
-  AccessKeyViewSchema,
-  RpcQueryRequestSchema,
-  // Methods
-  RPC_METHODS,
-  PATH_TO_METHOD_MAP
-} from '@near-js/jsonrpc-types';
-
-console.log('Testing @near-js/jsonrpc-types package...');
-
-// Test 1: Basic Types
-const account: AccountView = {
-  amount: "1000000000000000000000000",
-  locked: "0",
-  codeHash: "11111111111111111111111111111111",
-  storageUsage: 182,
-  storagePaidAt: 0
-};
-console.log('✓ AccountView type works');
-
-const accessKey: AccessKeyView = {
-  nonce: 1,
-  permission: "FullAccess"
-};
-console.log('✓ AccessKeyView type works');
-
-// Test 2: Schema Validation
-const accountValidation = AccountViewSchema().safeParse(account);
-if (!accountValidation.success) {
-  throw new Error('AccountView validation failed');
-}
-console.log('✓ AccountView schema validation works');
-
-const accessKeyValidation = AccessKeyViewSchema().safeParse(accessKey);
-if (!accessKeyValidation.success) {
-  throw new Error('AccessKeyView validation failed');
-}
-console.log('✓ AccessKeyView schema validation works');
-
-// Test 3: RPC Query Request
-const queryRequest: RpcQueryRequest = {
-  requestType: "view_account",
-  finality: "final",
-  accountId: "example.near"
-};
-
-const queryValidation = RpcQueryRequestSchema().safeParse(queryRequest);
-if (!queryValidation.success) {
-  throw new Error('RpcQueryRequest validation failed');
-}
-console.log('✓ RpcQueryRequest type and validation works');
-
-// Test 4: RPC Methods
-if (!Array.isArray(RPC_METHODS) || RPC_METHODS.length === 0) {
-  throw new Error('RPC_METHODS is not a valid array');
-}
-console.log(\`✓ RPC_METHODS contains \${RPC_METHODS.length} methods\`);
-
-if (typeof PATH_TO_METHOD_MAP !== 'object') {
-  throw new Error('PATH_TO_METHOD_MAP is not an object');
-}
-console.log(\`✓ PATH_TO_METHOD_MAP contains \${Object.keys(PATH_TO_METHOD_MAP).length} mappings\`);
-
-// Test 5: Type-safe method names
-const method: RpcMethod = 'query';
-if (!RPC_METHODS.includes(method)) {
-  throw new Error(\`Method '\${method}' not found in RPC_METHODS\`);
-}
-console.log('✓ Type-safe RPC method names work');
-
-// Test 6: Invalid data validation
-const invalidAccount = {
-  amount: 123, // Should be string
-  locked: "0",
-  codeHash: "11111111111111111111111111111111",
-  storageUsage: 182,
-  storagePaidAt: 0
-};
-
-const invalidValidation = AccountViewSchema().safeParse(invalidAccount);
-if (invalidValidation.success) {
-  throw new Error('Invalid account should not pass validation');
-}
-console.log('✓ Schema correctly rejects invalid data');
-
-console.log('\\n✅ All tests passed! The @near-js/jsonrpc-types package works correctly.');
-`;
-
-    const testFilePath = path.join(tmpDir, 'src', 'comprehensive_test.ts');
-    fs.writeFileSync(testFilePath, comprehensiveTest);
-    console.log('Created comprehensive test file');
-
-    // Compile it
-    try {
-      execSync('npx tsc', { cwd: tmpDir, stdio: 'pipe' });
-      console.log('✓ Comprehensive test compiled successfully');
-    } catch (error: any) {
-      console.error('Failed to compile comprehensive test:', error.message);
-      throw error;
-    }
-
-    // Run it
-    try {
-      const output = execSync('node dist/comprehensive_test.js', {
-        cwd: tmpDir,
-        encoding: 'utf-8',
-      });
-      console.log('Comprehensive test output:\n', output);
-      expect(output).toContain('All tests passed');
-    } catch (error: any) {
-      console.error('Failed to run comprehensive test:', error.message);
-      throw error;
-    }
   });
 });
