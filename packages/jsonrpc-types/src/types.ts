@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-08-23T15:21:57.921Z
+// Generated on: 2025-09-12T06:05:17.454Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -749,6 +749,8 @@ export type MutableConfigValue = z.infer<
   ReturnType<typeof schemas.MutableConfigValueSchema>
 >;
 
+export type NearGas = z.infer<ReturnType<typeof schemas.NearGasSchema>>;
+
 export type NetworkInfoView = z.infer<
   ReturnType<typeof schemas.NetworkInfoViewSchema>
 >;
@@ -776,6 +778,14 @@ export type PeerInfoView = z.infer<
 /** Error that can occur while preparing or executing Wasm smart-contract. */
 export type PrepareError = z.infer<
   ReturnType<typeof schemas.PrepareErrorSchema>
+>;
+
+/**
+ * Configures whether the node checks the next or the next next epoch for
+ * network version compatibility.
+ */
+export type ProtocolVersionCheckConfig = z.infer<
+  ReturnType<typeof schemas.ProtocolVersionCheckConfigSchema>
 >;
 
 export type PublicKey = z.infer<ReturnType<typeof schemas.PublicKeySchema>>;
