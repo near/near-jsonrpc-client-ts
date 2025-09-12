@@ -26,22 +26,34 @@ interface MethodMapping {
   clientMethodName: string;
   requestType: string;
   responseType: string;
+  paramsRequired: boolean;
 }
 
 function generateValidatedFunction(mapping: MethodMapping): string {
   const requestSchema = typeToSchemaName(mapping.requestType);
   const responseSchema = typeToSchemaName(mapping.responseType);
 
+  // Use optional params only when the schema is nullable
+  const paramsSignature = mapping.paramsRequired
+    ? `params: ${mapping.requestType}`
+    : `params?: ${mapping.requestType}`;
+
+  // Validation logic depends on whether params are required
+  const validationLogic = mapping.paramsRequired
+    ? `  // Validate request parameters
+  ${requestSchema}().parse(params);`
+    : `  // Validate request parameters
+  if (params) {
+    ${requestSchema}().parse(params);
+  }`;
+
   return `
 // ${mapping.rpcMethod} function with validation
 export async function ${mapping.clientMethodName}(
   client: NearRpcClient,
-  params?: ${mapping.requestType}
+  ${paramsSignature}
 ): Promise<${mapping.responseType}> {
-  // Validate request parameters
-  if (params) {
-    ${requestSchema}().parse(params);
-  }
+${validationLogic}
   
   // Make request (without validation in client)
   const response = await client.makeRequest('${mapping.rpcMethod}', params);
@@ -119,13 +131,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       // Read the generated file to extract mappings
       const content = await fs.readFile(generatedPath, 'utf8');
 
-      // Extract function definitions using regex
-      const functionRegex =
-        /export async function (\w+)\(\s*client: NearRpcClient,\s*params\?: (\w+)\s*\): Promise<(\w+)>/g;
+      // Extract function definitions using regex - handle both optional and required params
+      const functionRegexOptional =
+        /export async function (\w+)\(\s*client: NearRpcClient,\s*params\?\: (\w+)\s*\): Promise<(\w+)>/g;
+      const functionRegexRequired =
+        /export async function (\w+)\(\s*client: NearRpcClient,\s*params\: (\w+)\s*\): Promise<(\w+)>/g;
       const mappings: MethodMapping[] = [];
 
+      // First find functions with optional params
       let match;
-      while ((match = functionRegex.exec(content)) !== null) {
+      while ((match = functionRegexOptional.exec(content)) !== null) {
         const [, clientMethodName, requestType, responseType] = match;
 
         // Extract RPC method from the function body
@@ -138,6 +153,30 @@ if (import.meta.url === `file://${process.argv[1]}`) {
             clientMethodName,
             requestType,
             responseType,
+            paramsRequired: false,
+          });
+        }
+      }
+
+      // Then find functions with required params
+      while ((match = functionRegexRequired.exec(content)) !== null) {
+        const [, clientMethodName, requestType, responseType] = match;
+
+        // Skip if already found as optional
+        if (mappings.some(m => m.clientMethodName === clientMethodName))
+          continue;
+
+        // Extract RPC method from the function body
+        const functionBody = content.substring(match.index);
+        const methodMatch = functionBody.match(/makeRequest\('([^']+)'/);
+
+        if (methodMatch) {
+          mappings.push({
+            rpcMethod: methodMatch[1],
+            clientMethodName,
+            requestType,
+            responseType,
+            paramsRequired: true,
           });
         }
       }

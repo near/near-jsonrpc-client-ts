@@ -30,31 +30,36 @@ function isRequestNullable(
   const path = Object.entries(pathToMethodMap).find(
     ([_, method]) => method === rpcMethod
   )?.[0];
-  
+
   if (!path) return false;
-  
+
   try {
     // Get the request body schema
-    const requestBodySchema = openApiSpec.paths?.[path]?.post?.requestBody?.content?.['application/json']?.schema;
+    const requestBodySchema =
+      openApiSpec.paths?.[path]?.post?.requestBody?.content?.[
+        'application/json'
+      ]?.schema;
     if (!requestBodySchema?.$ref) return false;
-    
+
     // Get the JsonRpcRequest schema
     const schemaName = requestBodySchema.$ref.split('/').pop();
     const jsonRpcSchema = openApiSpec.components?.schemas?.[schemaName];
-    
+
     if (!jsonRpcSchema?.properties?.params) return false;
-    
+
     // Get the params schema reference
     const paramsRef = jsonRpcSchema.properties.params.$ref;
     if (!paramsRef) return false;
-    
+
     // Get the actual params schema
     const paramsSchemaName = paramsRef.split('/').pop();
     const paramsSchema = openApiSpec.components?.schemas?.[paramsSchemaName];
-    
+
     // Check if the schema is nullable
-    return paramsSchema?.nullable === true || 
-           (paramsSchema?.enum?.length === 1 && paramsSchema?.enum[0] === null);
+    return (
+      paramsSchema?.nullable === true ||
+      (paramsSchema?.enum?.length === 1 && paramsSchema?.enum[0] === null)
+    );
   } catch (error) {
     console.warn(`Could not check nullability for ${rpcMethod}:`, error);
     return false;
@@ -627,7 +632,7 @@ function generateStaticFunctions(
     const jsDoc = description ? formatComment(description) : '';
 
     // Use optional params only when the schema is nullable
-    const paramsSignature = mapping.paramsRequired 
+    const paramsSignature = mapping.paramsRequired
       ? `params: ${mapping.requestType}`
       : `params?: ${mapping.requestType}`;
 
@@ -667,7 +672,7 @@ ${mappings
           .map(line => '  ' + line)
           .join('\n')
       : '';
-    const paramsSignature = mapping.paramsRequired 
+    const paramsSignature = mapping.paramsRequired
       ? `params: ${mapping.requestType}`
       : `params?: ${mapping.requestType}`;
     return `${jsDoc}  ${mapping.clientMethodName}(${paramsSignature}): Promise<${mapping.responseType}>;`;
