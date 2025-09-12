@@ -13,6 +13,7 @@ interface MethodInfo {
   requestSchema?: string;
   responseSchema?: string;
   description?: string;
+  paramsRequired: boolean;
 }
 
 // Format JSDoc comment
@@ -112,6 +113,7 @@ function extractValidationInfo(
       requestType: defaultRequestType,
       responseType: defaultResponseType,
       description: post.description,
+      paramsRequired: true, // default to required, will be updated below
     };
 
     // Check if request schema exists
@@ -128,6 +130,13 @@ function extractValidationInfo(
             // Convert to TypeScript type name
             methodInfo.requestSchema = paramsSchemaName.replace(/Schema$/, '');
             methodInfo.requestType = methodInfo.requestSchema;
+            
+            // Check if the params schema is nullable
+            const actualParamsSchema = openApiSpec.components?.schemas?.[paramsSchemaName];
+            if (actualParamsSchema?.nullable === true || 
+                (actualParamsSchema?.enum?.length === 1 && actualParamsSchema?.enum[0] === null)) {
+              methodInfo.paramsRequired = false;
+            }
           } else if (paramsSchema.properties?.lazy?.anyOf) {
             // Handle lazy references
             for (const option of paramsSchema.properties.lazy.anyOf) {
@@ -211,7 +220,7 @@ function generateValidationWrapper(method: MethodInfo): string {
   const hasParams = method.requestSchema !== undefined;
   const paramsType = hasParams ? method.requestType : 'undefined';
   const paramsArg = hasParams
-    ? 'params?: ' + method.requestType
+    ? (method.paramsRequired ? 'params: ' + method.requestType : 'params?: ' + method.requestType)
     : 'params?: undefined';
 
   let validationCode = '';
