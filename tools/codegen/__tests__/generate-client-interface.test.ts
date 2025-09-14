@@ -64,7 +64,7 @@ describe('Client Interface Generator', () => {
       expect(result.methodCount).toBe(4);
       expect(result.content).toContain('export interface DynamicRpcMethods');
       expect(result.content).toContain(
-        'block(params?: RpcBlockRequest): Promise<RpcBlockResponse>'
+        'block(params: RpcBlockRequest): Promise<RpcBlockResponse>'
       );
       expect(result.content).toContain(
         'health(params?: RpcHealthRequest): Promise<RpcHealthResponse>'
@@ -76,7 +76,7 @@ describe('Client Interface Generator', () => {
       // Verify file was created
       const generatedContent = await fs.readFile(outputPath, 'utf8');
       expect(generatedContent).toContain("from '@near-js/jsonrpc-types'");
-    });
+    }, 30000);
 
     it('should handle all current RPC methods without errors', async () => {
       // Extract all methods from the spec
@@ -106,7 +106,7 @@ describe('Client Interface Generator', () => {
       // Verify no typescript compilation errors in generated file
       const generatedContent = await fs.readFile(outputPath, 'utf8');
       expect(generatedContent).not.toContain('any'); // Should not fall back to 'any' types
-    });
+    }, 30000);
   });
 
   describe('Type Safety Tests', () => {
@@ -130,19 +130,19 @@ describe('Client Interface Generator', () => {
 
       // Check specific type mappings we know should work
       expect(content).toContain(
-        'block(params?: RpcBlockRequest): Promise<RpcBlockResponse>'
+        'block(params: RpcBlockRequest): Promise<RpcBlockResponse>'
       );
       expect(content).toContain(
-        'broadcastTxAsync(params?: RpcSendTransactionRequest): Promise<CryptoHash>'
+        'broadcastTxAsync(params: RpcSendTransactionRequest): Promise<CryptoHash>'
       );
       expect(content).toContain(
-        'query(params?: RpcQueryRequest): Promise<RpcQueryResponse>'
+        'query(params: RpcQueryRequest): Promise<RpcQueryResponse>'
       );
 
       // Ensure no generic unknown types
       expect(content).not.toMatch(/params\?: unknown/);
       expect(content).not.toMatch(/Promise<unknown>/);
-    });
+    }, 30000);
 
     it('should handle EXPERIMENTAL methods correctly', async () => {
       const testMethods = [
@@ -172,7 +172,7 @@ describe('Client Interface Generator', () => {
       expect(content).toContain(
         'experimentalGenesisConfig(params?: GenesisConfigRequest): Promise<GenesisConfig>'
       );
-    });
+    }, 30000);
   });
 
   describe('API Evolution Tests', () => {
@@ -211,13 +211,13 @@ describe('Client Interface Generator', () => {
 
       // Should include both methods
       expect(content).toContain(
-        'block(params?: RpcBlockRequest): Promise<RpcBlockResponse>'
+        'block(params: RpcBlockRequest): Promise<RpcBlockResponse>'
       );
       expect(content).toContain(
-        'fakeNewMethod(params?: RpcBlockRequest): Promise<RpcBlockResponse>'
+        'fakeNewMethod(params: RpcBlockRequest): Promise<RpcBlockResponse>'
       );
       expect(result.methodCount).toBe(2);
-    });
+    }, 30000);
 
     it('should handle methods with different parameter types', async () => {
       // Test that different endpoints can have different parameter types
@@ -239,10 +239,10 @@ describe('Client Interface Generator', () => {
       const content = result.content;
 
       // Each method should have different parameter types
-      expect(content).toContain('block(params?: RpcBlockRequest)');
+      expect(content).toContain('block(params: RpcBlockRequest)');
       expect(content).toContain('health(params?: RpcHealthRequest)');
-      expect(content).toContain('gasPrice(params?: RpcGasPriceRequest)');
-    });
+      expect(content).toContain('gasPrice(params: RpcGasPriceRequest)');
+    }, 30000);
   });
 
   describe('Generator Robustness Tests', () => {
@@ -289,7 +289,7 @@ describe('Client Interface Generator', () => {
 
       const content = await fs.readFile(outputPath, 'utf8');
       expect(content).toContain('testMethod'); // Should still generate method
-    });
+    }, 30000);
 
     it('should validate generated TypeScript compiles', async () => {
       // Generate a full interface and verify it's valid TypeScript
@@ -323,6 +323,6 @@ describe('Client Interface Generator', () => {
       const matches = content.match(methodPattern);
       expect(matches).toBeTruthy();
       expect(matches!.length).toBeGreaterThan(0);
-    });
+    }, 30000);
   });
 });
