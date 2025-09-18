@@ -11,12 +11,59 @@ interface MethodMapping {
   clientMethodName: string;
   requestType: string;
   responseType: string;
+  paramsRequired: boolean;
 }
 
 interface GeneratedInterface {
   content: string;
   methodCount: number;
   timestamp: string;
+}
+
+// Check if a request schema is nullable (params are optional)
+function isRequestNullable(
+  rpcMethod: string,
+  openApiSpec: any,
+  pathToMethodMap: Record<string, string>
+): boolean {
+  // Find the path for this method
+  const path = Object.entries(pathToMethodMap).find(
+    ([_, method]) => method === rpcMethod
+  )?.[0];
+
+  if (!path) return false;
+
+  try {
+    // Get the request body schema
+    const requestBodySchema =
+      openApiSpec.paths?.[path]?.post?.requestBody?.content?.[
+        'application/json'
+      ]?.schema;
+    if (!requestBodySchema?.$ref) return false;
+
+    // Get the JsonRpcRequest schema
+    const schemaName = requestBodySchema.$ref.split('/').pop();
+    const jsonRpcSchema = openApiSpec.components?.schemas?.[schemaName];
+
+    if (!jsonRpcSchema?.properties?.params) return false;
+
+    // Get the params schema reference
+    const paramsRef = jsonRpcSchema.properties.params.$ref;
+    if (!paramsRef) return false;
+
+    // Get the actual params schema
+    const paramsSchemaName = paramsRef.split('/').pop();
+    const paramsSchema = openApiSpec.components?.schemas?.[paramsSchemaName];
+
+    // Check if the schema is nullable
+    return (
+      paramsSchema?.nullable === true ||
+      (paramsSchema?.enum?.length === 1 && paramsSchema?.enum[0] === null)
+    );
+  } catch (error) {
+    console.warn(`Could not check nullability for ${rpcMethod}:`, error);
+    return false;
+  }
 }
 
 // Convert RPC method name to camelCase TypeScript method name
@@ -486,6 +533,7 @@ async function generateMethodMappings(
     clientMethodName: rpcMethodToCamelCase(rpcMethod),
     requestType: rpcMethodToTypeName(rpcMethod, 'Request'),
     responseType: rpcMethodToTypeName(rpcMethod, 'Response'),
+    paramsRequired: !isRequestNullable(rpcMethod, openApiSpec, pathToMethodMap),
   }));
 }
 
@@ -583,9 +631,14 @@ function generateStaticFunctions(
     const description = methodDescriptions?.[mapping.rpcMethod] || '';
     const jsDoc = description ? formatComment(description) : '';
 
+    // Use optional params only when the schema is nullable
+    const paramsSignature = mapping.paramsRequired
+      ? `params: ${mapping.requestType}`
+      : `params?: ${mapping.requestType}`;
+
     return `${jsDoc}export async function ${mapping.clientMethodName}(
   client: NearRpcClient,
-  params?: ${mapping.requestType}
+  ${paramsSignature}
 ): Promise<${mapping.responseType}> {
   return client.makeRequest('${mapping.rpcMethod}', params);
 }`;
@@ -619,7 +672,10 @@ ${mappings
           .map(line => '  ' + line)
           .join('\n')
       : '';
-    return `${jsDoc}  ${mapping.clientMethodName}(params?: ${mapping.requestType}): Promise<${mapping.responseType}>;`;
+    const paramsSignature = mapping.paramsRequired
+      ? `params: ${mapping.requestType}`
+      : `params?: ${mapping.requestType}`;
+    return `${jsDoc}  ${mapping.clientMethodName}(${paramsSignature}): Promise<${mapping.responseType}>;`;
   })
   .join('\n')}
 }

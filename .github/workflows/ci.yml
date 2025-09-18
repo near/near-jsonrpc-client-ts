@@ -48,6 +48,9 @@ jobs:
       - name: Test & Generate Coverage
         run: pnpm -r run test:coverage
 
+      - name: Test Code Generator
+        run: cd tools/codegen && pnpm test
+
   browser_tests:
     name: Browser Tests
     runs-on: ubuntu-latest
