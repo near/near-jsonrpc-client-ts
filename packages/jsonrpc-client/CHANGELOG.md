@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.3.4...jsonrpc-client-v1.4.0) (2025-09-18)
+
+
+### Features
+
+* update generated code from OpenAPI spec ([#53](https://github.com/near/near-jsonrpc-client-ts/issues/53)) ([8759b07](https://github.com/near/near-jsonrpc-client-ts/commit/8759b0774fad2838833c56625a7e6a5438e758c9))
+
+
+### Bug Fixes
+
+* make RPC method params required when not nullable in schema ([#84](https://github.com/near/near-jsonrpc-client-ts/issues/84)) ([c4173fb](https://github.com/near/near-jsonrpc-client-ts/commit/c4173fba6094aae5781d4c6749c25ec923cf045c))
+
 ## [1.3.4](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.3.3...jsonrpc-client-v1.3.4) (2025-08-23)
 
 
