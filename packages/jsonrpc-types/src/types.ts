@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-09-12T17:20:47.123Z
+// Generated on: 2025-09-20T06:05:06.477Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -202,6 +202,26 @@ export type ChunkDistributionUris = z.infer<
 /** Contains main info about the chunk. */
 export type ChunkHeaderView = z.infer<
   ReturnType<typeof schemas.ChunkHeaderViewSchema>
+>;
+
+/** Configuration for a cloud-based archival reader. */
+export type CloudArchivalReaderConfig = z.infer<
+  ReturnType<typeof schemas.CloudArchivalReaderConfigSchema>
+>;
+
+/**
+ * Configuration for a cloud-based archival writer. If this config is present,
+ * the writer is enabled and writes chunk-related data based on the tracked
+ * shards. This config also controls additional archival behavior such as
+ * block data and polling interval.
+ */
+export type CloudArchivalWriterConfig = z.infer<
+  ReturnType<typeof schemas.CloudArchivalWriterConfigSchema>
+>;
+
+/** Configures the external storage used by the archival node. */
+export type CloudStorageConfig = z.infer<
+  ReturnType<typeof schemas.CloudStorageConfigSchema>
 >;
 
 export type CompilationError = z.infer<
