@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-09-12T17:20:47.145Z
+// Generated on: 2025-09-20T06:05:06.486Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -612,6 +612,36 @@ export const ChunkHeaderViewSchema = () =>
     txRoot: z.lazy(() => CryptoHashSchema()),
     validatorProposals: z.array(z.lazy(() => ValidatorStakeViewSchema())),
     validatorReward: z.string(),
+  });
+
+// Configuration for a cloud-based archival reader.
+export const CloudArchivalReaderConfigSchema = () =>
+  z.object({
+    cloudStorage: z.lazy(() => CloudStorageConfigSchema()),
+  });
+
+//
+// Configuration for a cloud-based archival writer. If this config is present,
+// the writer is enabled and writes chunk-related data based on the tracked
+// shards. This config also controls additional archival behavior such as
+// block data and polling interval.
+
+export const CloudArchivalWriterConfigSchema = () =>
+  z.object({
+    archiveBlockData: z.optional(z.boolean()),
+    cloudStorage: z.lazy(() => CloudStorageConfigSchema()),
+    pollingInterval: z.optional(
+      z.lazy(() => DurationAsStdSchemaProviderSchema())
+    ),
+  });
+
+// Configures the external storage used by the archival node.
+export const CloudStorageConfigSchema = () =>
+  z.object({
+    credentialsFile: z.optional(
+      z.union([z.union([z.string(), z.null()]), z.null()])
+    ),
+    storage: z.lazy(() => ExternalStorageLocationSchema()),
   });
 
 export const CompilationErrorSchema = () =>
@@ -2376,6 +2406,12 @@ export const RpcClientConfigResponseSchema = () =>
     chunkValidationThreads: z.number(),
     chunkWaitMult: z.array(z.number()),
     clientBackgroundMigrationThreads: z.number(),
+    cloudArchivalReader: z.optional(
+      z.union([z.lazy(() => CloudArchivalReaderConfigSchema()), z.null()])
+    ),
+    cloudArchivalWriter: z.optional(
+      z.union([z.lazy(() => CloudArchivalWriterConfigSchema()), z.null()])
+    ),
     doomslugStepPeriod: z.array(z.number()),
     enableMultilineLogging: z.boolean(),
     enableStatisticsExport: z.boolean(),
@@ -3773,6 +3809,7 @@ export const UseGlobalContractActionSchema = () =>
 
 export const VMConfigViewSchema = () =>
   z.object({
+    deterministicAccountIds: z.boolean(),
     discardCustomSections: z.boolean(),
     ethImplicitAccounts: z.boolean(),
     extCosts: z.lazy(() => ExtCostsConfigViewSchema()),
