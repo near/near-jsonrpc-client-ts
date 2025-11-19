@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-09-12T17:20:47.123Z
+// Generated on: 2025-11-19T06:05:25.898Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -115,6 +115,10 @@ export type ActionsValidationError = z.infer<
   ReturnType<typeof schemas.ActionsValidationErrorSchema>
 >;
 
+export type AddGasKeyAction = z.infer<
+  ReturnType<typeof schemas.AddGasKeyActionSchema>
+>;
+
 /** An action that adds key with public key associated */
 export type AddKeyAction = z.infer<
   ReturnType<typeof schemas.AddKeyActionSchema>
@@ -167,6 +171,10 @@ export type BlockHeaderView = z.infer<
 
 export type BlockId = z.infer<ReturnType<typeof schemas.BlockIdSchema>>;
 
+export type BlockReference = z.infer<
+  ReturnType<typeof schemas.BlockReferenceSchema>
+>;
+
 /** Height and hash of a block */
 export type BlockStatusView = z.infer<
   ReturnType<typeof schemas.BlockStatusViewSchema>
@@ -199,9 +207,21 @@ export type ChunkDistributionUris = z.infer<
   ReturnType<typeof schemas.ChunkDistributionUrisSchema>
 >;
 
+export type ChunkHash = z.infer<ReturnType<typeof schemas.ChunkHashSchema>>;
+
 /** Contains main info about the chunk. */
 export type ChunkHeaderView = z.infer<
   ReturnType<typeof schemas.ChunkHeaderViewSchema>
+>;
+
+/**
+ * Configuration for a cloud-based archival writer. If this config is present,
+ * the writer is enabled and writes chunk-related data based on the tracked
+ * shards. This config also controls additional archival behavior such as
+ * block data and polling interval.
+ */
+export type CloudArchivalWriterConfig = z.infer<
+  ReturnType<typeof schemas.CloudArchivalWriterConfigSchema>
 >;
 
 export type CompilationError = z.infer<
@@ -265,6 +285,10 @@ export type DeleteAccountAction = z.infer<
   ReturnType<typeof schemas.DeleteAccountActionSchema>
 >;
 
+export type DeleteGasKeyAction = z.infer<
+  ReturnType<typeof schemas.DeleteGasKeyActionSchema>
+>;
+
 export type DeleteKeyAction = z.infer<
   ReturnType<typeof schemas.DeleteKeyActionSchema>
 >;
@@ -281,6 +305,18 @@ export type DeployGlobalContractAction = z.infer<
 
 export type DetailedDebugStatus = z.infer<
   ReturnType<typeof schemas.DetailedDebugStatusSchema>
+>;
+
+export type DeterministicAccountStateInit = z.infer<
+  ReturnType<typeof schemas.DeterministicAccountStateInitSchema>
+>;
+
+export type DeterministicAccountStateInitV1 = z.infer<
+  ReturnType<typeof schemas.DeterministicAccountStateInitV1Schema>
+>;
+
+export type DeterministicStateInitAction = z.infer<
+  ReturnType<typeof schemas.DeterministicStateInitActionSchema>
 >;
 
 export type Direction = z.infer<ReturnType<typeof schemas.DirectionSchema>>;
@@ -301,6 +337,74 @@ export type EpochId = z.infer<ReturnType<typeof schemas.EpochIdSchema>>;
 
 export type EpochSyncConfig = z.infer<
   ReturnType<typeof schemas.EpochSyncConfigSchema>
+>;
+
+export type ErrorWrapperFor_GenesisConfigError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_GenesisConfigErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcBlockError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcBlockErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcChunkError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcChunkErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcClientConfigError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcClientConfigErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcGasPriceError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcGasPriceErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcLightClientNextBlockError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcLightClientNextBlockErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcLightClientProofError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcLightClientProofErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcMaintenanceWindowsError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcMaintenanceWindowsErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcNetworkInfoError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcNetworkInfoErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcProtocolConfigError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcProtocolConfigErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcQueryError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcQueryErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcReceiptError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcReceiptErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcSplitStorageInfoError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcSplitStorageInfoErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcStateChangesError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcStateChangesErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcStatusError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcStatusErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcTransactionError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcTransactionErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcValidatorError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcValidatorErrorSchema>
 >;
 
 export type ExecutionMetadataView = z.infer<
@@ -331,6 +435,7 @@ export type ExternalStorageConfig = z.infer<
   ReturnType<typeof schemas.ExternalStorageConfigSchema>
 >;
 
+/** Supported external storage backends and their minimal config. */
 export type ExternalStorageLocation = z.infer<
   ReturnType<typeof schemas.ExternalStorageLocationSchema>
 >;
@@ -403,10 +508,27 @@ export type FunctionCallPermission = z.infer<
 /** Configuration for garbage collection. */
 export type GCConfig = z.infer<ReturnType<typeof schemas.GCConfigSchema>>;
 
+/**
+ * Gas key is like an access key, except it stores a balance separately, and
+ * transactions signed with it deduct their cost from the gas key balance
+ * instead of the account balance.
+ */
+export type GasKey = z.infer<ReturnType<typeof schemas.GasKeySchema>>;
+
+export type GasKeyInfoView = z.infer<
+  ReturnType<typeof schemas.GasKeyInfoViewSchema>
+>;
+
+export type GasKeyList = z.infer<ReturnType<typeof schemas.GasKeyListSchema>>;
+
 export type GasKeyView = z.infer<ReturnType<typeof schemas.GasKeyViewSchema>>;
 
 export type GenesisConfig = z.infer<
   ReturnType<typeof schemas.GenesisConfigSchema>
+>;
+
+export type GenesisConfigError = z.infer<
+  ReturnType<typeof schemas.GenesisConfigErrorSchema>
 >;
 
 export type GenesisConfigRequest = z.infer<
@@ -421,7 +543,15 @@ export type GlobalContractIdentifier = z.infer<
   ReturnType<typeof schemas.GlobalContractIdentifierSchema>
 >;
 
+export type GlobalContractIdentifierView = z.infer<
+  ReturnType<typeof schemas.GlobalContractIdentifierViewSchema>
+>;
+
 export type HostError = z.infer<ReturnType<typeof schemas.HostErrorSchema>>;
+
+export type InternalError = z.infer<
+  ReturnType<typeof schemas.InternalErrorSchema>
+>;
 
 export type InvalidAccessKeyError = z.infer<
   ReturnType<typeof schemas.InvalidAccessKeyErrorSchema>
@@ -566,145 +696,159 @@ export type JsonRpcRequestForValidators = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestForValidatorsSchema>
 >;
 
-export type JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_CryptoHashAnd_RpcError = z.infer<
-  ReturnType<typeof schemas.JsonRpcResponseFor_CryptoHashAnd_RpcErrorSchema>
->;
-
-export type JsonRpcResponseFor_GenesisConfigAnd_RpcError = z.infer<
-  ReturnType<typeof schemas.JsonRpcResponseFor_GenesisConfigAnd_RpcErrorSchema>
->;
-
-export type JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_RpcBlockResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcBlockResponseAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_RpcChunkResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcChunkResponseAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcError =
+export type JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcMaintenanceWindowsError =
   z.infer<
     ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcErrorSchema
+      typeof schemas.JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcMaintenanceWindowsErrorSchema
     >
   >;
 
-export type JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcError =
+export type JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcValidatorError =
   z.infer<
     ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcErrorSchema
+      typeof schemas.JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcValidatorErrorSchema
     >
   >;
 
-export type JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcError =
+export type JsonRpcResponseFor_CryptoHashAnd_RpcTransactionError = z.infer<
+  ReturnType<
+    typeof schemas.JsonRpcResponseFor_CryptoHashAnd_RpcTransactionErrorSchema
+  >
+>;
+
+export type JsonRpcResponseFor_GenesisConfigAnd_GenesisConfigError = z.infer<
+  ReturnType<
+    typeof schemas.JsonRpcResponseFor_GenesisConfigAnd_GenesisConfigErrorSchema
+  >
+>;
+
+export type JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcStatusError =
   z.infer<
     ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcErrorSchema
+      typeof schemas.JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcStatusErrorSchema
     >
   >;
 
-export type JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcError = z.infer<
+export type JsonRpcResponseFor_RpcBlockResponseAnd_RpcBlockError = z.infer<
   ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcErrorSchema
+    typeof schemas.JsonRpcResponseFor_RpcBlockResponseAnd_RpcBlockErrorSchema
   >
 >;
 
-export type JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcError = z.infer<
+export type JsonRpcResponseFor_RpcChunkResponseAnd_RpcChunkError = z.infer<
   ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcErrorSchema
+    typeof schemas.JsonRpcResponseFor_RpcChunkResponseAnd_RpcChunkErrorSchema
   >
 >;
 
-export type JsonRpcResponseFor_RpcQueryResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcQueryResponseAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_RpcReceiptResponseAnd_RpcError = z.infer<
-  ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcReceiptResponseAnd_RpcErrorSchema
-  >
->;
-
-export type JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcError =
+export type JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcClientConfigError =
   z.infer<
     ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcErrorSchema
+      typeof schemas.JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcClientConfigErrorSchema
     >
   >;
 
-export type JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcError =
+export type JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcChunkError =
   z.infer<
     ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcErrorSchema
+      typeof schemas.JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcChunkErrorSchema
     >
   >;
 
-export type JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcError =
+export type JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcGasPriceError =
   z.infer<
     ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema
+      typeof schemas.JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcGasPriceErrorSchema
     >
   >;
 
-export type JsonRpcResponseFor_RpcStatusResponseAnd_RpcError = z.infer<
+export type JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcLightClientProofError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcLightClientProofErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcLightClientProofError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcLightClientProofErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcLightClientNextBlockError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcLightClientNextBlockErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcNetworkInfoError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcNetworkInfoErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcProtocolConfigError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcProtocolConfigErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcQueryResponseAnd_RpcQueryError = z.infer<
   ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcStatusResponseAnd_RpcErrorSchema
+    typeof schemas.JsonRpcResponseFor_RpcQueryResponseAnd_RpcQueryErrorSchema
   >
 >;
 
-export type JsonRpcResponseFor_RpcTransactionResponseAnd_RpcError = z.infer<
+export type JsonRpcResponseFor_RpcReceiptResponseAnd_RpcReceiptError = z.infer<
   ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema
+    typeof schemas.JsonRpcResponseFor_RpcReceiptResponseAnd_RpcReceiptErrorSchema
   >
 >;
 
-export type JsonRpcResponseFor_RpcValidatorResponseAnd_RpcError = z.infer<
+export type JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcSplitStorageInfoError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcSplitStorageInfoErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcStateChangesError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcStateChangesErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcStateChangesError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcStateChangesErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcStatusResponseAnd_RpcStatusError = z.infer<
   ReturnType<
-    typeof schemas.JsonRpcResponseFor_RpcValidatorResponseAnd_RpcErrorSchema
+    typeof schemas.JsonRpcResponseFor_RpcStatusResponseAnd_RpcStatusErrorSchema
   >
 >;
+
+export type JsonRpcResponseFor_RpcTransactionResponseAnd_RpcTransactionError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcTransactionResponseAnd_RpcTransactionErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcValidatorResponseAnd_RpcValidatorError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcValidatorResponseAnd_RpcValidatorErrorSchema
+    >
+  >;
 
 /**
  * Information about a Producer: its account name, peer_id and a list of
@@ -750,6 +894,8 @@ export type MutableConfigValue = z.infer<
 >;
 
 export type NearGas = z.infer<ReturnType<typeof schemas.NearGasSchema>>;
+
+export type NearToken = z.infer<ReturnType<typeof schemas.NearTokenSchema>>;
 
 export type NetworkInfoView = z.infer<
   ReturnType<typeof schemas.NetworkInfoViewSchema>
@@ -805,6 +951,10 @@ export type ReceiptValidationError = z.infer<
 
 export type ReceiptView = z.infer<ReturnType<typeof schemas.ReceiptViewSchema>>;
 
+export type RpcBlockError = z.infer<
+  ReturnType<typeof schemas.RpcBlockErrorSchema>
+>;
+
 export type RpcBlockRequest = z.infer<
   ReturnType<typeof schemas.RpcBlockRequestSchema>
 >;
@@ -813,12 +963,20 @@ export type RpcBlockResponse = z.infer<
   ReturnType<typeof schemas.RpcBlockResponseSchema>
 >;
 
+export type RpcChunkError = z.infer<
+  ReturnType<typeof schemas.RpcChunkErrorSchema>
+>;
+
 export type RpcChunkRequest = z.infer<
   ReturnType<typeof schemas.RpcChunkRequestSchema>
 >;
 
 export type RpcChunkResponse = z.infer<
   ReturnType<typeof schemas.RpcChunkResponseSchema>
+>;
+
+export type RpcClientConfigError = z.infer<
+  ReturnType<typeof schemas.RpcClientConfigErrorSchema>
 >;
 
 export type RpcClientConfigRequest = z.infer<
@@ -838,12 +996,9 @@ export type RpcCongestionLevelResponse = z.infer<
   ReturnType<typeof schemas.RpcCongestionLevelResponseSchema>
 >;
 
-/**
- * This struct may be returned from JSON RPC server in case of error It is
- * expected that this struct has impl From<_> all other RPC errors like
- * [RpcBlockError](crate::types::blocks::RpcBlockError)
- */
-export type RpcError = z.infer<ReturnType<typeof schemas.RpcErrorSchema>>;
+export type RpcGasPriceError = z.infer<
+  ReturnType<typeof schemas.RpcGasPriceErrorSchema>
+>;
 
 export type RpcGasPriceRequest = z.infer<
   ReturnType<typeof schemas.RpcGasPriceRequestSchema>
@@ -881,6 +1036,10 @@ export type RpcLightClientExecutionProofResponse = z.infer<
   ReturnType<typeof schemas.RpcLightClientExecutionProofResponseSchema>
 >;
 
+export type RpcLightClientNextBlockError = z.infer<
+  ReturnType<typeof schemas.RpcLightClientNextBlockErrorSchema>
+>;
+
 export type RpcLightClientNextBlockRequest = z.infer<
   ReturnType<typeof schemas.RpcLightClientNextBlockRequestSchema>
 >;
@@ -893,8 +1052,20 @@ export type RpcLightClientNextBlockResponse = z.infer<
   ReturnType<typeof schemas.RpcLightClientNextBlockResponseSchema>
 >;
 
+export type RpcLightClientProofError = z.infer<
+  ReturnType<typeof schemas.RpcLightClientProofErrorSchema>
+>;
+
+export type RpcMaintenanceWindowsError = z.infer<
+  ReturnType<typeof schemas.RpcMaintenanceWindowsErrorSchema>
+>;
+
 export type RpcMaintenanceWindowsRequest = z.infer<
   ReturnType<typeof schemas.RpcMaintenanceWindowsRequestSchema>
+>;
+
+export type RpcNetworkInfoError = z.infer<
+  ReturnType<typeof schemas.RpcNetworkInfoErrorSchema>
 >;
 
 export type RpcNetworkInfoRequest = z.infer<
@@ -907,6 +1078,10 @@ export type RpcNetworkInfoResponse = z.infer<
 
 export type RpcPeerInfo = z.infer<ReturnType<typeof schemas.RpcPeerInfoSchema>>;
 
+export type RpcProtocolConfigError = z.infer<
+  ReturnType<typeof schemas.RpcProtocolConfigErrorSchema>
+>;
+
 export type RpcProtocolConfigRequest = z.infer<
   ReturnType<typeof schemas.RpcProtocolConfigRequestSchema>
 >;
@@ -915,12 +1090,20 @@ export type RpcProtocolConfigResponse = z.infer<
   ReturnType<typeof schemas.RpcProtocolConfigResponseSchema>
 >;
 
+export type RpcQueryError = z.infer<
+  ReturnType<typeof schemas.RpcQueryErrorSchema>
+>;
+
 export type RpcQueryRequest = z.infer<
   ReturnType<typeof schemas.RpcQueryRequestSchema>
 >;
 
 export type RpcQueryResponse = z.infer<
   ReturnType<typeof schemas.RpcQueryResponseSchema>
+>;
+
+export type RpcReceiptError = z.infer<
+  ReturnType<typeof schemas.RpcReceiptErrorSchema>
 >;
 
 export type RpcReceiptRequest = z.infer<
@@ -939,6 +1122,10 @@ export type RpcSendTransactionRequest = z.infer<
   ReturnType<typeof schemas.RpcSendTransactionRequestSchema>
 >;
 
+export type RpcSplitStorageInfoError = z.infer<
+  ReturnType<typeof schemas.RpcSplitStorageInfoErrorSchema>
+>;
+
 export type RpcSplitStorageInfoRequest = z.infer<
   ReturnType<typeof schemas.RpcSplitStorageInfoRequestSchema>
 >;
@@ -946,6 +1133,10 @@ export type RpcSplitStorageInfoRequest = z.infer<
 /** Contains the split storage information. */
 export type RpcSplitStorageInfoResponse = z.infer<
   ReturnType<typeof schemas.RpcSplitStorageInfoResponseSchema>
+>;
+
+export type RpcStateChangesError = z.infer<
+  ReturnType<typeof schemas.RpcStateChangesErrorSchema>
 >;
 
 /**
@@ -969,6 +1160,10 @@ export type RpcStateChangesInBlockResponse = z.infer<
   ReturnType<typeof schemas.RpcStateChangesInBlockResponseSchema>
 >;
 
+export type RpcStatusError = z.infer<
+  ReturnType<typeof schemas.RpcStatusErrorSchema>
+>;
+
 export type RpcStatusRequest = z.infer<
   ReturnType<typeof schemas.RpcStatusRequestSchema>
 >;
@@ -977,12 +1172,20 @@ export type RpcStatusResponse = z.infer<
   ReturnType<typeof schemas.RpcStatusResponseSchema>
 >;
 
+export type RpcTransactionError = z.infer<
+  ReturnType<typeof schemas.RpcTransactionErrorSchema>
+>;
+
 export type RpcTransactionResponse = z.infer<
   ReturnType<typeof schemas.RpcTransactionResponseSchema>
 >;
 
 export type RpcTransactionStatusRequest = z.infer<
   ReturnType<typeof schemas.RpcTransactionStatusRequestSchema>
+>;
+
+export type RpcValidatorError = z.infer<
+  ReturnType<typeof schemas.RpcValidatorErrorSchema>
 >;
 
 export type RpcValidatorRequest = z.infer<
@@ -1182,6 +1385,10 @@ export type TrackedShardsConfig = z.infer<
 
 export type TransferAction = z.infer<
   ReturnType<typeof schemas.TransferActionSchema>
+>;
+
+export type TransferToGasKeyAction = z.infer<
+  ReturnType<typeof schemas.TransferToGasKeyActionSchema>
 >;
 
 /** Error returned in the ExecutionOutcome in case of failure */

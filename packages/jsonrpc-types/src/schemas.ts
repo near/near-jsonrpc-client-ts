@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-09-12T17:20:47.145Z
+// Generated on: 2025-11-19T06:05:25.913Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -57,7 +57,7 @@ export const AccessKeyPermissionViewSchema = () =>
     z.object({
       FunctionCall: z.object({
         allowance: z.optional(
-          z.union([z.union([z.string(), z.null()]), z.null()])
+          z.union([z.lazy(() => NearTokenSchema()), z.null()])
         ),
         methodNames: z.array(z.string()),
         receiverId: z.string(),
@@ -115,14 +115,14 @@ export const AccountIdValidityRulesVersionSchema = () => z.number();
 export const AccountInfoSchema = () =>
   z.object({
     accountId: z.lazy(() => AccountIdSchema()),
-    amount: z.string(),
+    amount: z.lazy(() => NearTokenSchema()),
     publicKey: z.lazy(() => PublicKeySchema()),
   });
 
 // A view of the account
 export const AccountViewSchema = () =>
   z.object({
-    amount: z.string(),
+    amount: z.lazy(() => NearTokenSchema()),
     codeHash: z.lazy(() => CryptoHashSchema()),
     globalContractAccountId: z.optional(
       z.union([z.lazy(() => AccountIdSchema()), z.null()])
@@ -130,7 +130,7 @@ export const AccountViewSchema = () =>
     globalContractHash: z.optional(
       z.union([z.lazy(() => CryptoHashSchema()), z.null()])
     ),
-    locked: z.string(),
+    locked: z.lazy(() => NearTokenSchema()),
     storagePaidAt: z.optional(z.number()),
     storageUsage: z.number(),
   });
@@ -219,7 +219,7 @@ export const ActionErrorKindSchema = () =>
     z.object({
       LackBalanceForState: z.object({
         accountId: z.lazy(() => AccountIdSchema()),
-        amount: z.string(),
+        amount: z.lazy(() => NearTokenSchema()),
       }),
     }),
     z.object({
@@ -230,16 +230,16 @@ export const ActionErrorKindSchema = () =>
     z.object({
       TriesToStake: z.object({
         accountId: z.lazy(() => AccountIdSchema()),
-        balance: z.string(),
-        locked: z.string(),
-        stake: z.string(),
+        balance: z.lazy(() => NearTokenSchema()),
+        locked: z.lazy(() => NearTokenSchema()),
+        stake: z.lazy(() => NearTokenSchema()),
       }),
     }),
     z.object({
       InsufficientStake: z.object({
         accountId: z.lazy(() => AccountIdSchema()),
-        minimumStake: z.string(),
-        stake: z.string(),
+        minimumStake: z.lazy(() => NearTokenSchema()),
+        stake: z.lazy(() => NearTokenSchema()),
       }),
     }),
     z.object({
@@ -286,6 +286,18 @@ export const ActionErrorKindSchema = () =>
         identifier: z.lazy(() => GlobalContractIdentifierSchema()),
       }),
     }),
+    z.object({
+      GasKeyDoesNotExist: z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+    }),
+    z.object({
+      GasKeyAlreadyExists: z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+    }),
   ]);
 
 export const ActionViewSchema = () =>
@@ -299,20 +311,20 @@ export const ActionViewSchema = () =>
     z.object({
       FunctionCall: z.object({
         args: z.lazy(() => FunctionArgsSchema()),
-        deposit: z.string(),
+        deposit: z.lazy(() => NearTokenSchema()),
         gas: z.lazy(() => NearGasSchema()),
         methodName: z.string(),
       }),
     }),
     z.object({
       Transfer: z.object({
-        deposit: z.string(),
+        deposit: z.lazy(() => NearTokenSchema()),
       }),
     }),
     z.object({
       Stake: z.object({
         publicKey: z.lazy(() => PublicKeySchema()),
-        stake: z.string(),
+        stake: z.lazy(() => NearTokenSchema()),
       }),
     }),
     z.object({
@@ -355,6 +367,31 @@ export const ActionViewSchema = () =>
     z.object({
       UseGlobalContractByAccountId: z.object({
         accountId: z.lazy(() => AccountIdSchema()),
+      }),
+    }),
+    z.object({
+      DeterministicStateInit: z.object({
+        code: z.lazy(() => GlobalContractIdentifierViewSchema()),
+        data: z.record(z.string(), z.string()),
+        deposit: z.lazy(() => NearTokenSchema()),
+      }),
+    }),
+    z.object({
+      AddGasKey: z.object({
+        numNonces: z.number(),
+        permission: z.lazy(() => AccessKeyPermissionViewSchema()),
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+    }),
+    z.object({
+      DeleteGasKey: z.object({
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+    }),
+    z.object({
+      TransferToGasKey: z.object({
+        amount: z.lazy(() => NearTokenSchema()),
+        publicKey: z.lazy(() => PublicKeySchema()),
       }),
     }),
   ]);
@@ -424,7 +461,43 @@ export const ActionsValidationErrorSchema = () =>
         version: z.number(),
       }),
     }),
+    z.object({
+      InvalidDeterministicStateInitReceiver: z.object({
+        derivedId: z.lazy(() => AccountIdSchema()),
+        receiverId: z.lazy(() => AccountIdSchema()),
+      }),
+    }),
+    z.object({
+      DeterministicStateInitKeyLengthExceeded: z.object({
+        length: z.number(),
+        limit: z.number(),
+      }),
+    }),
+    z.object({
+      DeterministicStateInitValueLengthExceeded: z.object({
+        length: z.number(),
+        limit: z.number(),
+      }),
+    }),
+    z.object({
+      GasKeyPermissionInvalid: z.object({
+        permission: z.lazy(() => AccessKeyPermissionSchema()),
+      }),
+    }),
+    z.object({
+      GasKeyTooManyNoncesRequested: z.object({
+        limit: z.number(),
+        requestedNonces: z.number(),
+      }),
+    }),
   ]);
+
+export const AddGasKeyActionSchema = () =>
+  z.object({
+    numNonces: z.number(),
+    permission: z.lazy(() => AccessKeyPermissionSchema()),
+    publicKey: z.lazy(() => PublicKeySchema()),
+  });
 
 // An action that adds key with public key associated
 export const AddKeyActionSchema = () =>
@@ -512,7 +585,7 @@ export const BlockHeaderViewSchema = () =>
     epochSyncDataHash: z.optional(
       z.union([z.lazy(() => CryptoHashSchema()), z.null()])
     ),
-    gasPrice: z.string(),
+    gasPrice: z.lazy(() => NearTokenSchema()),
     hash: z.lazy(() => CryptoHashSchema()),
     height: z.number(),
     lastDsFinalBlock: z.lazy(() => CryptoHashSchema()),
@@ -527,17 +600,30 @@ export const BlockHeaderViewSchema = () =>
     ),
     prevStateRoot: z.lazy(() => CryptoHashSchema()),
     randomValue: z.lazy(() => CryptoHashSchema()),
-    rentPaid: z.string(),
+    rentPaid: z.optional(z.lazy(() => NearTokenSchema())),
     signature: z.lazy(() => SignatureSchema()),
     timestamp: z.number(),
     timestampNanosec: z.string(),
-    totalSupply: z.string(),
+    totalSupply: z.lazy(() => NearTokenSchema()),
     validatorProposals: z.array(z.lazy(() => ValidatorStakeViewSchema())),
-    validatorReward: z.string(),
+    validatorReward: z.optional(z.lazy(() => NearTokenSchema())),
   });
 
 export const BlockIdSchema = () =>
   z.union([z.number(), z.lazy(() => CryptoHashSchema())]);
+
+export const BlockReferenceSchema = () =>
+  z.union([
+    z.object({
+      blockId: z.lazy(() => BlockIdSchema()),
+    }),
+    z.object({
+      finality: z.lazy(() => FinalitySchema()),
+    }),
+    z.object({
+      syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+    }),
+  ]);
 
 // Height and hash of a block
 export const BlockStatusViewSchema = () =>
@@ -585,10 +671,12 @@ export const ChunkDistributionUrisSchema = () =>
     set: z.string(),
   });
 
+export const ChunkHashSchema = () => z.lazy(() => CryptoHashSchema());
+
 // Contains main info about the chunk.
 export const ChunkHeaderViewSchema = () =>
   z.object({
-    balanceBurnt: z.string(),
+    balanceBurnt: z.lazy(() => NearTokenSchema()),
     bandwidthRequests: z.optional(
       z.union([z.lazy(() => BandwidthRequestsSchema()), z.null()])
     ),
@@ -606,12 +694,26 @@ export const ChunkHeaderViewSchema = () =>
     outgoingReceiptsRoot: z.lazy(() => CryptoHashSchema()),
     prevBlockHash: z.lazy(() => CryptoHashSchema()),
     prevStateRoot: z.lazy(() => CryptoHashSchema()),
-    rentPaid: z.string(),
+    rentPaid: z.optional(z.lazy(() => NearTokenSchema())),
     shardId: z.lazy(() => ShardIdSchema()),
     signature: z.lazy(() => SignatureSchema()),
     txRoot: z.lazy(() => CryptoHashSchema()),
     validatorProposals: z.array(z.lazy(() => ValidatorStakeViewSchema())),
-    validatorReward: z.string(),
+    validatorReward: z.optional(z.lazy(() => NearTokenSchema())),
+  });
+
+//
+// Configuration for a cloud-based archival writer. If this config is present,
+// the writer is enabled and writes chunk-related data based on the tracked
+// shards. This config also controls additional archival behavior such as
+// block data and polling interval.
+
+export const CloudArchivalWriterConfigSchema = () =>
+  z.object({
+    archiveBlockData: z.optional(z.boolean()),
+    pollingInterval: z.optional(
+      z.lazy(() => DurationAsStdSchemaProviderSchema())
+    ),
   });
 
 export const CompilationErrorSchema = () =>
@@ -705,7 +807,7 @@ export const CurrentEpochValidatorInfoSchema = () =>
     publicKey: z.lazy(() => PublicKeySchema()),
     shards: z.array(z.lazy(() => ShardIdSchema())),
     shardsEndorsed: z.optional(z.array(z.lazy(() => ShardIdSchema()))),
-    stake: z.string(),
+    stake: z.lazy(() => NearTokenSchema()),
   });
 
 // The fees settings for a data receipt creation
@@ -737,6 +839,11 @@ export const DeleteAccountActionSchema = () =>
     beneficiaryId: z.lazy(() => AccountIdSchema()),
   });
 
+export const DeleteGasKeyActionSchema = () =>
+  z.object({
+    publicKey: z.lazy(() => PublicKeySchema()),
+  });
+
 export const DeleteKeyActionSchema = () =>
   z.object({
     publicKey: z.lazy(() => PublicKeySchema()),
@@ -763,6 +870,23 @@ export const DetailedDebugStatusSchema = () =>
     currentHeaderHeadStatus: z.lazy(() => BlockStatusViewSchema()),
     networkInfo: z.lazy(() => NetworkInfoViewSchema()),
     syncStatus: z.string(),
+  });
+
+export const DeterministicAccountStateInitSchema = () =>
+  z.object({
+    V1: z.lazy(() => DeterministicAccountStateInitV1Schema()),
+  });
+
+export const DeterministicAccountStateInitV1Schema = () =>
+  z.object({
+    code: z.lazy(() => GlobalContractIdentifierSchema()),
+    data: z.record(z.string(), z.string()),
+  });
+
+export const DeterministicStateInitActionSchema = () =>
+  z.object({
+    deposit: z.lazy(() => NearTokenSchema()),
+    stateInit: z.lazy(() => DeterministicAccountStateInitSchema()),
   });
 
 export const DirectionSchema = () => z.enum(['Left', 'Right']);
@@ -806,6 +930,278 @@ export const EpochSyncConfigSchema = () =>
     timeoutForEpochSync: z.lazy(() => DurationAsStdSchemaProviderSchema()),
   });
 
+export const ErrorWrapperFor_GenesisConfigErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => GenesisConfigErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcBlockErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcBlockErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcChunkErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcChunkErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcClientConfigErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcClientConfigErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcGasPriceErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcGasPriceErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcLightClientNextBlockErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcLightClientNextBlockErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcLightClientProofErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcLightClientProofErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcMaintenanceWindowsErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcMaintenanceWindowsErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcNetworkInfoErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcNetworkInfoErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcProtocolConfigErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcProtocolConfigErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcQueryErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcQueryErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcReceiptErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcReceiptErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcSplitStorageInfoErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcSplitStorageInfoErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcStateChangesErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcStateChangesErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcStatusErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcStatusErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcTransactionErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcTransactionErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcValidatorErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcValidatorErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
 export const ExecutionMetadataViewSchema = () =>
   z.object({
     gasProfile: z.optional(
@@ -825,7 +1221,7 @@ export const ExecutionOutcomeViewSchema = () =>
     metadata: z.optional(z.lazy(() => ExecutionMetadataViewSchema())),
     receiptIds: z.array(z.lazy(() => CryptoHashSchema())),
     status: z.lazy(() => ExecutionStatusViewSchema()),
-    tokensBurnt: z.string(),
+    tokensBurnt: z.lazy(() => NearTokenSchema()),
   });
 
 export const ExecutionOutcomeWithIdViewSchema = () =>
@@ -953,6 +1349,7 @@ export const ExternalStorageConfigSchema = () =>
     numConcurrentRequestsDuringCatchup: z.optional(z.number()),
   });
 
+// Supported external storage backends and their minimal config.
 export const ExternalStorageLocationSchema = () =>
   z.union([
     z.object({
@@ -1038,7 +1435,7 @@ export const FunctionArgsSchema = () => z.string();
 export const FunctionCallActionSchema = () =>
   z.object({
     args: z.string(),
-    deposit: z.string(),
+    deposit: z.lazy(() => NearTokenSchema()),
     gas: z.lazy(() => NearGasSchema()),
     methodName: z.string(),
   });
@@ -1082,7 +1479,7 @@ export const FunctionCallErrorSchema = () =>
 
 export const FunctionCallPermissionSchema = () =>
   z.object({
-    allowance: z.optional(z.union([z.union([z.string(), z.null()]), z.null()])),
+    allowance: z.optional(z.union([z.lazy(() => NearTokenSchema()), z.null()])),
     methodNames: z.array(z.string()),
     receiverId: z.string(),
   });
@@ -1096,9 +1493,33 @@ export const GCConfigSchema = () =>
     gcStepPeriod: z.optional(z.lazy(() => DurationAsStdSchemaProviderSchema())),
   });
 
+//
+// Gas key is like an access key, except it stores a balance separately, and
+// transactions signed with it deduct their cost from the gas key balance
+// instead of the account balance.
+
+export const GasKeySchema = () =>
+  z.object({
+    balance: z.lazy(() => NearTokenSchema()),
+    numNonces: z.number(),
+    permission: z.lazy(() => AccessKeyPermissionSchema()),
+  });
+
+export const GasKeyInfoViewSchema = () =>
+  z.object({
+    gasKey: z.lazy(() => GasKeyViewSchema()),
+    publicKey: z.lazy(() => PublicKeySchema()),
+  });
+
+export const GasKeyListSchema = () =>
+  z.object({
+    keys: z.array(z.lazy(() => GasKeyInfoViewSchema())),
+  });
+
 export const GasKeyViewSchema = () =>
   z.object({
-    balance: z.number(),
+    balance: z.lazy(() => NearTokenSchema()),
+    nonces: z.array(z.number()),
     numNonces: z.number(),
     permission: z.lazy(() => AccessKeyPermissionViewSchema()),
   });
@@ -1113,15 +1534,15 @@ export const GenesisConfigSchema = () =>
     chunkValidatorOnlyKickoutThreshold: z.optional(z.number()),
     dynamicResharding: z.boolean(),
     epochLength: z.number(),
-    fishermenThreshold: z.string(),
+    fishermenThreshold: z.lazy(() => NearTokenSchema()),
     gasLimit: z.lazy(() => NearGasSchema()),
     gasPriceAdjustmentRate: z.array(z.number()),
     genesisHeight: z.number(),
     genesisTime: z.string(),
-    maxGasPrice: z.string(),
+    maxGasPrice: z.lazy(() => NearTokenSchema()),
     maxInflationRate: z.array(z.number()),
     maxKickoutStakePerc: z.optional(z.number()),
-    minGasPrice: z.string(),
+    minGasPrice: z.lazy(() => NearTokenSchema()),
     minimumStakeDivisor: z.optional(z.number()),
     minimumStakeRatio: z.optional(z.array(z.number())),
     minimumValidatorsPerShard: z.optional(z.number()),
@@ -1140,11 +1561,13 @@ export const GenesisConfigSchema = () =>
     shardLayout: z.optional(z.lazy(() => ShardLayoutSchema())),
     shuffleShardAssignmentForChunkProducers: z.optional(z.boolean()),
     targetValidatorMandatesPerShard: z.optional(z.number()),
-    totalSupply: z.string(),
+    totalSupply: z.lazy(() => NearTokenSchema()),
     transactionValidityPeriod: z.number(),
     useProductionConfig: z.optional(z.boolean()),
     validators: z.array(z.lazy(() => AccountInfoSchema())),
   });
+
+export const GenesisConfigErrorSchema = () => z.null();
 
 export const GenesisConfigRequestSchema = () => z.null();
 
@@ -1160,6 +1583,9 @@ export const GlobalContractIdentifierSchema = () =>
       AccountId: z.lazy(() => AccountIdSchema()),
     }),
   ]);
+
+export const GlobalContractIdentifierViewSchema = () =>
+  z.union([z.lazy(() => CryptoHashSchema()), z.lazy(() => AccountIdSchema())]);
 
 export const HostErrorSchema = () =>
   z.union([
@@ -1285,6 +1711,14 @@ export const HostErrorSchema = () =>
     }),
   ]);
 
+export const InternalErrorSchema = () =>
+  z.object({
+    info: z.object({
+      errorMessage: z.string(),
+    }),
+    name: z.enum(['INTERNAL_ERROR']),
+  });
+
 export const InvalidAccessKeyErrorSchema = () =>
   z.union([
     z.object({
@@ -1308,8 +1742,8 @@ export const InvalidAccessKeyErrorSchema = () =>
     z.object({
       NotEnoughAllowance: z.object({
         accountId: z.lazy(() => AccountIdSchema()),
-        allowance: z.string(),
-        cost: z.string(),
+        allowance: z.lazy(() => NearTokenSchema()),
+        cost: z.lazy(() => NearTokenSchema()),
         publicKey: z.lazy(() => PublicKeySchema()),
       }),
     }),
@@ -1352,14 +1786,14 @@ export const InvalidTxErrorSchema = () =>
     z.enum(['InvalidSignature']),
     z.object({
       NotEnoughBalance: z.object({
-        balance: z.string(),
-        cost: z.string(),
+        balance: z.lazy(() => NearTokenSchema()),
+        cost: z.lazy(() => NearTokenSchema()),
         signerId: z.lazy(() => AccountIdSchema()),
       }),
     }),
     z.object({
       LackBalanceForState: z.object({
-        amount: z.string(),
+        amount: z.lazy(() => NearTokenSchema()),
         signerId: z.lazy(() => AccountIdSchema()),
       }),
     }),
@@ -1641,23 +2075,26 @@ export const JsonRpcRequestForValidatorsSchema = () =>
     params: z.lazy(() => RpcValidatorRequestSchema()),
   });
 
-export const JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
+export const JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcMaintenanceWindowsErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.array(z.lazy(() => RangeOfUint64Schema())),
+        }),
+        z.object({
+          error: z.lazy(() =>
+            ErrorWrapperFor_RpcMaintenanceWindowsErrorSchema()
+          ),
+        }),
+      ]),
       z.object({
-        result: z.array(z.lazy(() => RangeOfUint64Schema())),
-      }),
-      z.object({
-        error: z.lazy(() => RpcErrorSchema()),
-      }),
-    ]),
-    z.object({
-      id: z.string(),
-      jsonrpc: z.string(),
-    })
-  );
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
-export const JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcValidatorErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1665,7 +2102,7 @@ export const JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcErrorSchema =
           result: z.array(z.lazy(() => ValidatorStakeViewSchema())),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcValidatorErrorSchema()),
         }),
       ]),
       z.object({
@@ -1674,14 +2111,14 @@ export const JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcErrorSchema =
       })
     );
 
-export const JsonRpcResponseFor_CryptoHashAnd_RpcErrorSchema = () =>
+export const JsonRpcResponseFor_CryptoHashAnd_RpcTransactionErrorSchema = () =>
   z.intersection(
     z.union([
       z.object({
         result: z.lazy(() => CryptoHashSchema()),
       }),
       z.object({
-        error: z.lazy(() => RpcErrorSchema()),
+        error: z.lazy(() => ErrorWrapperFor_RpcTransactionErrorSchema()),
       }),
     ]),
     z.object({
@@ -1690,23 +2127,24 @@ export const JsonRpcResponseFor_CryptoHashAnd_RpcErrorSchema = () =>
     })
   );
 
-export const JsonRpcResponseFor_GenesisConfigAnd_RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
+export const JsonRpcResponseFor_GenesisConfigAnd_GenesisConfigErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => GenesisConfigSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_GenesisConfigErrorSchema()),
+        }),
+      ]),
       z.object({
-        result: z.lazy(() => GenesisConfigSchema()),
-      }),
-      z.object({
-        error: z.lazy(() => RpcErrorSchema()),
-      }),
-    ]),
-    z.object({
-      id: z.string(),
-      jsonrpc: z.string(),
-    })
-  );
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
-export const JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcStatusErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1714,7 +2152,7 @@ export const JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcErrorSchema =
           result: z.union([z.lazy(() => RpcHealthResponseSchema()), z.null()]),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcStatusErrorSchema()),
         }),
       ]),
       z.object({
@@ -1723,14 +2161,14 @@ export const JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcErrorSchema =
       })
     );
 
-export const JsonRpcResponseFor_RpcBlockResponseAnd_RpcErrorSchema = () =>
+export const JsonRpcResponseFor_RpcBlockResponseAnd_RpcBlockErrorSchema = () =>
   z.intersection(
     z.union([
       z.object({
         result: z.lazy(() => RpcBlockResponseSchema()),
       }),
       z.object({
-        error: z.lazy(() => RpcErrorSchema()),
+        error: z.lazy(() => ErrorWrapperFor_RpcBlockErrorSchema()),
       }),
     ]),
     z.object({
@@ -1739,14 +2177,14 @@ export const JsonRpcResponseFor_RpcBlockResponseAnd_RpcErrorSchema = () =>
     })
   );
 
-export const JsonRpcResponseFor_RpcChunkResponseAnd_RpcErrorSchema = () =>
+export const JsonRpcResponseFor_RpcChunkResponseAnd_RpcChunkErrorSchema = () =>
   z.intersection(
     z.union([
       z.object({
         result: z.lazy(() => RpcChunkResponseSchema()),
       }),
       z.object({
-        error: z.lazy(() => RpcErrorSchema()),
+        error: z.lazy(() => ErrorWrapperFor_RpcChunkErrorSchema()),
       }),
     ]),
     z.object({
@@ -1755,7 +2193,7 @@ export const JsonRpcResponseFor_RpcChunkResponseAnd_RpcErrorSchema = () =>
     })
   );
 
-export const JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcClientConfigErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1763,7 +2201,7 @@ export const JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcErrorSchema =
           result: z.lazy(() => RpcClientConfigResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcClientConfigErrorSchema()),
         }),
       ]),
       z.object({
@@ -1772,7 +2210,7 @@ export const JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcErrorSchema =
       })
     );
 
-export const JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcChunkErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1780,7 +2218,7 @@ export const JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcErrorSchema =
           result: z.lazy(() => RpcCongestionLevelResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcChunkErrorSchema()),
         }),
       ]),
       z.object({
@@ -1789,23 +2227,24 @@ export const JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcErrorSchema =
       })
     );
 
-export const JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
+export const JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcGasPriceErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcGasPriceResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcGasPriceErrorSchema()),
+        }),
+      ]),
       z.object({
-        result: z.lazy(() => RpcGasPriceResponseSchema()),
-      }),
-      z.object({
-        error: z.lazy(() => RpcErrorSchema()),
-      }),
-    ]),
-    z.object({
-      id: z.string(),
-      jsonrpc: z.string(),
-    })
-  );
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
-export const JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcLightClientProofErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1813,7 +2252,7 @@ export const JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcErrorSche
           result: z.lazy(() => RpcLightClientBlockProofResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcLightClientProofErrorSchema()),
         }),
       ]),
       z.object({
@@ -1822,7 +2261,7 @@ export const JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcErrorSche
       })
     );
 
-export const JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcLightClientProofErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1830,7 +2269,7 @@ export const JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcError
           result: z.lazy(() => RpcLightClientExecutionProofResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcLightClientProofErrorSchema()),
         }),
       ]),
       z.object({
@@ -1839,7 +2278,7 @@ export const JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcError
       })
     );
 
-export const JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcLightClientNextBlockErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1847,7 +2286,9 @@ export const JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcErrorSchem
           result: z.lazy(() => RpcLightClientNextBlockResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() =>
+            ErrorWrapperFor_RpcLightClientNextBlockErrorSchema()
+          ),
         }),
       ]),
       z.object({
@@ -1856,23 +2297,24 @@ export const JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcErrorSchem
       })
     );
 
-export const JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
+export const JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcNetworkInfoErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcNetworkInfoResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcNetworkInfoErrorSchema()),
+        }),
+      ]),
       z.object({
-        result: z.lazy(() => RpcNetworkInfoResponseSchema()),
-      }),
-      z.object({
-        error: z.lazy(() => RpcErrorSchema()),
-      }),
-    ]),
-    z.object({
-      id: z.string(),
-      jsonrpc: z.string(),
-    })
-  );
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
-export const JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcProtocolConfigErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1880,7 +2322,7 @@ export const JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcErrorSchema =
           result: z.lazy(() => RpcProtocolConfigResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcProtocolConfigErrorSchema()),
         }),
       ]),
       z.object({
@@ -1889,14 +2331,14 @@ export const JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcErrorSchema =
       })
     );
 
-export const JsonRpcResponseFor_RpcQueryResponseAnd_RpcErrorSchema = () =>
+export const JsonRpcResponseFor_RpcQueryResponseAnd_RpcQueryErrorSchema = () =>
   z.intersection(
     z.union([
       z.object({
         result: z.lazy(() => RpcQueryResponseSchema()),
       }),
       z.object({
-        error: z.lazy(() => RpcErrorSchema()),
+        error: z.lazy(() => ErrorWrapperFor_RpcQueryErrorSchema()),
       }),
     ]),
     z.object({
@@ -1905,23 +2347,24 @@ export const JsonRpcResponseFor_RpcQueryResponseAnd_RpcErrorSchema = () =>
     })
   );
 
-export const JsonRpcResponseFor_RpcReceiptResponseAnd_RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
+export const JsonRpcResponseFor_RpcReceiptResponseAnd_RpcReceiptErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcReceiptResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcReceiptErrorSchema()),
+        }),
+      ]),
       z.object({
-        result: z.lazy(() => RpcReceiptResponseSchema()),
-      }),
-      z.object({
-        error: z.lazy(() => RpcErrorSchema()),
-      }),
-    ]),
-    z.object({
-      id: z.string(),
-      jsonrpc: z.string(),
-    })
-  );
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
-export const JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcSplitStorageInfoErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1929,7 +2372,7 @@ export const JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcErrorSchema =
           result: z.lazy(() => RpcSplitStorageInfoResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcSplitStorageInfoErrorSchema()),
         }),
       ]),
       z.object({
@@ -1938,7 +2381,7 @@ export const JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcErrorSchema =
       })
     );
 
-export const JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcStateChangesErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1946,7 +2389,7 @@ export const JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcError
           result: z.lazy(() => RpcStateChangesInBlockByTypeResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcStateChangesErrorSchema()),
         }),
       ]),
       z.object({
@@ -1955,7 +2398,7 @@ export const JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcError
       })
     );
 
-export const JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema =
+export const JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcStateChangesErrorSchema =
   () =>
     z.intersection(
       z.union([
@@ -1963,7 +2406,7 @@ export const JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema
           result: z.lazy(() => RpcStateChangesInBlockResponseSchema()),
         }),
         z.object({
-          error: z.lazy(() => RpcErrorSchema()),
+          error: z.lazy(() => ErrorWrapperFor_RpcStateChangesErrorSchema()),
         }),
       ]),
       z.object({
@@ -1972,53 +2415,56 @@ export const JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema
       })
     );
 
-export const JsonRpcResponseFor_RpcStatusResponseAnd_RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
+export const JsonRpcResponseFor_RpcStatusResponseAnd_RpcStatusErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcStatusResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcStatusErrorSchema()),
+        }),
+      ]),
       z.object({
-        result: z.lazy(() => RpcStatusResponseSchema()),
-      }),
-      z.object({
-        error: z.lazy(() => RpcErrorSchema()),
-      }),
-    ]),
-    z.object({
-      id: z.string(),
-      jsonrpc: z.string(),
-    })
-  );
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
-export const JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
+export const JsonRpcResponseFor_RpcTransactionResponseAnd_RpcTransactionErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcTransactionResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcTransactionErrorSchema()),
+        }),
+      ]),
       z.object({
-        result: z.lazy(() => RpcTransactionResponseSchema()),
-      }),
-      z.object({
-        error: z.lazy(() => RpcErrorSchema()),
-      }),
-    ]),
-    z.object({
-      id: z.string(),
-      jsonrpc: z.string(),
-    })
-  );
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
-export const JsonRpcResponseFor_RpcValidatorResponseAnd_RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
+export const JsonRpcResponseFor_RpcValidatorResponseAnd_RpcValidatorErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcValidatorResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcValidatorErrorSchema()),
+        }),
+      ]),
       z.object({
-        result: z.lazy(() => RpcValidatorResponseSchema()),
-      }),
-      z.object({
-        error: z.lazy(() => RpcErrorSchema()),
-      }),
-    ]),
-    z.object({
-      id: z.string(),
-      jsonrpc: z.string(),
-    })
-  );
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
 //
 // Information about a Producer: its account name, peer_id and a list of
@@ -2121,6 +2567,8 @@ export const MutableConfigValueSchema = () => z.string();
 
 export const NearGasSchema = () => z.number();
 
+export const NearTokenSchema = () => z.string();
+
 export const NetworkInfoViewSchema = () =>
   z.object({
     connectedPeers: z.array(z.lazy(() => PeerInfoViewSchema())),
@@ -2137,7 +2585,7 @@ export const NextEpochValidatorInfoSchema = () =>
     accountId: z.lazy(() => AccountIdSchema()),
     publicKey: z.lazy(() => PublicKeySchema()),
     shards: z.array(z.lazy(() => ShardIdSchema())),
-    stake: z.string(),
+    stake: z.lazy(() => NearTokenSchema()),
   });
 
 //
@@ -2176,6 +2624,20 @@ export const NonDelegateActionSchema = () =>
     }),
     z.object({
       UseGlobalContract: z.lazy(() => UseGlobalContractActionSchema()),
+    }),
+    z.object({
+      DeterministicStateInit: z.lazy(() =>
+        DeterministicStateInitActionSchema()
+      ),
+    }),
+    z.object({
+      AddGasKey: z.lazy(() => AddGasKeyActionSchema()),
+    }),
+    z.object({
+      DeleteGasKey: z.lazy(() => DeleteGasKeyActionSchema()),
+    }),
+    z.object({
+      TransferToGasKey: z.lazy(() => TransferToGasKeyActionSchema()),
     }),
   ]);
 
@@ -2239,7 +2701,7 @@ export const ReceiptEnumViewSchema = () =>
     z.object({
       Action: z.object({
         actions: z.array(z.lazy(() => ActionViewSchema())),
-        gasPrice: z.string(),
+        gasPrice: z.lazy(() => NearTokenSchema()),
         inputDataIds: z.array(z.lazy(() => CryptoHashSchema())),
         isPromiseYield: z.optional(z.boolean()),
         outputDataReceivers: z.array(z.lazy(() => DataReceiverViewSchema())),
@@ -2308,6 +2770,11 @@ export const ReceiptValidationErrorSchema = () =>
         size: z.number(),
       }),
     }),
+    z.object({
+      InvalidRefundTo: z.object({
+        accountId: z.string(),
+      }),
+    }),
   ]);
 
 export const ReceiptViewSchema = () =>
@@ -2318,6 +2785,23 @@ export const ReceiptViewSchema = () =>
     receiptId: z.lazy(() => CryptoHashSchema()),
     receiverId: z.lazy(() => AccountIdSchema()),
   });
+
+export const RpcBlockErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.record(z.string(), z.unknown()),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      name: z.enum(['NOT_SYNCED_YET']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
 
 export const RpcBlockRequestSchema = () =>
   z.union([
@@ -2339,6 +2823,32 @@ export const RpcBlockResponseSchema = () =>
     header: z.lazy(() => BlockHeaderViewSchema()),
   });
 
+export const RpcChunkErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+    z.object({
+      info: z.record(z.string(), z.unknown()),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        shardId: z.lazy(() => ShardIdSchema()),
+      }),
+      name: z.enum(['INVALID_SHARD_ID']),
+    }),
+    z.object({
+      info: z.object({
+        chunkHash: z.lazy(() => ChunkHashSchema()),
+      }),
+      name: z.enum(['UNKNOWN_CHUNK']),
+    }),
+  ]);
+
 export const RpcChunkRequestSchema = () =>
   z.union([
     z.object({
@@ -2356,6 +2866,14 @@ export const RpcChunkResponseSchema = () =>
     header: z.lazy(() => ChunkHeaderViewSchema()),
     receipts: z.array(z.lazy(() => ReceiptViewSchema())),
     transactions: z.array(z.lazy(() => SignedTransactionViewSchema())),
+  });
+
+export const RpcClientConfigErrorSchema = () =>
+  z.object({
+    info: z.object({
+      errorMessage: z.string(),
+    }),
+    name: z.enum(['INTERNAL_ERROR']),
   });
 
 export const RpcClientConfigRequestSchema = () => z.null();
@@ -2376,7 +2894,12 @@ export const RpcClientConfigResponseSchema = () =>
     chunkValidationThreads: z.number(),
     chunkWaitMult: z.array(z.number()),
     clientBackgroundMigrationThreads: z.number(),
+    cloudArchivalWriter: z.optional(
+      z.union([z.lazy(() => CloudArchivalWriterConfigSchema()), z.null()])
+    ),
     doomslugStepPeriod: z.array(z.number()),
+    dynamicReshardingDryRun: z.boolean(),
+    enableEarlyPrepareTransactions: z.boolean(),
     enableMultilineLogging: z.boolean(),
     enableStatisticsExport: z.boolean(),
     epochLength: z.number(),
@@ -2408,6 +2931,7 @@ export const RpcClientConfigResponseSchema = () =>
     saveLatestWitnesses: z.boolean(),
     saveTrieChanges: z.boolean(),
     saveTxOutcomes: z.boolean(),
+    saveUntrackedPartialChunksParts: z.boolean(),
     skipSyncWait: z.boolean(),
     stateRequestServerThreads: z.number(),
     stateRequestThrottlePeriod: z.array(z.number()),
@@ -2452,35 +2976,19 @@ export const RpcCongestionLevelResponseSchema = () =>
     congestionLevel: z.number(),
   });
 
-//
-// This struct may be returned from JSON RPC server in case of error It is
-// expected that this struct has impl From<_> all other RPC errors like
-// [RpcBlockError](crate::types::blocks::RpcBlockError)
-
-export const RpcErrorSchema = () =>
-  z.intersection(
-    z.union([
-      z.object({
-        cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
-        name: z.enum(['REQUEST_VALIDATION_ERROR']),
-      }),
-      z.object({
-        cause: z.unknown(),
-        name: z.enum(['HANDLER_ERROR']),
-      }),
-      z.object({
-        cause: z.unknown(),
-        name: z.enum(['INTERNAL_ERROR']),
-      }),
-    ]),
+export const RpcGasPriceErrorSchema = () =>
+  z.union([
     z.object({
-      cause: z.optional(z.unknown()),
-      code: z.number(),
-      data: z.optional(z.unknown()),
-      message: z.string(),
-      name: z.optional(z.unknown()),
-    })
-  );
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+    z.object({
+      info: z.record(z.string(), z.unknown()),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+  ]);
 
 export const RpcGasPriceRequestSchema = () =>
   z.object({
@@ -2489,7 +2997,7 @@ export const RpcGasPriceRequestSchema = () =>
 
 export const RpcGasPriceResponseSchema = () =>
   z.object({
-    gasPrice: z.string(),
+    gasPrice: z.lazy(() => NearTokenSchema()),
   });
 
 export const RpcHealthRequestSchema = () => z.null();
@@ -2542,6 +3050,26 @@ export const RpcLightClientExecutionProofResponseSchema = () =>
     outcomeRootProof: z.array(z.lazy(() => MerklePathItemSchema())),
   });
 
+export const RpcLightClientNextBlockErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+    z.object({
+      info: z.record(z.string(), z.unknown()),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        epochId: z.lazy(() => EpochIdSchema()),
+      }),
+      name: z.enum(['EPOCH_OUT_OF_BOUNDS']),
+    }),
+  ]);
+
 export const RpcLightClientNextBlockRequestSchema = () =>
   z.object({
     lastBlockHash: z.lazy(() => CryptoHashSchema()),
@@ -2568,9 +3096,65 @@ export const RpcLightClientNextBlockResponseSchema = () =>
     prevBlockHash: z.optional(z.lazy(() => CryptoHashSchema())),
   });
 
+export const RpcLightClientProofErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.record(z.string(), z.unknown()),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        executionOutcomeShardId: z.lazy(() => ShardIdSchema()),
+        numberOrShards: z.number(),
+      }),
+      name: z.enum(['INCONSISTENT_STATE']),
+    }),
+    z.object({
+      info: z.object({
+        transactionOrReceiptId: z.lazy(() => CryptoHashSchema()),
+      }),
+      name: z.enum(['NOT_CONFIRMED']),
+    }),
+    z.object({
+      info: z.object({
+        transactionOrReceiptId: z.lazy(() => CryptoHashSchema()),
+      }),
+      name: z.enum(['UNKNOWN_TRANSACTION_OR_RECEIPT']),
+    }),
+    z.object({
+      info: z.object({
+        shardId: z.lazy(() => ShardIdSchema()),
+        transactionOrReceiptId: z.lazy(() => CryptoHashSchema()),
+      }),
+      name: z.enum(['UNAVAILABLE_SHARD']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcMaintenanceWindowsErrorSchema = () =>
+  z.object({
+    info: z.object({
+      errorMessage: z.string(),
+    }),
+    name: z.enum(['INTERNAL_ERROR']),
+  });
+
 export const RpcMaintenanceWindowsRequestSchema = () =>
   z.object({
     accountId: z.lazy(() => AccountIdSchema()),
+  });
+
+export const RpcNetworkInfoErrorSchema = () =>
+  z.object({
+    info: z.object({
+      errorMessage: z.string(),
+    }),
+    name: z.enum(['INTERNAL_ERROR']),
   });
 
 export const RpcNetworkInfoRequestSchema = () => z.null();
@@ -2591,6 +3175,20 @@ export const RpcPeerInfoSchema = () =>
     addr: z.optional(z.union([z.union([z.string(), z.null()]), z.null()])),
     id: z.lazy(() => PeerIdSchema()),
   });
+
+export const RpcProtocolConfigErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.record(z.string(), z.unknown()),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
 
 export const RpcProtocolConfigRequestSchema = () =>
   z.union([
@@ -2614,15 +3212,15 @@ export const RpcProtocolConfigResponseSchema = () =>
     chunkValidatorOnlyKickoutThreshold: z.number(),
     dynamicResharding: z.boolean(),
     epochLength: z.number(),
-    fishermenThreshold: z.string(),
+    fishermenThreshold: z.lazy(() => NearTokenSchema()),
     gasLimit: z.lazy(() => NearGasSchema()),
     gasPriceAdjustmentRate: z.array(z.number()),
     genesisHeight: z.number(),
     genesisTime: z.string(),
-    maxGasPrice: z.string(),
+    maxGasPrice: z.lazy(() => NearTokenSchema()),
     maxInflationRate: z.array(z.number()),
     maxKickoutStakePerc: z.number(),
-    minGasPrice: z.string(),
+    minGasPrice: z.lazy(() => NearTokenSchema()),
     minimumStakeDivisor: z.number(),
     minimumStakeRatio: z.array(z.number()),
     minimumValidatorsPerShard: z.number(),
@@ -2641,6 +3239,102 @@ export const RpcProtocolConfigResponseSchema = () =>
     targetValidatorMandatesPerShard: z.number(),
     transactionValidityPeriod: z.number(),
   });
+
+export const RpcQueryErrorSchema = () =>
+  z.union([
+    z.object({
+      name: z.enum(['NO_SYNCED_BLOCKS']),
+    }),
+    z.object({
+      info: z.object({
+        requestedShardId: z.lazy(() => ShardIdSchema()),
+      }),
+      name: z.enum(['UNAVAILABLE_SHARD']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+      }),
+      name: z.enum(['GARBAGE_COLLECTED_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        contractAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['NO_CONTRACT_CODE']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        contractAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['TOO_LARGE_CONTRACT_STATE']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCESS_KEY']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+      name: z.enum(['UNKNOWN_GAS_KEY']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        vmError: z.string(),
+      }),
+      name: z.enum(['CONTRACT_EXECUTION_ERROR']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        identifier: z.lazy(() => GlobalContractIdentifierSchema()),
+      }),
+      name: z.enum(['NO_GLOBAL_CONTRACT_CODE']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
 
 export const RpcQueryRequestSchema = () =>
   z.union([
@@ -2698,6 +3392,25 @@ export const RpcQueryRequestSchema = () =>
       }),
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
+        publicKey: z.lazy(() => PublicKeySchema()),
+        requestType: z.enum(['view_gas_key']),
+      })
+    ),
+    z.intersection(
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+        requestType: z.enum(['view_gas_key_list']),
+      })
+    ),
+    z.intersection(
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
         argsBase64: z.lazy(() => FunctionArgsSchema()),
         methodName: z.string(),
         requestType: z.enum(['call_function']),
@@ -2775,6 +3488,25 @@ export const RpcQueryRequestSchema = () =>
       }),
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
+        publicKey: z.lazy(() => PublicKeySchema()),
+        requestType: z.enum(['view_gas_key']),
+      })
+    ),
+    z.intersection(
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+        requestType: z.enum(['view_gas_key_list']),
+      })
+    ),
+    z.intersection(
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
         argsBase64: z.lazy(() => FunctionArgsSchema()),
         methodName: z.string(),
         requestType: z.enum(['call_function']),
@@ -2844,6 +3576,25 @@ export const RpcQueryRequestSchema = () =>
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
         requestType: z.enum(['view_access_key_list']),
+      })
+    ),
+    z.intersection(
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+      z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+        publicKey: z.lazy(() => PublicKeySchema()),
+        requestType: z.enum(['view_gas_key']),
+      })
+    ),
+    z.intersection(
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+      z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+        requestType: z.enum(['view_gas_key_list']),
       })
     ),
     z.intersection(
@@ -2886,12 +3637,30 @@ export const RpcQueryResponseSchema = () =>
       z.lazy(() => CallResultSchema()),
       z.lazy(() => AccessKeyViewSchema()),
       z.lazy(() => AccessKeyListSchema()),
+      z.lazy(() => GasKeyViewSchema()),
+      z.lazy(() => GasKeyListSchema()),
     ]),
     z.object({
       blockHash: z.lazy(() => CryptoHashSchema()),
       blockHeight: z.number(),
     })
   );
+
+export const RpcReceiptErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+    z.object({
+      info: z.object({
+        receiptId: z.lazy(() => CryptoHashSchema()),
+      }),
+      name: z.enum(['UNKNOWN_RECEIPT']),
+    }),
+  ]);
 
 export const RpcReceiptRequestSchema = () =>
   z.object({
@@ -2929,6 +3698,14 @@ export const RpcSendTransactionRequestSchema = () =>
     waitUntil: z.optional(z.lazy(() => TxExecutionStatusSchema())),
   });
 
+export const RpcSplitStorageInfoErrorSchema = () =>
+  z.object({
+    info: z.object({
+      errorMessage: z.string(),
+    }),
+    name: z.enum(['INTERNAL_ERROR']),
+  });
+
 export const RpcSplitStorageInfoRequestSchema = () =>
   z.record(z.string(), z.unknown());
 
@@ -2946,6 +3723,23 @@ export const RpcSplitStorageInfoResponseSchema = () =>
     ),
     hotDbKind: z.optional(z.union([z.union([z.string(), z.null()]), z.null()])),
   });
+
+export const RpcStateChangesErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.record(z.string(), z.unknown()),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      name: z.enum(['NOT_SYNCED_YET']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
 
 //
 // It is a [serializable view] of [`StateChangesRequest`]. [serializable
@@ -3173,6 +3967,31 @@ export const RpcStateChangesInBlockResponseSchema = () =>
     changes: z.array(z.lazy(() => StateChangeWithCauseViewSchema())),
   });
 
+export const RpcStatusErrorSchema = () =>
+  z.union([
+    z.object({
+      name: z.enum(['NODE_IS_SYNCING']),
+    }),
+    z.object({
+      info: z.object({
+        elapsed: z.array(z.number()),
+      }),
+      name: z.enum(['NO_NEW_BLOCKS']),
+    }),
+    z.object({
+      info: z.object({
+        epochId: z.lazy(() => EpochIdSchema()),
+      }),
+      name: z.enum(['EPOCH_OUT_OF_BOUNDS']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
 export const RpcStatusRequestSchema = () => z.null();
 
 export const RpcStatusResponseSchema = () =>
@@ -3198,6 +4017,38 @@ export const RpcStatusResponseSchema = () =>
     validators: z.array(z.lazy(() => ValidatorInfoSchema())),
     version: z.lazy(() => VersionSchema()),
   });
+
+export const RpcTransactionErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.record(z.string(), z.unknown()),
+      name: z.enum(['INVALID_TRANSACTION']),
+    }),
+    z.object({
+      name: z.enum(['DOES_NOT_TRACK_SHARD']),
+    }),
+    z.object({
+      info: z.object({
+        transactionHash: z.lazy(() => CryptoHashSchema()),
+      }),
+      name: z.enum(['REQUEST_ROUTED']),
+    }),
+    z.object({
+      info: z.object({
+        requestedTransactionHash: z.lazy(() => CryptoHashSchema()),
+      }),
+      name: z.enum(['UNKNOWN_TRANSACTION']),
+    }),
+    z.object({
+      info: z.object({
+        debugInfo: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+    z.object({
+      name: z.enum(['TIMEOUT_ERROR']),
+    }),
+  ]);
 
 export const RpcTransactionResponseSchema = () =>
   z.intersection(
@@ -3225,6 +4076,22 @@ export const RpcTransactionStatusRequestSchema = () =>
       waitUntil: z.optional(z.lazy(() => TxExecutionStatusSchema())),
     })
   );
+
+export const RpcValidatorErrorSchema = () =>
+  z.union([
+    z.object({
+      name: z.enum(['UNKNOWN_EPOCH']),
+    }),
+    z.object({
+      name: z.enum(['VALIDATOR_INFO_UNAVAILABLE']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
 
 export const RpcValidatorRequestSchema = () =>
   z.union([
@@ -3260,7 +4127,7 @@ export const RuntimeConfigViewSchema = () =>
   z.object({
     accountCreationConfig: z.lazy(() => AccountCreationConfigViewSchema()),
     congestionControlConfig: z.lazy(() => CongestionControlConfigViewSchema()),
-    storageAmountPerByte: z.string(),
+    storageAmountPerByte: z.lazy(() => NearTokenSchema()),
     transactionCosts: z.lazy(() => RuntimeFeesConfigViewSchema()),
     wasmConfig: z.lazy(() => VMConfigViewSchema()),
     witnessConfig: z.lazy(() => WitnessConfigViewSchema()),
@@ -3430,7 +4297,7 @@ export const SlashedValidatorSchema = () =>
 export const StakeActionSchema = () =>
   z.object({
     publicKey: z.lazy(() => PublicKeySchema()),
-    stake: z.string(),
+    stake: z.lazy(() => NearTokenSchema()),
   });
 
 // See crate::types::StateChangeCause for details.
@@ -3506,7 +4373,7 @@ export const StateChangeWithCauseViewSchema = () =>
       z.object({
         change: z.object({
           accountId: z.lazy(() => AccountIdSchema()),
-          amount: z.string(),
+          amount: z.lazy(() => NearTokenSchema()),
           codeHash: z.lazy(() => CryptoHashSchema()),
           globalContractAccountId: z.optional(
             z.union([z.lazy(() => AccountIdSchema()), z.null()])
@@ -3514,7 +4381,7 @@ export const StateChangeWithCauseViewSchema = () =>
           globalContractHash: z.optional(
             z.union([z.lazy(() => CryptoHashSchema()), z.null()])
           ),
-          locked: z.string(),
+          locked: z.lazy(() => NearTokenSchema()),
           storagePaidAt: z.optional(z.number()),
           storageUsage: z.number(),
         }),
@@ -3544,7 +4411,7 @@ export const StateChangeWithCauseViewSchema = () =>
       z.object({
         change: z.object({
           accountId: z.lazy(() => AccountIdSchema()),
-          gasKey: z.lazy(() => GasKeyViewSchema()),
+          gasKey: z.lazy(() => GasKeySchema()),
           publicKey: z.lazy(() => PublicKeySchema()),
         }),
         type: z.enum(['gas_key_update']),
@@ -3741,7 +4608,13 @@ export const TrackedShardsConfigSchema = () =>
 
 export const TransferActionSchema = () =>
   z.object({
-    deposit: z.string(),
+    deposit: z.lazy(() => NearTokenSchema()),
+  });
+
+export const TransferToGasKeyActionSchema = () =>
+  z.object({
+    deposit: z.lazy(() => NearTokenSchema()),
+    publicKey: z.lazy(() => PublicKeySchema()),
   });
 
 // Error returned in the ExecutionOutcome in case of failure
@@ -3773,6 +4646,7 @@ export const UseGlobalContractActionSchema = () =>
 
 export const VMConfigViewSchema = () =>
   z.object({
+    deterministicAccountIds: z.boolean(),
     discardCustomSections: z.boolean(),
     ethImplicitAccounts: z.boolean(),
     extCosts: z.lazy(() => ExtCostsConfigViewSchema()),
@@ -3781,6 +4655,8 @@ export const VMConfigViewSchema = () =>
     growMemCost: z.number(),
     implicitAccountCreation: z.boolean(),
     limitConfig: z.lazy(() => LimitConfigSchema()),
+    linearOpBaseCost: z.number(),
+    linearOpUnitCost: z.number(),
     reftypesBulkMemory: z.boolean(),
     regularOpCost: z.number(),
     saturatingFloatToInt: z.boolean(),
@@ -3794,7 +4670,6 @@ export const VMKindSchema = () =>
     z.enum(['Wasmtime']),
     z.enum(['Wasmer2']),
     z.enum(['NearVm']),
-    z.enum(['NearVm2']),
   ]);
 
 export const ValidatorInfoSchema = () =>
@@ -3821,8 +4696,8 @@ export const ValidatorKickoutReasonSchema = () =>
     z.enum(['Unstaked']),
     z.object({
       NotEnoughStake: z.object({
-        stakeU128: z.string(),
-        thresholdU128: z.string(),
+        stakeU128: z.lazy(() => NearTokenSchema()),
+        thresholdU128: z.lazy(() => NearTokenSchema()),
       }),
     }),
     z.enum(['DidNotGetASeat']),
@@ -3853,7 +4728,7 @@ export const ValidatorStakeViewV1Schema = () =>
   z.object({
     accountId: z.lazy(() => AccountIdSchema()),
     publicKey: z.lazy(() => PublicKeySchema()),
-    stake: z.string(),
+    stake: z.lazy(() => NearTokenSchema()),
   });
 
 // Data structure for semver version and github tag or commit.
@@ -3910,7 +4785,7 @@ export const EXPERIMENTALChangesRequestSchema = () =>
 
 export const EXPERIMENTALChangesResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcStateChangesErrorSchema()
   );
 
 //
@@ -3930,7 +4805,7 @@ export const EXPERIMENTALChangesInBlockRequestSchema = () =>
 
 export const EXPERIMENTALChangesInBlockResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcStateChangesErrorSchema()
   );
 
 //
@@ -3948,7 +4823,7 @@ export const EXPERIMENTALCongestionLevelRequestSchema = () =>
 
 export const EXPERIMENTALCongestionLevelResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcCongestionLevelResponseAnd_RpcChunkErrorSchema()
   );
 
 //
@@ -3965,7 +4840,7 @@ export const EXPERIMENTALGenesisConfigRequestSchema = () =>
 // instead.
 
 export const EXPERIMENTALGenesisConfigResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_GenesisConfigAnd_RpcErrorSchema());
+  z.lazy(() => JsonRpcResponseFor_GenesisConfigAnd_GenesisConfigErrorSchema());
 
 //
 // Request schema for EXPERIMENTAL_light_client_block_proof: Returns the
@@ -3980,7 +4855,7 @@ export const EXPERIMENTALLightClientBlockProofRequestSchema = () =>
 
 export const EXPERIMENTALLightClientBlockProofResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcLightClientProofErrorSchema()
   );
 
 //
@@ -3996,7 +4871,7 @@ export const EXPERIMENTALLightClientProofRequestSchema = () =>
 
 export const EXPERIMENTALLightClientProofResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcLightClientProofErrorSchema()
   );
 
 //
@@ -4015,7 +4890,9 @@ export const EXPERIMENTALMaintenanceWindowsRequestSchema = () =>
 // chunk producer. Consider using maintenance_windows instead.
 
 export const EXPERIMENTALMaintenanceWindowsResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcMaintenanceWindowsErrorSchema()
+  );
 
 //
 // Request schema for EXPERIMENTAL_protocol_config: A configuration that
@@ -4032,7 +4909,7 @@ export const EXPERIMENTALProtocolConfigRequestSchema = () =>
 
 export const EXPERIMENTALProtocolConfigResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcProtocolConfigResponseAnd_RpcProtocolConfigErrorSchema()
   );
 
 //
@@ -4047,7 +4924,9 @@ export const EXPERIMENTALReceiptRequestSchema = () =>
 // is, without a status or execution outcome)
 
 export const EXPERIMENTALReceiptResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcReceiptResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcReceiptResponseAnd_RpcReceiptErrorSchema()
+  );
 
 //
 // Request schema for EXPERIMENTAL_split_storage_info: Contains the split
@@ -4064,7 +4943,7 @@ export const EXPERIMENTALSplitStorageInfoRequestSchema = () =>
 
 export const EXPERIMENTALSplitStorageInfoResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcSplitStorageInfoErrorSchema()
   );
 
 //
@@ -4081,7 +4960,9 @@ export const EXPERIMENTALTxStatusRequestSchema = () =>
 // receipts.
 
 export const EXPERIMENTALTxStatusResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcTransactionResponseAnd_RpcTransactionErrorSchema()
+  );
 
 //
 // Request schema for EXPERIMENTAL_validators_ordered: Returns the current
@@ -4100,7 +4981,7 @@ export const EXPERIMENTALValidatorsOrderedRequestSchema = () =>
 
 export const EXPERIMENTALValidatorsOrderedResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcErrorSchema()
+    JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcValidatorErrorSchema()
   );
 
 // Request schema for block: Returns block details for given height or hash
@@ -4109,7 +4990,7 @@ export const BlockRequestSchema = () =>
 
 // Response schema for block: Returns block details for given height or hash
 export const BlockResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcBlockResponseAnd_RpcErrorSchema());
+  z.lazy(() => JsonRpcResponseFor_RpcBlockResponseAnd_RpcBlockErrorSchema());
 
 //
 // Request schema for block_effects: Returns changes in block for given block
@@ -4128,7 +5009,7 @@ export const BlockEffectsRequestSchema = () =>
 
 export const BlockEffectsResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcStateChangesInBlockByTypeResponseAnd_RpcStateChangesErrorSchema()
   );
 
 //
@@ -4143,7 +5024,7 @@ export const BroadcastTxAsyncRequestSchema = () =>
 // and immediately returns transaction hash. Consider using send_tx instead.
 
 export const BroadcastTxAsyncResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_CryptoHashAnd_RpcErrorSchema());
+  z.lazy(() => JsonRpcResponseFor_CryptoHashAnd_RpcTransactionErrorSchema());
 
 //
 // Request schema for broadcast_tx_commit: [Deprecated] Sends a transaction
@@ -4159,7 +5040,9 @@ export const BroadcastTxCommitRequestSchema = () =>
 // Consider using send_tx instead.
 
 export const BroadcastTxCommitResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcTransactionResponseAnd_RpcTransactionErrorSchema()
+  );
 
 //
 // Request schema for changes: Returns changes for a given account, contract
@@ -4174,7 +5057,7 @@ export const ChangesRequestSchema = () =>
 
 export const ChangesResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcStateChangesInBlockResponseAnd_RpcStateChangesErrorSchema()
   );
 
 //
@@ -4189,7 +5072,7 @@ export const ChunkRequestSchema = () =>
 // a block details query to get a valid chunk hash.
 
 export const ChunkResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcChunkResponseAnd_RpcErrorSchema());
+  z.lazy(() => JsonRpcResponseFor_RpcChunkResponseAnd_RpcChunkErrorSchema());
 
 // Request schema for client_config: Queries client node configuration
 export const ClientConfigRequestSchema = () =>
@@ -4197,7 +5080,9 @@ export const ClientConfigRequestSchema = () =>
 
 // Response schema for client_config: Queries client node configuration
 export const ClientConfigResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcClientConfigResponseAnd_RpcClientConfigErrorSchema()
+  );
 
 //
 // Request schema for gas_price: Returns gas price for a specific block_height
@@ -4212,14 +5097,16 @@ export const GasPriceRequestSchema = () =>
 // block's gas price.
 
 export const GasPriceResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcGasPriceErrorSchema()
+  );
 
 //
 // Response schema for genesis_config: Get initial state and parameters for
 // the genesis block
 
 export const GenesisConfigResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_GenesisConfigAnd_RpcErrorSchema());
+  z.lazy(() => JsonRpcResponseFor_GenesisConfigAnd_GenesisConfigErrorSchema());
 
 //
 // Request schema for health: Returns the current health status of the RPC
@@ -4234,7 +5121,7 @@ export const HealthRequestSchema = () =>
 
 export const HealthResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_Nullable_RpcHealthResponseAnd_RpcStatusErrorSchema()
   );
 
 //
@@ -4250,7 +5137,7 @@ export const LightClientProofRequestSchema = () =>
 
 export const LightClientProofResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcLightClientProofErrorSchema()
   );
 
 //
@@ -4267,7 +5154,9 @@ export const MaintenanceWindowsRequestSchema = () =>
 // windows, the node will not be block producer or chunk producer.
 
 export const MaintenanceWindowsResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_ArrayOf_RangeOfUint64And_RpcMaintenanceWindowsErrorSchema()
+  );
 
 //
 // Request schema for network_info: Queries the current state of node network
@@ -4283,7 +5172,9 @@ export const NetworkInfoRequestSchema = () =>
 // data, known producers, etc.
 
 export const NetworkInfoResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcNetworkInfoResponseAnd_RpcNetworkInfoErrorSchema()
+  );
 
 // Request schema for next_light_client_block: Returns the next light client block.
 export const NextLightClientBlockRequestSchema = () =>
@@ -4295,7 +5186,7 @@ export const NextLightClientBlockRequestSchema = () =>
 
 export const NextLightClientBlockResponseSchema = () =>
   z.lazy(() =>
-    JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcErrorSchema()
+    JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcLightClientNextBlockErrorSchema()
   );
 
 //
@@ -4328,7 +5219,7 @@ export const QueryRequestSchema = () =>
 // function in a contract deployed on the network.
 
 export const QueryResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcQueryResponseAnd_RpcErrorSchema());
+  z.lazy(() => JsonRpcResponseFor_RpcQueryResponseAnd_RpcQueryErrorSchema());
 
 //
 // Request schema for send_tx: Sends transaction. Returns the guaranteed
@@ -4342,7 +5233,9 @@ export const SendTxRequestSchema = () =>
 // execution status and the results the blockchain can provide at the moment.
 
 export const SendTxResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcTransactionResponseAnd_RpcTransactionErrorSchema()
+  );
 
 //
 // Request schema for status: Requests the status of the connected RPC node.
@@ -4358,7 +5251,7 @@ export const StatusRequestSchema = () =>
 // protocol version, the current set of validators, etc.
 
 export const StatusResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcStatusResponseAnd_RpcErrorSchema());
+  z.lazy(() => JsonRpcResponseFor_RpcStatusResponseAnd_RpcStatusErrorSchema());
 
 //
 // Request schema for tx: Queries status of a transaction by hash and returns
@@ -4371,7 +5264,9 @@ export const TxRequestSchema = () => z.lazy(() => JsonRpcRequestForTxSchema());
 // the final transaction result.
 
 export const TxResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcTransactionResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcTransactionResponseAnd_RpcTransactionErrorSchema()
+  );
 
 //
 // Request schema for validators: Queries active validators on the network.
@@ -4385,7 +5280,9 @@ export const ValidatorsRequestSchema = () =>
 // Returns details and the state of validation on the blockchain.
 
 export const ValidatorsResponseSchema = () =>
-  z.lazy(() => JsonRpcResponseFor_RpcValidatorResponseAnd_RpcErrorSchema());
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcValidatorResponseAnd_RpcValidatorErrorSchema()
+  );
 
 // Auto-generated validation schema mapping
 // Maps RPC method names to their request/response schema functions
