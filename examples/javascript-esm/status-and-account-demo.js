@@ -40,7 +40,7 @@ console.log(`   Hash: ${blockResult.header?.hash?.substring(0, 16)}...`);
 
 // Test 3: Test gas price
 console.log('\n⛽ Testing gasPrice() method...');
-const gasPriceResult = await gasPrice(client, [null]);
+const gasPriceResult = await gasPrice(client, {});
 console.log(`✅ Gas price: ${gasPriceResult.gasPrice} yoctoNEAR`);
 
 // Test 4: Test health endpoint
