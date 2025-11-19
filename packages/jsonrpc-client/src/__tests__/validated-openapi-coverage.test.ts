@@ -280,12 +280,8 @@ describe('Validated Functions OpenAPI Coverage', () => {
       // Create a mock client that returns invalid responses
       const mockClient = {
         makeRequest: vi.fn().mockImplementation(async () => {
-          // Return an invalid response that doesn't match the expected schema
-          return {
-            invalidField: 'This response does not match any schema',
-            wrongType: 123,
-            missingRequiredFields: true,
-          };
+          // Return a string instead of an object - this should always fail validation
+          return 'invalid-response-string';
         }),
       } as unknown as NearRpcClient;
 
