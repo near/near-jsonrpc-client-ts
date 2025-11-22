@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-types-v1.4.0...jsonrpc-types-v1.5.0) (2025-11-22)
+
+
+### Features
+
+* update generated code from OpenAPI spec ([#85](https://github.com/near/near-jsonrpc-client-ts/issues/85)) ([1033e61](https://github.com/near/near-jsonrpc-client-ts/commit/1033e61c988ae9d75743364093dae7d04b33270c))
+
 ## [1.4.0](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-types-v1.3.4...jsonrpc-types-v1.4.0) (2025-09-18)
 
 
