@@ -77,6 +77,8 @@ const blockResult = await block(client, { finality: 'final' });
 console.log('Latest block height:', blockResult.header.height);
 ```
 
+Check out [`the examples folder`](https://github.com/near/near-jsonrpc-client-ts/tree/main/examples) for a comprehensive list of of examples in different environments and with different variants. 
+
 ## ✨ Features
 
 - **🔧 Auto-generated** from NEAR's official OpenAPI specification
