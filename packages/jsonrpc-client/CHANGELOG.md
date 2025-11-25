@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.4.0...jsonrpc-client-v1.5.0) (2025-11-25)
+
+
+### Features
+
+* update generated code from OpenAPI spec ([#85](https://github.com/near/near-jsonrpc-client-ts/issues/85)) ([1033e61](https://github.com/near/near-jsonrpc-client-ts/commit/1033e61c988ae9d75743364093dae7d04b33270c))
+* update generated code from OpenAPI spec ([#88](https://github.com/near/near-jsonrpc-client-ts/issues/88)) ([3345cd5](https://github.com/near/near-jsonrpc-client-ts/commit/3345cd533ef36ab8b229159cc38287bb08f9e680))
+
+
+### Bug Fixes
+
+* remove try-catch wrappers that hide failures in status-and-account-demo ([#87](https://github.com/near/near-jsonrpc-client-ts/issues/87)) ([2a8b53d](https://github.com/near/near-jsonrpc-client-ts/commit/2a8b53da0d9892261c34da5378e7ff4aaca3aed7))
+
 ## [1.4.0](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.3.4...jsonrpc-client-v1.4.0) (2025-09-18)
 
 
