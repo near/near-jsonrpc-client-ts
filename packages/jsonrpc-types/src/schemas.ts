@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-11-19T06:05:25.913Z
+// Generated on: 2025-11-25T06:05:40.535Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -75,8 +75,8 @@ export const AccessKeyViewSchema = () =>
 // The structure describes configuration for creation of new accounts.
 export const AccountCreationConfigViewSchema = () =>
   z.object({
-    minAllowedTopLevelAccountLength: z.number(),
-    registrarAccountId: z.lazy(() => AccountIdSchema()),
+    minAllowedTopLevelAccountLength: z.optional(z.number()),
+    registrarAccountId: z.optional(z.lazy(() => AccountIdSchema())),
   });
 
 //
@@ -148,17 +148,17 @@ export const AccountWithPublicKeySchema = () =>
 
 export const ActionCreationConfigViewSchema = () =>
   z.object({
-    addKeyCost: z.lazy(() => AccessKeyCreationConfigViewSchema()),
-    createAccountCost: z.lazy(() => FeeSchema()),
-    delegateCost: z.lazy(() => FeeSchema()),
-    deleteAccountCost: z.lazy(() => FeeSchema()),
-    deleteKeyCost: z.lazy(() => FeeSchema()),
-    deployContractCost: z.lazy(() => FeeSchema()),
-    deployContractCostPerByte: z.lazy(() => FeeSchema()),
-    functionCallCost: z.lazy(() => FeeSchema()),
-    functionCallCostPerByte: z.lazy(() => FeeSchema()),
-    stakeCost: z.lazy(() => FeeSchema()),
-    transferCost: z.lazy(() => FeeSchema()),
+    addKeyCost: z.optional(z.lazy(() => AccessKeyCreationConfigViewSchema())),
+    createAccountCost: z.optional(z.lazy(() => FeeSchema())),
+    delegateCost: z.optional(z.lazy(() => FeeSchema())),
+    deleteAccountCost: z.optional(z.lazy(() => FeeSchema())),
+    deleteKeyCost: z.optional(z.lazy(() => FeeSchema())),
+    deployContractCost: z.optional(z.lazy(() => FeeSchema())),
+    deployContractCostPerByte: z.optional(z.lazy(() => FeeSchema())),
+    functionCallCost: z.optional(z.lazy(() => FeeSchema())),
+    functionCallCostPerByte: z.optional(z.lazy(() => FeeSchema())),
+    stakeCost: z.optional(z.lazy(() => FeeSchema())),
+    transferCost: z.optional(z.lazy(() => FeeSchema())),
   });
 
 // An error happened during Action execution
@@ -660,15 +660,15 @@ export const CatchupStatusViewSchema = () =>
 
 export const ChunkDistributionNetworkConfigSchema = () =>
   z.object({
-    enabled: z.boolean(),
-    uris: z.lazy(() => ChunkDistributionUrisSchema()),
+    enabled: z.optional(z.boolean()),
+    uris: z.optional(z.lazy(() => ChunkDistributionUrisSchema())),
   });
 
 // URIs for the Chunk Distribution Network feature.
 export const ChunkDistributionUrisSchema = () =>
   z.object({
-    get: z.string(),
-    set: z.string(),
+    get: z.optional(z.string()),
+    set: z.optional(z.string()),
   });
 
 export const ChunkHashSchema = () => z.lazy(() => CryptoHashSchema());
@@ -739,18 +739,18 @@ export const CompilationErrorSchema = () =>
 
 export const CongestionControlConfigViewSchema = () =>
   z.object({
-    allowedShardOutgoingGas: z.lazy(() => NearGasSchema()),
-    maxCongestionIncomingGas: z.lazy(() => NearGasSchema()),
-    maxCongestionMemoryConsumption: z.number(),
-    maxCongestionMissedChunks: z.number(),
-    maxCongestionOutgoingGas: z.lazy(() => NearGasSchema()),
-    maxOutgoingGas: z.lazy(() => NearGasSchema()),
-    maxTxGas: z.lazy(() => NearGasSchema()),
-    minOutgoingGas: z.lazy(() => NearGasSchema()),
-    minTxGas: z.lazy(() => NearGasSchema()),
-    outgoingReceiptsBigSizeLimit: z.number(),
-    outgoingReceiptsUsualSizeLimit: z.number(),
-    rejectTxCongestionThreshold: z.number(),
+    allowedShardOutgoingGas: z.optional(z.lazy(() => NearGasSchema())),
+    maxCongestionIncomingGas: z.optional(z.lazy(() => NearGasSchema())),
+    maxCongestionMemoryConsumption: z.optional(z.number()),
+    maxCongestionMissedChunks: z.optional(z.number()),
+    maxCongestionOutgoingGas: z.optional(z.lazy(() => NearGasSchema())),
+    maxOutgoingGas: z.optional(z.lazy(() => NearGasSchema())),
+    maxTxGas: z.optional(z.lazy(() => NearGasSchema())),
+    minOutgoingGas: z.optional(z.lazy(() => NearGasSchema())),
+    minTxGas: z.optional(z.lazy(() => NearGasSchema())),
+    outgoingReceiptsBigSizeLimit: z.optional(z.number()),
+    outgoingReceiptsUsualSizeLimit: z.optional(z.number()),
+    rejectTxCongestionThreshold: z.optional(z.number()),
   });
 
 //
@@ -813,8 +813,8 @@ export const CurrentEpochValidatorInfoSchema = () =>
 // The fees settings for a data receipt creation
 export const DataReceiptCreationConfigViewSchema = () =>
   z.object({
-    baseCost: z.lazy(() => FeeSchema()),
-    costPerByte: z.lazy(() => FeeSchema()),
+    baseCost: z.optional(z.lazy(() => FeeSchema())),
+    costPerByte: z.optional(z.lazy(() => FeeSchema())),
   });
 
 export const DataReceiverViewSchema = () =>
@@ -900,7 +900,7 @@ export const DumpConfigSchema = () =>
     iterationDelay: z.optional(
       z.union([z.lazy(() => DurationAsStdSchemaProviderSchema()), z.null()])
     ),
-    location: z.lazy(() => ExternalStorageLocationSchema()),
+    location: z.optional(z.lazy(() => ExternalStorageLocationSchema())),
     restartDumpForShards: z.optional(
       z.union([
         z.union([z.array(z.lazy(() => ShardIdSchema())), z.null()]),
@@ -925,9 +925,11 @@ export const EpochIdSchema = () => z.lazy(() => CryptoHashSchema());
 export const EpochSyncConfigSchema = () =>
   z.object({
     disableEpochSyncForBootstrapping: z.optional(z.boolean()),
-    epochSyncHorizon: z.number(),
+    epochSyncHorizon: z.optional(z.number()),
     ignoreEpochSyncNetworkRequests: z.optional(z.boolean()),
-    timeoutForEpochSync: z.lazy(() => DurationAsStdSchemaProviderSchema()),
+    timeoutForEpochSync: z.optional(
+      z.lazy(() => DurationAsStdSchemaProviderSchema())
+    ),
   });
 
 export const ErrorWrapperFor_GenesisConfigErrorSchema = () =>
@@ -1252,99 +1254,99 @@ export const ExecutionStatusViewSchema = () =>
 
 export const ExtCostsConfigViewSchema = () =>
   z.object({
-    altBn128G1MultiexpBase: z.lazy(() => NearGasSchema()),
-    altBn128G1MultiexpElement: z.lazy(() => NearGasSchema()),
-    altBn128G1SumBase: z.lazy(() => NearGasSchema()),
-    altBn128G1SumElement: z.lazy(() => NearGasSchema()),
-    altBn128PairingCheckBase: z.lazy(() => NearGasSchema()),
-    altBn128PairingCheckElement: z.lazy(() => NearGasSchema()),
-    base: z.lazy(() => NearGasSchema()),
-    bls12381G1MultiexpBase: z.lazy(() => NearGasSchema()),
-    bls12381G1MultiexpElement: z.lazy(() => NearGasSchema()),
-    bls12381G2MultiexpBase: z.lazy(() => NearGasSchema()),
-    bls12381G2MultiexpElement: z.lazy(() => NearGasSchema()),
-    bls12381MapFp2ToG2Base: z.lazy(() => NearGasSchema()),
-    bls12381MapFp2ToG2Element: z.lazy(() => NearGasSchema()),
-    bls12381MapFpToG1Base: z.lazy(() => NearGasSchema()),
-    bls12381MapFpToG1Element: z.lazy(() => NearGasSchema()),
-    bls12381P1DecompressBase: z.lazy(() => NearGasSchema()),
-    bls12381P1DecompressElement: z.lazy(() => NearGasSchema()),
-    bls12381P1SumBase: z.lazy(() => NearGasSchema()),
-    bls12381P1SumElement: z.lazy(() => NearGasSchema()),
-    bls12381P2DecompressBase: z.lazy(() => NearGasSchema()),
-    bls12381P2DecompressElement: z.lazy(() => NearGasSchema()),
-    bls12381P2SumBase: z.lazy(() => NearGasSchema()),
-    bls12381P2SumElement: z.lazy(() => NearGasSchema()),
-    bls12381PairingBase: z.lazy(() => NearGasSchema()),
-    bls12381PairingElement: z.lazy(() => NearGasSchema()),
-    contractCompileBase: z.lazy(() => NearGasSchema()),
-    contractCompileBytes: z.lazy(() => NearGasSchema()),
-    contractLoadingBase: z.lazy(() => NearGasSchema()),
-    contractLoadingBytes: z.lazy(() => NearGasSchema()),
-    ecrecoverBase: z.lazy(() => NearGasSchema()),
-    ed25519VerifyBase: z.lazy(() => NearGasSchema()),
-    ed25519VerifyByte: z.lazy(() => NearGasSchema()),
-    keccak256Base: z.lazy(() => NearGasSchema()),
-    keccak256Byte: z.lazy(() => NearGasSchema()),
-    keccak512Base: z.lazy(() => NearGasSchema()),
-    keccak512Byte: z.lazy(() => NearGasSchema()),
-    logBase: z.lazy(() => NearGasSchema()),
-    logByte: z.lazy(() => NearGasSchema()),
-    promiseAndBase: z.lazy(() => NearGasSchema()),
-    promiseAndPerPromise: z.lazy(() => NearGasSchema()),
-    promiseReturn: z.lazy(() => NearGasSchema()),
-    readCachedTrieNode: z.lazy(() => NearGasSchema()),
-    readMemoryBase: z.lazy(() => NearGasSchema()),
-    readMemoryByte: z.lazy(() => NearGasSchema()),
-    readRegisterBase: z.lazy(() => NearGasSchema()),
-    readRegisterByte: z.lazy(() => NearGasSchema()),
-    ripemd160Base: z.lazy(() => NearGasSchema()),
-    ripemd160Block: z.lazy(() => NearGasSchema()),
-    sha256Base: z.lazy(() => NearGasSchema()),
-    sha256Byte: z.lazy(() => NearGasSchema()),
-    storageHasKeyBase: z.lazy(() => NearGasSchema()),
-    storageHasKeyByte: z.lazy(() => NearGasSchema()),
-    storageIterCreateFromByte: z.lazy(() => NearGasSchema()),
-    storageIterCreatePrefixBase: z.lazy(() => NearGasSchema()),
-    storageIterCreatePrefixByte: z.lazy(() => NearGasSchema()),
-    storageIterCreateRangeBase: z.lazy(() => NearGasSchema()),
-    storageIterCreateToByte: z.lazy(() => NearGasSchema()),
-    storageIterNextBase: z.lazy(() => NearGasSchema()),
-    storageIterNextKeyByte: z.lazy(() => NearGasSchema()),
-    storageIterNextValueByte: z.lazy(() => NearGasSchema()),
-    storageLargeReadOverheadBase: z.lazy(() => NearGasSchema()),
-    storageLargeReadOverheadByte: z.lazy(() => NearGasSchema()),
-    storageReadBase: z.lazy(() => NearGasSchema()),
-    storageReadKeyByte: z.lazy(() => NearGasSchema()),
-    storageReadValueByte: z.lazy(() => NearGasSchema()),
-    storageRemoveBase: z.lazy(() => NearGasSchema()),
-    storageRemoveKeyByte: z.lazy(() => NearGasSchema()),
-    storageRemoveRetValueByte: z.lazy(() => NearGasSchema()),
-    storageWriteBase: z.lazy(() => NearGasSchema()),
-    storageWriteEvictedByte: z.lazy(() => NearGasSchema()),
-    storageWriteKeyByte: z.lazy(() => NearGasSchema()),
-    storageWriteValueByte: z.lazy(() => NearGasSchema()),
-    touchingTrieNode: z.lazy(() => NearGasSchema()),
-    utf16DecodingBase: z.lazy(() => NearGasSchema()),
-    utf16DecodingByte: z.lazy(() => NearGasSchema()),
-    utf8DecodingBase: z.lazy(() => NearGasSchema()),
-    utf8DecodingByte: z.lazy(() => NearGasSchema()),
-    validatorStakeBase: z.lazy(() => NearGasSchema()),
-    validatorTotalStakeBase: z.lazy(() => NearGasSchema()),
-    writeMemoryBase: z.lazy(() => NearGasSchema()),
-    writeMemoryByte: z.lazy(() => NearGasSchema()),
-    writeRegisterBase: z.lazy(() => NearGasSchema()),
-    writeRegisterByte: z.lazy(() => NearGasSchema()),
-    yieldCreateBase: z.lazy(() => NearGasSchema()),
-    yieldCreateByte: z.lazy(() => NearGasSchema()),
-    yieldResumeBase: z.lazy(() => NearGasSchema()),
-    yieldResumeByte: z.lazy(() => NearGasSchema()),
+    altBn128G1MultiexpBase: z.optional(z.lazy(() => NearGasSchema())),
+    altBn128G1MultiexpElement: z.optional(z.lazy(() => NearGasSchema())),
+    altBn128G1SumBase: z.optional(z.lazy(() => NearGasSchema())),
+    altBn128G1SumElement: z.optional(z.lazy(() => NearGasSchema())),
+    altBn128PairingCheckBase: z.optional(z.lazy(() => NearGasSchema())),
+    altBn128PairingCheckElement: z.optional(z.lazy(() => NearGasSchema())),
+    base: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381G1MultiexpBase: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381G1MultiexpElement: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381G2MultiexpBase: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381G2MultiexpElement: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381MapFp2ToG2Base: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381MapFp2ToG2Element: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381MapFpToG1Base: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381MapFpToG1Element: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381P1DecompressBase: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381P1DecompressElement: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381P1SumBase: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381P1SumElement: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381P2DecompressBase: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381P2DecompressElement: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381P2SumBase: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381P2SumElement: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381PairingBase: z.optional(z.lazy(() => NearGasSchema())),
+    bls12381PairingElement: z.optional(z.lazy(() => NearGasSchema())),
+    contractCompileBase: z.optional(z.lazy(() => NearGasSchema())),
+    contractCompileBytes: z.optional(z.lazy(() => NearGasSchema())),
+    contractLoadingBase: z.optional(z.lazy(() => NearGasSchema())),
+    contractLoadingBytes: z.optional(z.lazy(() => NearGasSchema())),
+    ecrecoverBase: z.optional(z.lazy(() => NearGasSchema())),
+    ed25519VerifyBase: z.optional(z.lazy(() => NearGasSchema())),
+    ed25519VerifyByte: z.optional(z.lazy(() => NearGasSchema())),
+    keccak256Base: z.optional(z.lazy(() => NearGasSchema())),
+    keccak256Byte: z.optional(z.lazy(() => NearGasSchema())),
+    keccak512Base: z.optional(z.lazy(() => NearGasSchema())),
+    keccak512Byte: z.optional(z.lazy(() => NearGasSchema())),
+    logBase: z.optional(z.lazy(() => NearGasSchema())),
+    logByte: z.optional(z.lazy(() => NearGasSchema())),
+    promiseAndBase: z.optional(z.lazy(() => NearGasSchema())),
+    promiseAndPerPromise: z.optional(z.lazy(() => NearGasSchema())),
+    promiseReturn: z.optional(z.lazy(() => NearGasSchema())),
+    readCachedTrieNode: z.optional(z.lazy(() => NearGasSchema())),
+    readMemoryBase: z.optional(z.lazy(() => NearGasSchema())),
+    readMemoryByte: z.optional(z.lazy(() => NearGasSchema())),
+    readRegisterBase: z.optional(z.lazy(() => NearGasSchema())),
+    readRegisterByte: z.optional(z.lazy(() => NearGasSchema())),
+    ripemd160Base: z.optional(z.lazy(() => NearGasSchema())),
+    ripemd160Block: z.optional(z.lazy(() => NearGasSchema())),
+    sha256Base: z.optional(z.lazy(() => NearGasSchema())),
+    sha256Byte: z.optional(z.lazy(() => NearGasSchema())),
+    storageHasKeyBase: z.optional(z.lazy(() => NearGasSchema())),
+    storageHasKeyByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageIterCreateFromByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageIterCreatePrefixBase: z.optional(z.lazy(() => NearGasSchema())),
+    storageIterCreatePrefixByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageIterCreateRangeBase: z.optional(z.lazy(() => NearGasSchema())),
+    storageIterCreateToByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageIterNextBase: z.optional(z.lazy(() => NearGasSchema())),
+    storageIterNextKeyByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageIterNextValueByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageLargeReadOverheadBase: z.optional(z.lazy(() => NearGasSchema())),
+    storageLargeReadOverheadByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageReadBase: z.optional(z.lazy(() => NearGasSchema())),
+    storageReadKeyByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageReadValueByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageRemoveBase: z.optional(z.lazy(() => NearGasSchema())),
+    storageRemoveKeyByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageRemoveRetValueByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageWriteBase: z.optional(z.lazy(() => NearGasSchema())),
+    storageWriteEvictedByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageWriteKeyByte: z.optional(z.lazy(() => NearGasSchema())),
+    storageWriteValueByte: z.optional(z.lazy(() => NearGasSchema())),
+    touchingTrieNode: z.optional(z.lazy(() => NearGasSchema())),
+    utf16DecodingBase: z.optional(z.lazy(() => NearGasSchema())),
+    utf16DecodingByte: z.optional(z.lazy(() => NearGasSchema())),
+    utf8DecodingBase: z.optional(z.lazy(() => NearGasSchema())),
+    utf8DecodingByte: z.optional(z.lazy(() => NearGasSchema())),
+    validatorStakeBase: z.optional(z.lazy(() => NearGasSchema())),
+    validatorTotalStakeBase: z.optional(z.lazy(() => NearGasSchema())),
+    writeMemoryBase: z.optional(z.lazy(() => NearGasSchema())),
+    writeMemoryByte: z.optional(z.lazy(() => NearGasSchema())),
+    writeRegisterBase: z.optional(z.lazy(() => NearGasSchema())),
+    writeRegisterByte: z.optional(z.lazy(() => NearGasSchema())),
+    yieldCreateBase: z.optional(z.lazy(() => NearGasSchema())),
+    yieldCreateByte: z.optional(z.lazy(() => NearGasSchema())),
+    yieldResumeBase: z.optional(z.lazy(() => NearGasSchema())),
+    yieldResumeByte: z.optional(z.lazy(() => NearGasSchema())),
   });
 
 export const ExternalStorageConfigSchema = () =>
   z.object({
     externalStorageFallbackThreshold: z.optional(z.number()),
-    location: z.lazy(() => ExternalStorageLocationSchema()),
+    location: z.optional(z.lazy(() => ExternalStorageLocationSchema())),
     numConcurrentRequests: z.optional(z.number()),
     numConcurrentRequestsDuringCatchup: z.optional(z.number()),
   });
@@ -2498,43 +2500,43 @@ export const LimitConfigSchema = () =>
     accountIdValidityRulesVersion: z.optional(
       z.lazy(() => AccountIdValidityRulesVersionSchema())
     ),
-    initialMemoryPages: z.number(),
-    maxActionsPerReceipt: z.number(),
-    maxArgumentsLength: z.number(),
-    maxContractSize: z.number(),
+    initialMemoryPages: z.optional(z.number()),
+    maxActionsPerReceipt: z.optional(z.number()),
+    maxArgumentsLength: z.optional(z.number()),
+    maxContractSize: z.optional(z.number()),
     maxElementsPerContractTable: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
     maxFunctionsNumberPerContract: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
-    maxGasBurnt: z.lazy(() => NearGasSchema()),
-    maxLengthMethodName: z.number(),
-    maxLengthReturnedData: z.number(),
-    maxLengthStorageKey: z.number(),
-    maxLengthStorageValue: z.number(),
+    maxGasBurnt: z.optional(z.lazy(() => NearGasSchema())),
+    maxLengthMethodName: z.optional(z.number()),
+    maxLengthReturnedData: z.optional(z.number()),
+    maxLengthStorageKey: z.optional(z.number()),
+    maxLengthStorageValue: z.optional(z.number()),
     maxLocalsPerContract: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
-    maxMemoryPages: z.number(),
-    maxNumberBytesMethodNames: z.number(),
-    maxNumberInputDataDependencies: z.number(),
-    maxNumberLogs: z.number(),
-    maxNumberRegisters: z.number(),
-    maxPromisesPerFunctionCallAction: z.number(),
-    maxReceiptSize: z.number(),
-    maxRegisterSize: z.number(),
-    maxStackHeight: z.number(),
+    maxMemoryPages: z.optional(z.number()),
+    maxNumberBytesMethodNames: z.optional(z.number()),
+    maxNumberInputDataDependencies: z.optional(z.number()),
+    maxNumberLogs: z.optional(z.number()),
+    maxNumberRegisters: z.optional(z.number()),
+    maxPromisesPerFunctionCallAction: z.optional(z.number()),
+    maxReceiptSize: z.optional(z.number()),
+    maxRegisterSize: z.optional(z.number()),
+    maxStackHeight: z.optional(z.number()),
     maxTablesPerContract: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
-    maxTotalLogLength: z.number(),
-    maxTotalPrepaidGas: z.lazy(() => NearGasSchema()),
-    maxTransactionSize: z.number(),
-    maxYieldPayloadSize: z.number(),
-    perReceiptStorageProofSizeLimit: z.number(),
-    registersMemoryLimit: z.number(),
-    yieldTimeoutLengthInBlocks: z.number(),
+    maxTotalLogLength: z.optional(z.number()),
+    maxTotalPrepaidGas: z.optional(z.lazy(() => NearGasSchema())),
+    maxTransactionSize: z.optional(z.number()),
+    maxYieldPayloadSize: z.optional(z.number()),
+    perReceiptStorageProofSizeLimit: z.optional(z.number()),
+    registersMemoryLimit: z.optional(z.number()),
+    yieldTimeoutLengthInBlocks: z.optional(z.number()),
   });
 
 export const LogSummaryStyleSchema = () => z.enum(['plain', 'colored']);
@@ -2881,83 +2883,87 @@ export const RpcClientConfigRequestSchema = () => z.null();
 // ClientConfig where some fields can be updated at runtime.
 export const RpcClientConfigResponseSchema = () =>
   z.object({
-    archive: z.boolean(),
-    blockFetchHorizon: z.number(),
-    blockHeaderFetchHorizon: z.number(),
-    blockProductionTrackingDelay: z.array(z.number()),
-    catchupStepPeriod: z.array(z.number()),
-    chainId: z.string(),
+    archive: z.optional(z.boolean()),
+    blockFetchHorizon: z.optional(z.number()),
+    blockHeaderFetchHorizon: z.optional(z.number()),
+    blockProductionTrackingDelay: z.optional(z.array(z.number())),
+    catchupStepPeriod: z.optional(z.array(z.number())),
+    chainId: z.optional(z.string()),
     chunkDistributionNetwork: z.optional(
       z.union([z.lazy(() => ChunkDistributionNetworkConfigSchema()), z.null()])
     ),
-    chunkRequestRetryPeriod: z.array(z.number()),
-    chunkValidationThreads: z.number(),
-    chunkWaitMult: z.array(z.number()),
-    clientBackgroundMigrationThreads: z.number(),
+    chunkRequestRetryPeriod: z.optional(z.array(z.number())),
+    chunkValidationThreads: z.optional(z.number()),
+    chunkWaitMult: z.optional(z.array(z.number())),
+    clientBackgroundMigrationThreads: z.optional(z.number()),
     cloudArchivalWriter: z.optional(
       z.union([z.lazy(() => CloudArchivalWriterConfigSchema()), z.null()])
     ),
-    doomslugStepPeriod: z.array(z.number()),
-    dynamicReshardingDryRun: z.boolean(),
-    enableEarlyPrepareTransactions: z.boolean(),
-    enableMultilineLogging: z.boolean(),
-    enableStatisticsExport: z.boolean(),
-    epochLength: z.number(),
-    epochSync: z.lazy(() => EpochSyncConfigSchema()),
-    expectedShutdown: z.lazy(() => MutableConfigValueSchema()),
-    gc: z.lazy(() => GCConfigSchema()),
-    headerSyncExpectedHeightPerSecond: z.number(),
-    headerSyncInitialTimeout: z.array(z.number()),
-    headerSyncProgressTimeout: z.array(z.number()),
-    headerSyncStallBanTimeout: z.array(z.number()),
-    logSummaryPeriod: z.array(z.number()),
-    logSummaryStyle: z.lazy(() => LogSummaryStyleSchema()),
-    maxBlockProductionDelay: z.array(z.number()),
-    maxBlockWaitDelay: z.array(z.number()),
+    disableTxRouting: z.optional(z.boolean()),
+    doomslugStepPeriod: z.optional(z.array(z.number())),
+    dynamicReshardingDryRun: z.optional(z.boolean()),
+    enableEarlyPrepareTransactions: z.optional(z.boolean()),
+    enableMultilineLogging: z.optional(z.boolean()),
+    enableStatisticsExport: z.optional(z.boolean()),
+    epochLength: z.optional(z.number()),
+    epochSync: z.optional(z.lazy(() => EpochSyncConfigSchema())),
+    expectedShutdown: z.optional(z.lazy(() => MutableConfigValueSchema())),
+    gc: z.optional(z.lazy(() => GCConfigSchema())),
+    headerSyncExpectedHeightPerSecond: z.optional(z.number()),
+    headerSyncInitialTimeout: z.optional(z.array(z.number())),
+    headerSyncProgressTimeout: z.optional(z.array(z.number())),
+    headerSyncStallBanTimeout: z.optional(z.array(z.number())),
+    logSummaryPeriod: z.optional(z.array(z.number())),
+    logSummaryStyle: z.optional(z.lazy(() => LogSummaryStyleSchema())),
+    maxBlockProductionDelay: z.optional(z.array(z.number())),
+    maxBlockWaitDelay: z.optional(z.array(z.number())),
     maxGasBurntView: z.optional(
       z.union([z.lazy(() => NearGasSchema()), z.null()])
     ),
-    minBlockProductionDelay: z.array(z.number()),
-    minNumPeers: z.number(),
-    numBlockProducerSeats: z.number(),
-    orphanStateWitnessMaxSize: z.number(),
-    orphanStateWitnessPoolSize: z.number(),
-    produceChunkAddTransactionsTimeLimit: z.string(),
-    produceEmptyBlocks: z.boolean(),
-    protocolVersionCheck: z.lazy(() => ProtocolVersionCheckConfigSchema()),
-    reshardingConfig: z.lazy(() => MutableConfigValueSchema()),
+    minBlockProductionDelay: z.optional(z.array(z.number())),
+    minNumPeers: z.optional(z.number()),
+    numBlockProducerSeats: z.optional(z.number()),
+    orphanStateWitnessMaxSize: z.optional(z.number()),
+    orphanStateWitnessPoolSize: z.optional(z.number()),
+    produceChunkAddTransactionsTimeLimit: z.optional(z.string()),
+    produceEmptyBlocks: z.optional(z.boolean()),
+    protocolVersionCheck: z.optional(
+      z.lazy(() => ProtocolVersionCheckConfigSchema())
+    ),
+    reshardingConfig: z.optional(z.lazy(() => MutableConfigValueSchema())),
     rpcAddr: z.optional(z.union([z.union([z.string(), z.null()]), z.null()])),
-    saveInvalidWitnesses: z.boolean(),
-    saveLatestWitnesses: z.boolean(),
-    saveTrieChanges: z.boolean(),
-    saveTxOutcomes: z.boolean(),
-    saveUntrackedPartialChunksParts: z.boolean(),
-    skipSyncWait: z.boolean(),
-    stateRequestServerThreads: z.number(),
-    stateRequestThrottlePeriod: z.array(z.number()),
-    stateRequestsPerThrottlePeriod: z.number(),
-    stateSync: z.lazy(() => StateSyncConfigSchema()),
-    stateSyncEnabled: z.boolean(),
-    stateSyncExternalBackoff: z.array(z.number()),
-    stateSyncExternalTimeout: z.array(z.number()),
-    stateSyncP2pTimeout: z.array(z.number()),
-    stateSyncRetryBackoff: z.array(z.number()),
-    syncCheckPeriod: z.array(z.number()),
-    syncHeightThreshold: z.number(),
-    syncMaxBlockRequests: z.number(),
-    syncStepPeriod: z.array(z.number()),
-    trackedShardsConfig: z.lazy(() => TrackedShardsConfigSchema()),
+    saveInvalidWitnesses: z.optional(z.boolean()),
+    saveLatestWitnesses: z.optional(z.boolean()),
+    saveStateChanges: z.optional(z.boolean()),
+    saveTrieChanges: z.optional(z.boolean()),
+    saveTxOutcomes: z.optional(z.boolean()),
+    saveUntrackedPartialChunksParts: z.optional(z.boolean()),
+    skipSyncWait: z.optional(z.boolean()),
+    stateRequestServerThreads: z.optional(z.number()),
+    stateRequestThrottlePeriod: z.optional(z.array(z.number())),
+    stateRequestsPerThrottlePeriod: z.optional(z.number()),
+    stateSync: z.optional(z.lazy(() => StateSyncConfigSchema())),
+    stateSyncEnabled: z.optional(z.boolean()),
+    stateSyncExternalBackoff: z.optional(z.array(z.number())),
+    stateSyncExternalTimeout: z.optional(z.array(z.number())),
+    stateSyncP2pTimeout: z.optional(z.array(z.number())),
+    stateSyncRetryBackoff: z.optional(z.array(z.number())),
+    syncCheckPeriod: z.optional(z.array(z.number())),
+    syncHeightThreshold: z.optional(z.number()),
+    syncMaxBlockRequests: z.optional(z.number()),
+    syncStepPeriod: z.optional(z.array(z.number())),
+    trackedShardsConfig: z.optional(z.lazy(() => TrackedShardsConfigSchema())),
     transactionPoolSizeLimit: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
-    transactionRequestHandlerThreads: z.number(),
+    transactionRequestHandlerThreads: z.optional(z.number()),
     trieViewerStateSizeLimit: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
-    ttlAccountIdRouter: z.array(z.number()),
-    txRoutingHeightHorizon: z.number(),
-    version: z.lazy(() => VersionSchema()),
-    viewClientThreads: z.number(),
+    ttlAccountIdRouter: z.optional(z.array(z.number())),
+    txRoutingHeightHorizon: z.optional(z.number()),
+    version: z.optional(z.lazy(() => VersionSchema())),
+    viewClientThreads: z.optional(z.number()),
   });
 
 export const RpcCongestionLevelRequestSchema = () =>
@@ -3205,39 +3211,39 @@ export const RpcProtocolConfigRequestSchema = () =>
 
 export const RpcProtocolConfigResponseSchema = () =>
   z.object({
-    avgHiddenValidatorSeatsPerShard: z.array(z.number()),
-    blockProducerKickoutThreshold: z.number(),
-    chainId: z.string(),
-    chunkProducerKickoutThreshold: z.number(),
-    chunkValidatorOnlyKickoutThreshold: z.number(),
-    dynamicResharding: z.boolean(),
-    epochLength: z.number(),
-    fishermenThreshold: z.lazy(() => NearTokenSchema()),
-    gasLimit: z.lazy(() => NearGasSchema()),
-    gasPriceAdjustmentRate: z.array(z.number()),
-    genesisHeight: z.number(),
-    genesisTime: z.string(),
-    maxGasPrice: z.lazy(() => NearTokenSchema()),
-    maxInflationRate: z.array(z.number()),
-    maxKickoutStakePerc: z.number(),
-    minGasPrice: z.lazy(() => NearTokenSchema()),
-    minimumStakeDivisor: z.number(),
-    minimumStakeRatio: z.array(z.number()),
-    minimumValidatorsPerShard: z.number(),
-    numBlockProducerSeats: z.number(),
-    numBlockProducerSeatsPerShard: z.array(z.number()),
-    numBlocksPerYear: z.number(),
-    onlineMaxThreshold: z.array(z.number()),
-    onlineMinThreshold: z.array(z.number()),
-    protocolRewardRate: z.array(z.number()),
-    protocolTreasuryAccount: z.lazy(() => AccountIdSchema()),
-    protocolUpgradeStakeThreshold: z.array(z.number()),
-    protocolVersion: z.number(),
-    runtimeConfig: z.lazy(() => RuntimeConfigViewSchema()),
-    shardLayout: z.lazy(() => ShardLayoutSchema()),
-    shuffleShardAssignmentForChunkProducers: z.boolean(),
-    targetValidatorMandatesPerShard: z.number(),
-    transactionValidityPeriod: z.number(),
+    avgHiddenValidatorSeatsPerShard: z.optional(z.array(z.number())),
+    blockProducerKickoutThreshold: z.optional(z.number()),
+    chainId: z.optional(z.string()),
+    chunkProducerKickoutThreshold: z.optional(z.number()),
+    chunkValidatorOnlyKickoutThreshold: z.optional(z.number()),
+    dynamicResharding: z.optional(z.boolean()),
+    epochLength: z.optional(z.number()),
+    fishermenThreshold: z.optional(z.lazy(() => NearTokenSchema())),
+    gasLimit: z.optional(z.lazy(() => NearGasSchema())),
+    gasPriceAdjustmentRate: z.optional(z.array(z.number())),
+    genesisHeight: z.optional(z.number()),
+    genesisTime: z.optional(z.string()),
+    maxGasPrice: z.optional(z.lazy(() => NearTokenSchema())),
+    maxInflationRate: z.optional(z.array(z.number())),
+    maxKickoutStakePerc: z.optional(z.number()),
+    minGasPrice: z.optional(z.lazy(() => NearTokenSchema())),
+    minimumStakeDivisor: z.optional(z.number()),
+    minimumStakeRatio: z.optional(z.array(z.number())),
+    minimumValidatorsPerShard: z.optional(z.number()),
+    numBlockProducerSeats: z.optional(z.number()),
+    numBlockProducerSeatsPerShard: z.optional(z.array(z.number())),
+    numBlocksPerYear: z.optional(z.number()),
+    onlineMaxThreshold: z.optional(z.array(z.number())),
+    onlineMinThreshold: z.optional(z.array(z.number())),
+    protocolRewardRate: z.optional(z.array(z.number())),
+    protocolTreasuryAccount: z.optional(z.lazy(() => AccountIdSchema())),
+    protocolUpgradeStakeThreshold: z.optional(z.array(z.number())),
+    protocolVersion: z.optional(z.number()),
+    runtimeConfig: z.optional(z.lazy(() => RuntimeConfigViewSchema())),
+    shardLayout: z.optional(z.lazy(() => ShardLayoutSchema())),
+    shuffleShardAssignmentForChunkProducers: z.optional(z.boolean()),
+    targetValidatorMandatesPerShard: z.optional(z.number()),
+    transactionValidityPeriod: z.optional(z.number()),
   });
 
 export const RpcQueryErrorSchema = () =>
@@ -4125,25 +4131,33 @@ export const RpcValidatorsOrderedRequestSchema = () =>
 // View that preserves JSON format of the runtime config.
 export const RuntimeConfigViewSchema = () =>
   z.object({
-    accountCreationConfig: z.lazy(() => AccountCreationConfigViewSchema()),
-    congestionControlConfig: z.lazy(() => CongestionControlConfigViewSchema()),
-    storageAmountPerByte: z.lazy(() => NearTokenSchema()),
-    transactionCosts: z.lazy(() => RuntimeFeesConfigViewSchema()),
-    wasmConfig: z.lazy(() => VMConfigViewSchema()),
-    witnessConfig: z.lazy(() => WitnessConfigViewSchema()),
+    accountCreationConfig: z.optional(
+      z.lazy(() => AccountCreationConfigViewSchema())
+    ),
+    congestionControlConfig: z.optional(
+      z.lazy(() => CongestionControlConfigViewSchema())
+    ),
+    storageAmountPerByte: z.optional(z.lazy(() => NearTokenSchema())),
+    transactionCosts: z.optional(z.lazy(() => RuntimeFeesConfigViewSchema())),
+    wasmConfig: z.optional(z.lazy(() => VMConfigViewSchema())),
+    witnessConfig: z.optional(z.lazy(() => WitnessConfigViewSchema())),
   });
 
 // Describes different fees for the runtime
 export const RuntimeFeesConfigViewSchema = () =>
   z.object({
-    actionCreationConfig: z.lazy(() => ActionCreationConfigViewSchema()),
-    actionReceiptCreationConfig: z.lazy(() => FeeSchema()),
-    burntGasReward: z.array(z.number()),
-    dataReceiptCreationConfig: z.lazy(() =>
-      DataReceiptCreationConfigViewSchema()
+    actionCreationConfig: z.optional(
+      z.lazy(() => ActionCreationConfigViewSchema())
     ),
-    pessimisticGasPriceInflationRatio: z.array(z.number()),
-    storageUsageConfig: z.lazy(() => StorageUsageConfigViewSchema()),
+    actionReceiptCreationConfig: z.optional(z.lazy(() => FeeSchema())),
+    burntGasReward: z.optional(z.array(z.number())),
+    dataReceiptCreationConfig: z.optional(
+      z.lazy(() => DataReceiptCreationConfigViewSchema())
+    ),
+    pessimisticGasPriceInflationRatio: z.optional(z.array(z.number())),
+    storageUsageConfig: z.optional(
+      z.lazy(() => StorageUsageConfigViewSchema())
+    ),
   });
 
 //
@@ -4537,8 +4551,8 @@ export const StorageGetModeSchema = () => z.enum(['FlatStorage', 'Trie']);
 // Describes cost of storage per block
 export const StorageUsageConfigViewSchema = () =>
   z.object({
-    numBytesAccount: z.number(),
-    numExtraBytesRecord: z.number(),
+    numBytesAccount: z.optional(z.number()),
+    numExtraBytesRecord: z.optional(z.number()),
   });
 
 //
@@ -4562,10 +4576,10 @@ export const SyncCheckpointSchema = () =>
 
 export const SyncConcurrencySchema = () =>
   z.object({
-    apply: z.number(),
-    applyDuringCatchup: z.number(),
-    peerDownloads: z.number(),
-    perShard: z.number(),
+    apply: z.optional(z.number()),
+    applyDuringCatchup: z.optional(z.number()),
+    peerDownloads: z.optional(z.number()),
+    perShard: z.optional(z.number()),
   });
 
 // Configures how to fetch state parts during state sync.
@@ -4646,22 +4660,22 @@ export const UseGlobalContractActionSchema = () =>
 
 export const VMConfigViewSchema = () =>
   z.object({
-    deterministicAccountIds: z.boolean(),
-    discardCustomSections: z.boolean(),
-    ethImplicitAccounts: z.boolean(),
-    extCosts: z.lazy(() => ExtCostsConfigViewSchema()),
-    fixContractLoadingCost: z.boolean(),
-    globalContractHostFns: z.boolean(),
-    growMemCost: z.number(),
-    implicitAccountCreation: z.boolean(),
-    limitConfig: z.lazy(() => LimitConfigSchema()),
-    linearOpBaseCost: z.number(),
-    linearOpUnitCost: z.number(),
-    reftypesBulkMemory: z.boolean(),
-    regularOpCost: z.number(),
-    saturatingFloatToInt: z.boolean(),
-    storageGetMode: z.lazy(() => StorageGetModeSchema()),
-    vmKind: z.lazy(() => VMKindSchema()),
+    deterministicAccountIds: z.optional(z.boolean()),
+    discardCustomSections: z.optional(z.boolean()),
+    ethImplicitAccounts: z.optional(z.boolean()),
+    extCosts: z.optional(z.lazy(() => ExtCostsConfigViewSchema())),
+    fixContractLoadingCost: z.optional(z.boolean()),
+    globalContractHostFns: z.optional(z.boolean()),
+    growMemCost: z.optional(z.number()),
+    implicitAccountCreation: z.optional(z.boolean()),
+    limitConfig: z.optional(z.lazy(() => LimitConfigSchema())),
+    linearOpBaseCost: z.optional(z.number()),
+    linearOpUnitCost: z.optional(z.number()),
+    reftypesBulkMemory: z.optional(z.boolean()),
+    regularOpCost: z.optional(z.number()),
+    saturatingFloatToInt: z.optional(z.boolean()),
+    storageGetMode: z.optional(z.lazy(() => StorageGetModeSchema())),
+    vmKind: z.optional(z.lazy(() => VMKindSchema())),
   });
 
 export const VMKindSchema = () =>
@@ -4764,9 +4778,9 @@ export const WasmTrapSchema = () =>
 // Configuration specific to ChunkStateWitness.
 export const WitnessConfigViewSchema = () =>
   z.object({
-    combinedTransactionsSizeLimit: z.number(),
-    mainStorageProofSizeSoftLimit: z.number(),
-    newTransactionsValidationStateSizeSoftLimit: z.number(),
+    combinedTransactionsSizeLimit: z.optional(z.number()),
+    mainStorageProofSizeSoftLimit: z.optional(z.number()),
+    newTransactionsValidationStateSizeSoftLimit: z.optional(z.number()),
   });
 
 // Method-specific schemas
