@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-11-25T06:05:40.535Z
+// Generated on: 2025-11-30T06:05:25.652Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -2707,6 +2707,9 @@ export const ReceiptEnumViewSchema = () =>
         inputDataIds: z.array(z.lazy(() => CryptoHashSchema())),
         isPromiseYield: z.optional(z.boolean()),
         outputDataReceivers: z.array(z.lazy(() => DataReceiverViewSchema())),
+        refundTo: z.optional(
+          z.union([z.lazy(() => AccountIdSchema()), z.null()])
+        ),
         signerId: z.lazy(() => AccountIdSchema()),
         signerPublicKey: z.lazy(() => PublicKeySchema()),
       }),
@@ -2895,6 +2898,7 @@ export const RpcClientConfigResponseSchema = () =>
     chunkRequestRetryPeriod: z.optional(z.array(z.number())),
     chunkValidationThreads: z.optional(z.number()),
     chunkWaitMult: z.optional(z.array(z.number())),
+    chunksCacheHeightHorizon: z.optional(z.number()),
     clientBackgroundMigrationThreads: z.optional(z.number()),
     cloudArchivalWriter: z.optional(
       z.union([z.lazy(() => CloudArchivalWriterConfigSchema()), z.null()])
