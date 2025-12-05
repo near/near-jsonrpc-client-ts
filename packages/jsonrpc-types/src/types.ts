@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-11-25T06:05:40.524Z
+// Generated on: 2025-12-05T06:05:39.118Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -1254,6 +1254,14 @@ export type ShardLayoutV1 = z.infer<
  */
 export type ShardLayoutV2 = z.infer<
   ReturnType<typeof schemas.ShardLayoutV2Schema>
+>;
+
+/**
+ * Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
+ * serde serialization.
+ */
+export type ShardLayoutV3 = z.infer<
+  ReturnType<typeof schemas.ShardLayoutV3Schema>
 >;
 
 /**
