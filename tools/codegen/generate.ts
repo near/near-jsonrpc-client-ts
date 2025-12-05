@@ -303,58 +303,6 @@ function generateZodSchema(
   return baseSchema;
 }
 
-// Generate base JSON-RPC utility schemas by analyzing the pattern from specific response schemas
-function generateBaseUtilitySchemas(spec: OpenAPISpec): {
-  jsonRpcRequest: string;
-  jsonRpcError: string;
-  jsonRpcResponse: string;
-} {
-  // Find a representative JsonRpcResponse schema to extract the pattern
-  const responseSchemaKey = Object.keys(spec.components.schemas).find(key =>
-    key.startsWith('JsonRpcResponse_for_')
-  );
-
-  if (!responseSchemaKey) {
-    throw new Error('No JsonRpcResponse schema found in OpenAPI spec');
-  }
-
-  // Generate JsonRpcRequest - this is typically not in the spec but follows a pattern
-  const jsonRpcRequest = `z.object({
-  jsonrpc: z.literal('2.0'),
-  id: z.string(),
-  method: z.string(),
-  params: z.optional(z.unknown()),
-})`;
-
-  // Generate JsonRpcError - extract from RpcError schema or use simplified version
-  const jsonRpcError = `z.object({
-  code: z.number(),
-  message: z.string(),
-  data: z.optional(z.unknown()),
-})`;
-
-  // Generate JsonRpcResponse using the oneOf pattern from the spec
-  // The pattern is: oneOf with shared properties (jsonrpc, id) and either result or error
-  // This enforces JSON-RPC 2.0 spec: exactly one of result or error must be present
-  //
-  // NOTE: zod/mini doesn't support .refine(), .strict(), or .passthrough().
-  // We use a custom validation wrapper that checks BEFORE parsing to the union schema.
-  const jsonRpcResponse = `z.union([
-  z.object({
-    jsonrpc: z.literal('2.0'),
-    id: z.string(),
-    result: z.unknown(),
-  }),
-  z.object({
-    jsonrpc: z.literal('2.0'),
-    id: z.string(),
-    error: JsonRpcErrorSchema(),
-  }),
-])`;
-
-  return { jsonRpcRequest, jsonRpcError, jsonRpcResponse };
-}
-
 export async function generateTypes() {
   console.log('🔄 Starting OpenAPI spec analysis and type generation...');
 
@@ -613,9 +561,6 @@ export const RPC_METHODS = Object.values(PATH_TO_METHOD_MAP);
 export type RpcMethod = typeof RPC_METHODS[number];
 `;
 
-    // Generate base utility schemas from OpenAPI patterns
-    const utilitySchemas = generateBaseUtilitySchemas(spec);
-
     // Create schemas content (zod/mini only)
     const schemasContent = `// Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
 // Generated on: ${new Date().toISOString()}
@@ -682,17 +627,37 @@ ${miniSchemaDefinitions.join('\n\n')}
 ${miniMethodSchemas.join('\n\n')}
 
 // Base JSON-RPC utility schemas
-// These schemas are auto-generated based on the JSON-RPC 2.0 specification patterns
-// found in the OpenAPI spec's response schemas
+// These schemas are static utilities for the JSON-RPC 2.0 specification
+// They are not derived from the OpenAPI spec but are standard JSON-RPC primitives
 
-export const JsonRpcRequestSchema = () => ${utilitySchemas.jsonRpcRequest};
+export const JsonRpcRequestSchema = () => z.object({
+  jsonrpc: z.literal('2.0'),
+  id: z.string(),
+  method: z.string(),
+  params: z.optional(z.unknown()),
+});
 
-export const JsonRpcErrorSchema = () => ${utilitySchemas.jsonRpcError};
+export const JsonRpcErrorSchema = () => z.object({
+  code: z.number(),
+  message: z.string(),
+  data: z.optional(z.unknown()),
+});
 
 // JSON-RPC 2.0 compliant response schema
 // Enforces that exactly one of 'result' or 'error' must be present (via custom validation)
 // Note: Uses custom wrapper because zod/mini doesn't support .refine()
-const _baseJsonRpcResponseSchema = ${utilitySchemas.jsonRpcResponse};
+const _baseJsonRpcResponseSchema = z.union([
+  z.object({
+    jsonrpc: z.literal('2.0'),
+    id: z.string(),
+    result: z.unknown(),
+  }),
+  z.object({
+    jsonrpc: z.literal('2.0'),
+    id: z.string(),
+    error: JsonRpcErrorSchema(),
+  }),
+]);
 export const JsonRpcResponseSchema = () => createJsonRpcResponseValidator(_baseJsonRpcResponseSchema);
 `;
 
