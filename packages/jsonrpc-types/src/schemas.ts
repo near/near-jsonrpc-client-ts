@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-11-25T06:05:40.535Z
+// Generated on: 2025-12-06T06:08:03.266Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -2707,6 +2707,9 @@ export const ReceiptEnumViewSchema = () =>
         inputDataIds: z.array(z.lazy(() => CryptoHashSchema())),
         isPromiseYield: z.optional(z.boolean()),
         outputDataReceivers: z.array(z.lazy(() => DataReceiverViewSchema())),
+        refundTo: z.optional(
+          z.union([z.lazy(() => AccountIdSchema()), z.null()])
+        ),
         signerId: z.lazy(() => AccountIdSchema()),
         signerPublicKey: z.lazy(() => PublicKeySchema()),
       }),
@@ -2895,6 +2898,7 @@ export const RpcClientConfigResponseSchema = () =>
     chunkRequestRetryPeriod: z.optional(z.array(z.number())),
     chunkValidationThreads: z.optional(z.number()),
     chunkWaitMult: z.optional(z.array(z.number())),
+    chunksCacheHeightHorizon: z.optional(z.number()),
     clientBackgroundMigrationThreads: z.optional(z.number()),
     cloudArchivalWriter: z.optional(
       z.union([z.lazy(() => CloudArchivalWriterConfigSchema()), z.null()])
@@ -4191,6 +4195,9 @@ export const ShardLayoutSchema = () =>
     z.object({
       V2: z.lazy(() => ShardLayoutV2Schema()),
     }),
+    z.object({
+      V3: z.lazy(() => ShardLayoutV3Schema()),
+    }),
   ]);
 
 //
@@ -4259,6 +4266,22 @@ export const ShardLayoutV2Schema = () =>
       ])
     ),
     version: z.number(),
+  });
+
+//
+// Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
+// serde serialization.
+
+export const ShardLayoutV3Schema = () =>
+  z.object({
+    boundaryAccounts: z.array(z.lazy(() => AccountIdSchema())),
+    idToIndexMap: z.record(z.string(), z.number()),
+    lastSplit: z.lazy(() => ShardIdSchema()),
+    shardIds: z.array(z.lazy(() => ShardIdSchema())),
+    shardsSplitMap: z.record(
+      z.string(),
+      z.array(z.lazy(() => ShardIdSchema()))
+    ),
   });
 
 //
