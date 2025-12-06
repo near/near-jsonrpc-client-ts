@@ -568,59 +568,6 @@ export type RpcMethod = typeof RPC_METHODS[number];
 
 import { z } from 'zod/mini';
 
-// Custom validation wrapper for JSON-RPC 2.0 response
-// zod/mini doesn't support .refine() or .passthrough() so we validate before parsing
-function createJsonRpcResponseValidator(baseSchema: any) {
-  return {
-    parse: (data: unknown) => {
-      // Validate JSON-RPC 2.0 spec BEFORE parsing: exactly one of result or error must be present
-      if (typeof data === 'object' && data !== null) {
-        const hasResult = 'result' in data;
-        const hasError = 'error' in data;
-        if (hasResult && hasError) {
-          throw new Error('JSON-RPC 2.0 violation: response cannot have both result and error');
-        }
-        if (!hasResult && !hasError) {
-          throw new Error('JSON-RPC 2.0 violation: response must have either result or error');
-        }
-      }
-      return baseSchema.parse(data);
-    },
-    safeParse: (data: unknown) => {
-      // Validate JSON-RPC 2.0 spec BEFORE parsing: exactly one of result or error must be present
-      if (typeof data === 'object' && data !== null) {
-        const hasResult = 'result' in data;
-        const hasError = 'error' in data;
-        if (hasResult && hasError) {
-          return {
-            success: false as const,
-            error: {
-              issues: [{
-                code: 'custom',
-                message: 'JSON-RPC 2.0 violation: response cannot have both result and error',
-                path: [],
-              }],
-            },
-          };
-        }
-        if (!hasResult && !hasError) {
-          return {
-            success: false as const,
-            error: {
-              issues: [{
-                code: 'custom',
-                message: 'JSON-RPC 2.0 violation: response must have either result or error',
-                path: [],
-              }],
-            },
-          };
-        }
-      }
-      return baseSchema.safeParse(data);
-    },
-  };
-}
-
 ${miniSchemaDefinitions.join('\n\n')}
 
 // Method-specific schemas
@@ -644,21 +591,21 @@ export const JsonRpcErrorSchema = () => z.object({
 });
 
 // JSON-RPC 2.0 compliant response schema
-// Enforces that exactly one of 'result' or 'error' must be present (via custom validation)
-// Note: Uses custom wrapper because zod/mini doesn't support .refine()
-const _baseJsonRpcResponseSchema = z.union([
-  z.object({
-    jsonrpc: z.literal('2.0'),
-    id: z.string(),
-    result: z.unknown(),
-  }),
-  z.object({
-    jsonrpc: z.literal('2.0'),
-    id: z.string(),
-    error: JsonRpcErrorSchema(),
-  }),
-]);
-export const JsonRpcResponseSchema = () => createJsonRpcResponseValidator(_baseJsonRpcResponseSchema);
+// Enforces exactly one of 'result' or 'error' must be present (JSON-RPC 2.0 spec)
+// Uses .check() with z.refine() to validate the constraint after parsing
+export const JsonRpcResponseSchema = () => z.object({
+  jsonrpc: z.literal('2.0'),
+  id: z.string(),
+  result: z.optional(z.unknown()),
+  error: z.optional(JsonRpcErrorSchema()),
+}).check(
+  z.refine((val) => {
+    const hasError = val.error !== undefined;
+    const hasResult = val.result !== undefined;
+    // Exactly one of error or result must be present (not both, not neither)
+    return (hasError && !hasResult) || (!hasError && hasResult);
+  })
+);
 `;
 
     // Write generated files (zod/mini only)
