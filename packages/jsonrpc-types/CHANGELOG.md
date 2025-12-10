@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-types-v1.5.0...jsonrpc-types-v1.5.1) (2025-12-10)
+
+
+### Bug Fixes
+
+* enforce JSON-RPC 2.0 spec - exactly one of result or error required ([#93](https://github.com/near/near-jsonrpc-client-ts/issues/93)) ([f5a5389](https://github.com/near/near-jsonrpc-client-ts/commit/f5a5389130e5befa406ca44eab481981ffb8c440))
+
 ## [1.5.0](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-types-v1.4.0...jsonrpc-types-v1.5.0) (2025-11-25)
 
 
