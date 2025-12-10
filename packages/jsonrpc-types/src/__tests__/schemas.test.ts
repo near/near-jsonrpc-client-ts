@@ -141,7 +141,7 @@ describe('JsonRpcResponseSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('should allow response with both result and error (per current schema)', () => {
+  it('should reject response with both result and error (violates JSON-RPC 2.0 spec)', () => {
     const responseWithBoth = {
       jsonrpc: '2.0',
       id: 'test-id',
@@ -150,19 +150,19 @@ describe('JsonRpcResponseSchema', () => {
     };
 
     const result = JsonRpcResponseSchema().safeParse(responseWithBoth);
-    // Current schema allows both - this is technically against JSON-RPC spec but matches our schema
-    expect(result.success).toBe(true);
+    // Schema now correctly rejects having both result and error
+    expect(result.success).toBe(false);
   });
 
-  it('should allow response with neither result nor error (per current schema)', () => {
+  it('should reject response with neither result nor error (violates JSON-RPC 2.0 spec)', () => {
     const responseWithNeither = {
       jsonrpc: '2.0',
       id: 'test-id',
     };
 
     const result = JsonRpcResponseSchema().safeParse(responseWithNeither);
-    // Current schema allows this - both result and error are optional
-    expect(result.success).toBe(true);
+    // Schema now correctly rejects having neither result nor error
+    expect(result.success).toBe(false);
   });
 });
 

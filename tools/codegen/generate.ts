@@ -573,7 +573,10 @@ ${miniSchemaDefinitions.join('\n\n')}
 // Method-specific schemas
 ${miniMethodSchemas.join('\n\n')}
 
-// Utility schemas
+// Base JSON-RPC utility schemas
+// These schemas are static utilities for the JSON-RPC 2.0 specification
+// They are not derived from the OpenAPI spec but are standard JSON-RPC primitives
+
 export const JsonRpcRequestSchema = () => z.object({
   jsonrpc: z.literal('2.0'),
   id: z.string(),
@@ -587,12 +590,22 @@ export const JsonRpcErrorSchema = () => z.object({
   data: z.optional(z.unknown()),
 });
 
+// JSON-RPC 2.0 compliant response schema
+// Enforces exactly one of 'result' or 'error' must be present (JSON-RPC 2.0 spec)
+// Uses .check() with z.refine() to validate the constraint after parsing
 export const JsonRpcResponseSchema = () => z.object({
   jsonrpc: z.literal('2.0'),
   id: z.string(),
   result: z.optional(z.unknown()),
   error: z.optional(JsonRpcErrorSchema()),
-});
+}).check(
+  z.refine((val) => {
+    const hasError = val.error !== undefined;
+    const hasResult = val.result !== undefined;
+    // Exactly one of error or result must be present (not both, not neither)
+    return (hasError && !hasResult) || (!hasError && hasResult);
+  })
+);
 `;
 
     // Write generated files (zod/mini only)
