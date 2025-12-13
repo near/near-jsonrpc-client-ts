@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-11-25T06:05:40.535Z
+// Generated on: 2025-12-13T06:05:21.096Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -913,6 +913,15 @@ export const DurationAsStdSchemaProviderSchema = () =>
   z.object({
     nanos: z.number(),
     secs: z.number(),
+  });
+
+// Configuration for dynamic resharding feature
+export const DynamicReshardingConfigViewSchema = () =>
+  z.object({
+    maxNumberOfShards: z.number(),
+    memoryUsageThreshold: z.number(),
+    minChildMemoryUsage: z.number(),
+    minEpochsBetweenResharding: z.number(),
   });
 
 //
@@ -2707,6 +2716,9 @@ export const ReceiptEnumViewSchema = () =>
         inputDataIds: z.array(z.lazy(() => CryptoHashSchema())),
         isPromiseYield: z.optional(z.boolean()),
         outputDataReceivers: z.array(z.lazy(() => DataReceiverViewSchema())),
+        refundTo: z.optional(
+          z.union([z.lazy(() => AccountIdSchema()), z.null()])
+        ),
         signerId: z.lazy(() => AccountIdSchema()),
         signerPublicKey: z.lazy(() => PublicKeySchema()),
       }),
@@ -2895,6 +2907,7 @@ export const RpcClientConfigResponseSchema = () =>
     chunkRequestRetryPeriod: z.optional(z.array(z.number())),
     chunkValidationThreads: z.optional(z.number()),
     chunkWaitMult: z.optional(z.array(z.number())),
+    chunksCacheHeightHorizon: z.optional(z.number()),
     clientBackgroundMigrationThreads: z.optional(z.number()),
     cloudArchivalWriter: z.optional(
       z.union([z.lazy(() => CloudArchivalWriterConfigSchema()), z.null()])
@@ -4137,6 +4150,9 @@ export const RuntimeConfigViewSchema = () =>
     congestionControlConfig: z.optional(
       z.lazy(() => CongestionControlConfigViewSchema())
     ),
+    dynamicReshardingConfig: z.optional(
+      z.lazy(() => DynamicReshardingConfigViewSchema())
+    ),
     storageAmountPerByte: z.optional(z.lazy(() => NearTokenSchema())),
     transactionCosts: z.optional(z.lazy(() => RuntimeFeesConfigViewSchema())),
     wasmConfig: z.optional(z.lazy(() => VMConfigViewSchema())),
@@ -4190,6 +4206,9 @@ export const ShardLayoutSchema = () =>
     }),
     z.object({
       V2: z.lazy(() => ShardLayoutV2Schema()),
+    }),
+    z.object({
+      V3: z.lazy(() => ShardLayoutV3Schema()),
     }),
   ]);
 
@@ -4259,6 +4278,22 @@ export const ShardLayoutV2Schema = () =>
       ])
     ),
     version: z.number(),
+  });
+
+//
+// Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
+// serde serialization.
+
+export const ShardLayoutV3Schema = () =>
+  z.object({
+    boundaryAccounts: z.array(z.lazy(() => AccountIdSchema())),
+    idToIndexMap: z.record(z.string(), z.number()),
+    lastSplit: z.lazy(() => ShardIdSchema()),
+    shardIds: z.array(z.lazy(() => ShardIdSchema())),
+    shardsSplitMap: z.record(
+      z.string(),
+      z.array(z.lazy(() => ShardIdSchema()))
+    ),
   });
 
 //
@@ -5430,7 +5465,10 @@ export const VALIDATION_SCHEMA_MAP: Record<
   },
 };
 
-// Utility schemas
+// Base JSON-RPC utility schemas
+// These schemas are static utilities for the JSON-RPC 2.0 specification
+// They are not derived from the OpenAPI spec but are standard JSON-RPC primitives
+
 export const JsonRpcRequestSchema = () =>
   z.object({
     jsonrpc: z.literal('2.0'),
@@ -5446,10 +5484,22 @@ export const JsonRpcErrorSchema = () =>
     data: z.optional(z.unknown()),
   });
 
+// JSON-RPC 2.0 compliant response schema
+// Enforces exactly one of 'result' or 'error' must be present (JSON-RPC 2.0 spec)
+// Uses .check() with z.refine() to validate the constraint after parsing
 export const JsonRpcResponseSchema = () =>
-  z.object({
-    jsonrpc: z.literal('2.0'),
-    id: z.string(),
-    result: z.optional(z.unknown()),
-    error: z.optional(JsonRpcErrorSchema()),
-  });
+  z
+    .object({
+      jsonrpc: z.literal('2.0'),
+      id: z.string(),
+      result: z.optional(z.unknown()),
+      error: z.optional(JsonRpcErrorSchema()),
+    })
+    .check(
+      z.refine(val => {
+        const hasError = val.error !== undefined;
+        const hasResult = val.result !== undefined;
+        // Exactly one of error or result must be present (not both, not neither)
+        return (hasError && !hasResult) || (!hasError && hasResult);
+      })
+    );
