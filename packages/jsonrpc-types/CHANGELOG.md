@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-types-v1.5.0...jsonrpc-types-v1.6.0) (2025-12-24)
+
+
+### Features
+
+* Added experimental flat query methods (e.g. experimentalCallFunction) ([#90](https://github.com/near/near-jsonrpc-client-ts/issues/90)) ([9605faa](https://github.com/near/near-jsonrpc-client-ts/commit/9605faa1bec3b336fc0f30f3ae03bdc95fd5c27c))
+
+
+### Bug Fixes
+
+* enforce JSON-RPC 2.0 spec - exactly one of result or error required ([#93](https://github.com/near/near-jsonrpc-client-ts/issues/93)) ([f5a5389](https://github.com/near/near-jsonrpc-client-ts/commit/f5a5389130e5befa406ca44eab481981ffb8c440))
+
 ## [1.5.0](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-types-v1.4.0...jsonrpc-types-v1.5.0) (2025-11-25)
 
 
