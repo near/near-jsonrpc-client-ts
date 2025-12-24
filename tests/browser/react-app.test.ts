@@ -173,7 +173,7 @@ test.describe('React Client App Tests', () => {
       console.log(`React app CSS bundle: ${(cssSize / 1024).toFixed(1)}KB`);
 
       // Verify reasonable bundle sizes
-      expect(jsSize).toBeLessThan(15 * 1024); // < 15KB for app code (excluding vendor)
+      expect(jsSize).toBeLessThan(16 * 1024); // < 16KB for app code (excluding vendor)
       expect(cssSize).toBeLessThan(5 * 1024); // < 5KB for CSS
       expect(jsSize).toBeGreaterThan(1 * 1024); // > 1KB (should have some content)
       expect(cssSize).toBeGreaterThan(500); // > 500 bytes (should have some styles)

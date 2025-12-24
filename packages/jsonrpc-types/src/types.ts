@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-11-25T06:05:40.524Z
+// Generated on: 2025-12-24T06:05:58.038Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -328,6 +328,11 @@ export type DurationAsStdSchemaProvider = z.infer<
   ReturnType<typeof schemas.DurationAsStdSchemaProviderSchema>
 >;
 
+/** Configuration for dynamic resharding feature */
+export type DynamicReshardingConfigView = z.infer<
+  ReturnType<typeof schemas.DynamicReshardingConfigViewSchema>
+>;
+
 /**
  * Epoch identifier -- wrapped hash, to make it easier to distinguish. EpochId
  * of epoch T is the hash of last block in T-2 EpochId of first two epochs is
@@ -345,6 +350,10 @@ export type ErrorWrapperFor_GenesisConfigError = z.infer<
 
 export type ErrorWrapperFor_RpcBlockError = z.infer<
   ReturnType<typeof schemas.ErrorWrapperFor_RpcBlockErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcCallFunctionError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcCallFunctionErrorSchema>
 >;
 
 export type ErrorWrapperFor_RpcChunkError = z.infer<
@@ -405,6 +414,34 @@ export type ErrorWrapperFor_RpcTransactionError = z.infer<
 
 export type ErrorWrapperFor_RpcValidatorError = z.infer<
   ReturnType<typeof schemas.ErrorWrapperFor_RpcValidatorErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcViewAccessKeyError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewAccessKeyErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcViewAccessKeyListError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewAccessKeyListErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcViewAccountError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewAccountErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcViewCodeError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewCodeErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcViewGasKeyError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewGasKeyErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcViewGasKeyListError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewGasKeyListErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcViewStateError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewStateErrorSchema>
 >;
 
 export type ExecutionMetadataView = z.infer<
@@ -562,6 +599,10 @@ export type InvalidTxError = z.infer<
   ReturnType<typeof schemas.InvalidTxErrorSchema>
 >;
 
+export type JsonRpcRequestFor_EXPERIMENTALCallFunction = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALCallFunctionSchema>
+>;
+
 export type JsonRpcRequestFor_EXPERIMENTALChanges = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALChangesSchema>
 >;
@@ -618,6 +659,36 @@ export type JsonRpcRequestFor_EXPERIMENTALValidatorsOrdered = z.infer<
   ReturnType<
     typeof schemas.JsonRpcRequestFor_EXPERIMENTALValidatorsOrderedSchema
   >
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALViewAccessKey = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewAccessKeySchema>
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALViewAccessKeyList = z.infer<
+  ReturnType<
+    typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewAccessKeyListSchema
+  >
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALViewAccount = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewAccountSchema>
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALViewCode = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewCodeSchema>
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALViewGasKey = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewGasKeySchema>
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALViewGasKeyList = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewGasKeyListSchema>
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALViewState = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewStateSchema>
 >;
 
 export type JsonRpcRequestForBlock = z.infer<
@@ -735,6 +806,13 @@ export type JsonRpcResponseFor_RpcBlockResponseAnd_RpcBlockError = z.infer<
   >
 >;
 
+export type JsonRpcResponseFor_RpcCallFunctionResponseAnd_RpcCallFunctionError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcCallFunctionResponseAnd_RpcCallFunctionErrorSchema
+    >
+  >;
+
 export type JsonRpcResponseFor_RpcChunkResponseAnd_RpcChunkError = z.infer<
   ReturnType<
     typeof schemas.JsonRpcResponseFor_RpcChunkResponseAnd_RpcChunkErrorSchema
@@ -850,6 +928,55 @@ export type JsonRpcResponseFor_RpcValidatorResponseAnd_RpcValidatorError =
     >
   >;
 
+export type JsonRpcResponseFor_RpcViewAccessKeyListResponseAnd_RpcViewAccessKeyListError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcViewAccessKeyListResponseAnd_RpcViewAccessKeyListErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcViewAccessKeyResponseAnd_RpcViewAccessKeyError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcViewAccessKeyResponseAnd_RpcViewAccessKeyErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcViewAccountResponseAnd_RpcViewAccountError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcViewAccountResponseAnd_RpcViewAccountErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcViewStateResponseAnd_RpcViewStateError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcViewStateResponseAnd_RpcViewStateErrorSchema
+    >
+  >;
+
 /**
  * Information about a Producer: its account name, peer_id and a list of
  * connected peers that the node can use to send message for this producer.
@@ -961,6 +1088,19 @@ export type RpcBlockRequest = z.infer<
 
 export type RpcBlockResponse = z.infer<
   ReturnType<typeof schemas.RpcBlockResponseSchema>
+>;
+
+export type RpcCallFunctionError = z.infer<
+  ReturnType<typeof schemas.RpcCallFunctionErrorSchema>
+>;
+
+export type RpcCallFunctionRequest = z.infer<
+  ReturnType<typeof schemas.RpcCallFunctionRequestSchema>
+>;
+
+/** A result returned by contract method */
+export type RpcCallFunctionResponse = z.infer<
+  ReturnType<typeof schemas.RpcCallFunctionResponseSchema>
 >;
 
 export type RpcChunkError = z.infer<
@@ -1201,6 +1341,95 @@ export type RpcValidatorsOrderedRequest = z.infer<
   ReturnType<typeof schemas.RpcValidatorsOrderedRequestSchema>
 >;
 
+export type RpcViewAccessKeyError = z.infer<
+  ReturnType<typeof schemas.RpcViewAccessKeyErrorSchema>
+>;
+
+export type RpcViewAccessKeyListError = z.infer<
+  ReturnType<typeof schemas.RpcViewAccessKeyListErrorSchema>
+>;
+
+export type RpcViewAccessKeyListRequest = z.infer<
+  ReturnType<typeof schemas.RpcViewAccessKeyListRequestSchema>
+>;
+
+/** Lists access keys */
+export type RpcViewAccessKeyListResponse = z.infer<
+  ReturnType<typeof schemas.RpcViewAccessKeyListResponseSchema>
+>;
+
+export type RpcViewAccessKeyRequest = z.infer<
+  ReturnType<typeof schemas.RpcViewAccessKeyRequestSchema>
+>;
+
+/** Describes access key permission scope and nonce. */
+export type RpcViewAccessKeyResponse = z.infer<
+  ReturnType<typeof schemas.RpcViewAccessKeyResponseSchema>
+>;
+
+export type RpcViewAccountError = z.infer<
+  ReturnType<typeof schemas.RpcViewAccountErrorSchema>
+>;
+
+export type RpcViewAccountRequest = z.infer<
+  ReturnType<typeof schemas.RpcViewAccountRequestSchema>
+>;
+
+/** A view of the account */
+export type RpcViewAccountResponse = z.infer<
+  ReturnType<typeof schemas.RpcViewAccountResponseSchema>
+>;
+
+export type RpcViewCodeError = z.infer<
+  ReturnType<typeof schemas.RpcViewCodeErrorSchema>
+>;
+
+export type RpcViewCodeRequest = z.infer<
+  ReturnType<typeof schemas.RpcViewCodeRequestSchema>
+>;
+
+/** A view of the contract code. */
+export type RpcViewCodeResponse = z.infer<
+  ReturnType<typeof schemas.RpcViewCodeResponseSchema>
+>;
+
+export type RpcViewGasKeyError = z.infer<
+  ReturnType<typeof schemas.RpcViewGasKeyErrorSchema>
+>;
+
+export type RpcViewGasKeyListError = z.infer<
+  ReturnType<typeof schemas.RpcViewGasKeyListErrorSchema>
+>;
+
+export type RpcViewGasKeyListRequest = z.infer<
+  ReturnType<typeof schemas.RpcViewGasKeyListRequestSchema>
+>;
+
+export type RpcViewGasKeyListResponse = z.infer<
+  ReturnType<typeof schemas.RpcViewGasKeyListResponseSchema>
+>;
+
+export type RpcViewGasKeyRequest = z.infer<
+  ReturnType<typeof schemas.RpcViewGasKeyRequestSchema>
+>;
+
+export type RpcViewGasKeyResponse = z.infer<
+  ReturnType<typeof schemas.RpcViewGasKeyResponseSchema>
+>;
+
+export type RpcViewStateError = z.infer<
+  ReturnType<typeof schemas.RpcViewStateErrorSchema>
+>;
+
+export type RpcViewStateRequest = z.infer<
+  ReturnType<typeof schemas.RpcViewStateRequestSchema>
+>;
+
+/** Resulting state values for a view state query request */
+export type RpcViewStateResponse = z.infer<
+  ReturnType<typeof schemas.RpcViewStateResponseSchema>
+>;
+
 /** View that preserves JSON format of the runtime config. */
 export type RuntimeConfigView = z.infer<
   ReturnType<typeof schemas.RuntimeConfigViewSchema>
@@ -1254,6 +1483,14 @@ export type ShardLayoutV1 = z.infer<
  */
 export type ShardLayoutV2 = z.infer<
   ReturnType<typeof schemas.ShardLayoutV2Schema>
+>;
+
+/**
+ * Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
+ * serde serialization.
+ */
+export type ShardLayoutV3 = z.infer<
+  ReturnType<typeof schemas.ShardLayoutV3Schema>
 >;
 
 /**
@@ -1449,6 +1686,22 @@ export type WitnessConfigView = z.infer<
 >;
 
 // Method-specific types
+/**
+ * Request parameters for EXPERIMENTAL_call_function: Calls a view function on
+ * a contract and returns the result.
+ */
+export type EXPERIMENTALCallFunctionRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALCallFunctionRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_call_function: Calls a view function on a
+ * contract and returns the result.
+ */
+export type EXPERIMENTALCallFunctionResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALCallFunctionResponseSchema>
+>;
+
 /**
  * Request parameters for EXPERIMENTAL_changes: [Deprecated] Returns changes
  * for a given account, contract or contract code for given block height or
@@ -1663,6 +1916,118 @@ export type EXPERIMENTALValidatorsOrderedRequest = z.infer<
  */
 export type EXPERIMENTALValidatorsOrderedResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALValidatorsOrderedResponseSchema>
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_view_access_key: Returns information
+ * about a single access key for given account.
+ */
+export type EXPERIMENTALViewAccessKeyRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewAccessKeyRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_view_access_key: Returns information about a
+ * single access key for given account.
+ */
+export type EXPERIMENTALViewAccessKeyResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewAccessKeyResponseSchema>
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_view_access_key_list: Returns all
+ * access keys for a given account.
+ */
+export type EXPERIMENTALViewAccessKeyListRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewAccessKeyListRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_view_access_key_list: Returns all access
+ * keys for a given account.
+ */
+export type EXPERIMENTALViewAccessKeyListResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewAccessKeyListResponseSchema>
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_view_account: Returns information about
+ * an account for given account_id.
+ */
+export type EXPERIMENTALViewAccountRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewAccountRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_view_account: Returns information about an
+ * account for given account_id.
+ */
+export type EXPERIMENTALViewAccountResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewAccountResponseSchema>
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_view_code: Returns the contract code
+ * (Wasm binary) deployed to the account.
+ */
+export type EXPERIMENTALViewCodeRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewCodeRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_view_code: Returns the contract code (Wasm
+ * binary) deployed to the account.
+ */
+export type EXPERIMENTALViewCodeResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewCodeResponseSchema>
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_view_gas_key: Returns information about
+ * a single gas key for given account.
+ */
+export type EXPERIMENTALViewGasKeyRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_view_gas_key: Returns information about a
+ * single gas key for given account.
+ */
+export type EXPERIMENTALViewGasKeyResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyResponseSchema>
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_view_gas_key_list: Returns all gas keys
+ * for a given account.
+ */
+export type EXPERIMENTALViewGasKeyListRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyListRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_view_gas_key_list: Returns all gas keys for
+ * a given account.
+ */
+export type EXPERIMENTALViewGasKeyListResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyListResponseSchema>
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_view_state: Returns the state
+ * (key-value pairs) of a contract based on the key prefix.
+ */
+export type EXPERIMENTALViewStateRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewStateRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_view_state: Returns the state (key-value
+ * pairs) of a contract based on the key prefix.
+ */
+export type EXPERIMENTALViewStateResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALViewStateResponseSchema>
 >;
 
 /** Request parameters for block: Returns block details for given height or hash */

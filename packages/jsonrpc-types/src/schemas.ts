@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-11-25T06:05:40.535Z
+// Generated on: 2025-12-24T06:05:58.049Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -915,6 +915,15 @@ export const DurationAsStdSchemaProviderSchema = () =>
     secs: z.number(),
   });
 
+// Configuration for dynamic resharding feature
+export const DynamicReshardingConfigViewSchema = () =>
+  z.object({
+    maxNumberOfShards: z.number(),
+    memoryUsageThreshold: z.number(),
+    minChildMemoryUsage: z.number(),
+    minEpochsBetweenResharding: z.number(),
+  });
+
 //
 // Epoch identifier -- wrapped hash, to make it easier to distinguish. EpochId
 // of epoch T is the hash of last block in T-2 EpochId of first two epochs is
@@ -956,6 +965,22 @@ export const ErrorWrapperFor_RpcBlockErrorSchema = () =>
     }),
     z.object({
       cause: z.lazy(() => RpcBlockErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcCallFunctionErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcCallFunctionErrorSchema()),
       name: z.enum(['HANDLER_ERROR']),
     }),
     z.object({
@@ -1196,6 +1221,118 @@ export const ErrorWrapperFor_RpcValidatorErrorSchema = () =>
     }),
     z.object({
       cause: z.lazy(() => RpcValidatorErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcViewAccessKeyErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcViewAccessKeyErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcViewAccessKeyListErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcViewAccessKeyListErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcViewAccountErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcViewAccountErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcViewCodeErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcViewCodeErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcViewGasKeyErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcViewGasKeyErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcViewGasKeyListErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcViewGasKeyListErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcViewStateErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcViewStateErrorSchema()),
       name: z.enum(['HANDLER_ERROR']),
     }),
     z.object({
@@ -1587,7 +1724,14 @@ export const GlobalContractIdentifierSchema = () =>
   ]);
 
 export const GlobalContractIdentifierViewSchema = () =>
-  z.union([z.lazy(() => CryptoHashSchema()), z.lazy(() => AccountIdSchema())]);
+  z.union([
+    z.object({
+      hash: z.lazy(() => CryptoHashSchema()),
+    }),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+    }),
+  ]);
 
 export const HostErrorSchema = () =>
   z.union([
@@ -1829,6 +1973,14 @@ export const InvalidTxErrorSchema = () =>
     }),
   ]);
 
+export const JsonRpcRequestFor_EXPERIMENTALCallFunctionSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_call_function']),
+    params: z.lazy(() => RpcCallFunctionRequestSchema()),
+  });
+
 export const JsonRpcRequestFor_EXPERIMENTALChangesSchema = () =>
   z.object({
     id: z.string(),
@@ -1923,6 +2075,62 @@ export const JsonRpcRequestFor_EXPERIMENTALValidatorsOrderedSchema = () =>
     jsonrpc: z.string(),
     method: z.enum(['EXPERIMENTAL_validators_ordered']),
     params: z.lazy(() => RpcValidatorsOrderedRequestSchema()),
+  });
+
+export const JsonRpcRequestFor_EXPERIMENTALViewAccessKeySchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_view_access_key']),
+    params: z.lazy(() => RpcViewAccessKeyRequestSchema()),
+  });
+
+export const JsonRpcRequestFor_EXPERIMENTALViewAccessKeyListSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_view_access_key_list']),
+    params: z.lazy(() => RpcViewAccessKeyListRequestSchema()),
+  });
+
+export const JsonRpcRequestFor_EXPERIMENTALViewAccountSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_view_account']),
+    params: z.lazy(() => RpcViewAccountRequestSchema()),
+  });
+
+export const JsonRpcRequestFor_EXPERIMENTALViewCodeSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_view_code']),
+    params: z.lazy(() => RpcViewCodeRequestSchema()),
+  });
+
+export const JsonRpcRequestFor_EXPERIMENTALViewGasKeySchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_view_gas_key']),
+    params: z.lazy(() => RpcViewGasKeyRequestSchema()),
+  });
+
+export const JsonRpcRequestFor_EXPERIMENTALViewGasKeyListSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_view_gas_key_list']),
+    params: z.lazy(() => RpcViewGasKeyListRequestSchema()),
+  });
+
+export const JsonRpcRequestFor_EXPERIMENTALViewStateSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_view_state']),
+    params: z.lazy(() => RpcViewStateRequestSchema()),
   });
 
 export const JsonRpcRequestForBlockSchema = () =>
@@ -2178,6 +2386,23 @@ export const JsonRpcResponseFor_RpcBlockResponseAnd_RpcBlockErrorSchema = () =>
       jsonrpc: z.string(),
     })
   );
+
+export const JsonRpcResponseFor_RpcCallFunctionResponseAnd_RpcCallFunctionErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcCallFunctionResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcCallFunctionErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
 
 export const JsonRpcResponseFor_RpcChunkResponseAnd_RpcChunkErrorSchema = () =>
   z.intersection(
@@ -2468,6 +2693,127 @@ export const JsonRpcResponseFor_RpcValidatorResponseAnd_RpcValidatorErrorSchema 
       })
     );
 
+export const JsonRpcResponseFor_RpcViewAccessKeyListResponseAnd_RpcViewAccessKeyListErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcViewAccessKeyListResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() =>
+            ErrorWrapperFor_RpcViewAccessKeyListErrorSchema()
+          ),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcViewAccessKeyResponseAnd_RpcViewAccessKeyErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcViewAccessKeyResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcViewAccessKeyErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcViewAccountResponseAnd_RpcViewAccountErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcViewAccountResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcViewAccountErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcViewCodeResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcViewCodeErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcViewGasKeyListResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcViewGasKeyListErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcViewGasKeyResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcViewGasKeyErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcViewStateResponseAnd_RpcViewStateErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcViewStateResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcViewStateErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
 //
 // Information about a Producer: its account name, peer_id and a list of
 // connected peers that the node can use to send message for this producer.
@@ -2707,6 +3053,9 @@ export const ReceiptEnumViewSchema = () =>
         inputDataIds: z.array(z.lazy(() => CryptoHashSchema())),
         isPromiseYield: z.optional(z.boolean()),
         outputDataReceivers: z.array(z.lazy(() => DataReceiverViewSchema())),
+        refundTo: z.optional(
+          z.union([z.lazy(() => AccountIdSchema()), z.null()])
+        ),
         signerId: z.lazy(() => AccountIdSchema()),
         signerPublicKey: z.lazy(() => PublicKeySchema()),
       }),
@@ -2825,6 +3174,83 @@ export const RpcBlockResponseSchema = () =>
     header: z.lazy(() => BlockHeaderViewSchema()),
   });
 
+export const RpcCallFunctionErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        contractAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['NO_CONTRACT_CODE']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        vmError: z.lazy(() => FunctionCallErrorSchema()),
+      }),
+      name: z.enum(['CONTRACT_EXECUTION_ERROR']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcCallFunctionRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+    ]),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+      argsBase64: z.lazy(() => FunctionArgsSchema()),
+      methodName: z.string(),
+    })
+  );
+
+// A result returned by contract method
+export const RpcCallFunctionResponseSchema = () =>
+  z.object({
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    blockHeight: z.number(),
+    logs: z.array(z.string()),
+    result: z.array(z.number()),
+  });
+
 export const RpcChunkErrorSchema = () =>
   z.union([
     z.object({
@@ -2895,13 +3321,13 @@ export const RpcClientConfigResponseSchema = () =>
     chunkRequestRetryPeriod: z.optional(z.array(z.number())),
     chunkValidationThreads: z.optional(z.number()),
     chunkWaitMult: z.optional(z.array(z.number())),
+    chunksCacheHeightHorizon: z.optional(z.number()),
     clientBackgroundMigrationThreads: z.optional(z.number()),
     cloudArchivalWriter: z.optional(
       z.union([z.lazy(() => CloudArchivalWriterConfigSchema()), z.null()])
     ),
     disableTxRouting: z.optional(z.boolean()),
     doomslugStepPeriod: z.optional(z.array(z.number())),
-    dynamicReshardingDryRun: z.optional(z.boolean()),
     enableEarlyPrepareTransactions: z.optional(z.boolean()),
     enableMultilineLogging: z.optional(z.boolean()),
     enableStatisticsExport: z.optional(z.boolean()),
@@ -3322,6 +3748,7 @@ export const RpcQueryErrorSchema = () =>
       info: z.object({
         blockHash: z.lazy(() => CryptoHashSchema()),
         blockHeight: z.number(),
+        error: z.lazy(() => FunctionCallErrorSchema()),
         vmError: z.string(),
       }),
       name: z.enum(['CONTRACT_EXECUTION_ERROR']),
@@ -4128,6 +4555,462 @@ export const RpcValidatorsOrderedRequestSchema = () =>
     blockId: z.optional(z.union([z.lazy(() => BlockIdSchema()), z.null()])),
   });
 
+export const RpcViewAccessKeyErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCESS_KEY']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcViewAccessKeyListErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcViewAccessKeyListRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+    ]),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+    })
+  );
+
+// Lists access keys
+export const RpcViewAccessKeyListResponseSchema = () =>
+  z.object({
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    blockHeight: z.number(),
+    keys: z.array(z.lazy(() => AccessKeyInfoViewSchema())),
+  });
+
+export const RpcViewAccessKeyRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+    ]),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+      publicKey: z.lazy(() => PublicKeySchema()),
+    })
+  );
+
+// Describes access key permission scope and nonce.
+export const RpcViewAccessKeyResponseSchema = () =>
+  z.object({
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    blockHeight: z.number(),
+    nonce: z.number(),
+    permission: z.lazy(() => AccessKeyPermissionViewSchema()),
+  });
+
+export const RpcViewAccountErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcViewAccountRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+    ]),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+    })
+  );
+
+// A view of the account
+export const RpcViewAccountResponseSchema = () =>
+  z.object({
+    amount: z.lazy(() => NearTokenSchema()),
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    blockHeight: z.number(),
+    codeHash: z.lazy(() => CryptoHashSchema()),
+    globalContractAccountId: z.optional(
+      z.union([z.lazy(() => AccountIdSchema()), z.null()])
+    ),
+    globalContractHash: z.optional(
+      z.union([z.lazy(() => CryptoHashSchema()), z.null()])
+    ),
+    locked: z.lazy(() => NearTokenSchema()),
+    storagePaidAt: z.optional(z.number()),
+    storageUsage: z.number(),
+  });
+
+export const RpcViewCodeErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        contractAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['NO_CONTRACT_CODE']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcViewCodeRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+    ]),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+    })
+  );
+
+// A view of the contract code.
+export const RpcViewCodeResponseSchema = () =>
+  z.object({
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    blockHeight: z.number(),
+    codeBase64: z.string(),
+    hash: z.lazy(() => CryptoHashSchema()),
+  });
+
+export const RpcViewGasKeyErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+      name: z.enum(['UNKNOWN_GAS_KEY']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcViewGasKeyListErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcViewGasKeyListRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+    ]),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+    })
+  );
+
+export const RpcViewGasKeyListResponseSchema = () =>
+  z.object({
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    blockHeight: z.number(),
+    keys: z.array(z.lazy(() => GasKeyInfoViewSchema())),
+  });
+
+export const RpcViewGasKeyRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+    ]),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+      publicKey: z.lazy(() => PublicKeySchema()),
+    })
+  );
+
+export const RpcViewGasKeyResponseSchema = () =>
+  z.object({
+    balance: z.lazy(() => NearTokenSchema()),
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    blockHeight: z.number(),
+    nonces: z.array(z.number()),
+    numNonces: z.number(),
+    permission: z.lazy(() => AccessKeyPermissionViewSchema()),
+  });
+
+export const RpcViewStateErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        blockReference: z.lazy(() => BlockReferenceSchema()),
+      }),
+      name: z.enum(['UNKNOWN_BLOCK']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['INVALID_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        requestedAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['UNKNOWN_ACCOUNT']),
+    }),
+    z.object({
+      info: z.object({
+        blockHash: z.lazy(() => CryptoHashSchema()),
+        blockHeight: z.number(),
+        contractAccountId: z.lazy(() => AccountIdSchema()),
+      }),
+      name: z.enum(['TOO_LARGE_CONTRACT_STATE']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcViewStateRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        blockId: z.lazy(() => BlockIdSchema()),
+      }),
+      z.object({
+        finality: z.lazy(() => FinalitySchema()),
+      }),
+      z.object({
+        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
+      }),
+    ]),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+      includeProof: z.optional(z.boolean()),
+      prefixBase64: z.lazy(() => StoreKeySchema()),
+    })
+  );
+
+// Resulting state values for a view state query request
+export const RpcViewStateResponseSchema = () =>
+  z.object({
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    blockHeight: z.number(),
+    proof: z.optional(z.array(z.string())),
+    values: z.array(z.lazy(() => StateItemSchema())),
+  });
+
 // View that preserves JSON format of the runtime config.
 export const RuntimeConfigViewSchema = () =>
   z.object({
@@ -4136,6 +5019,9 @@ export const RuntimeConfigViewSchema = () =>
     ),
     congestionControlConfig: z.optional(
       z.lazy(() => CongestionControlConfigViewSchema())
+    ),
+    dynamicReshardingConfig: z.optional(
+      z.lazy(() => DynamicReshardingConfigViewSchema())
     ),
     storageAmountPerByte: z.optional(z.lazy(() => NearTokenSchema())),
     transactionCosts: z.optional(z.lazy(() => RuntimeFeesConfigViewSchema())),
@@ -4190,6 +5076,9 @@ export const ShardLayoutSchema = () =>
     }),
     z.object({
       V2: z.lazy(() => ShardLayoutV2Schema()),
+    }),
+    z.object({
+      V3: z.lazy(() => ShardLayoutV3Schema()),
     }),
   ]);
 
@@ -4259,6 +5148,22 @@ export const ShardLayoutV2Schema = () =>
       ])
     ),
     version: z.number(),
+  });
+
+//
+// Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
+// serde serialization.
+
+export const ShardLayoutV3Schema = () =>
+  z.object({
+    boundaryAccounts: z.array(z.lazy(() => AccountIdSchema())),
+    idToIndexMap: z.record(z.string(), z.number()),
+    lastSplit: z.lazy(() => ShardIdSchema()),
+    shardIds: z.array(z.lazy(() => ShardIdSchema())),
+    shardsSplitMap: z.record(
+      z.string(),
+      z.array(z.lazy(() => ShardIdSchema()))
+    ),
   });
 
 //
@@ -4785,6 +5690,22 @@ export const WitnessConfigViewSchema = () =>
 
 // Method-specific schemas
 //
+// Request schema for EXPERIMENTAL_call_function: Calls a view function on a
+// contract and returns the result.
+
+export const EXPERIMENTALCallFunctionRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALCallFunctionSchema());
+
+//
+// Response schema for EXPERIMENTAL_call_function: Calls a view function on a
+// contract and returns the result.
+
+export const EXPERIMENTALCallFunctionResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcCallFunctionResponseAnd_RpcCallFunctionErrorSchema()
+  );
+
+//
 // Request schema for EXPERIMENTAL_changes: [Deprecated] Returns changes for a
 // given account, contract or contract code for given block height or hash.
 // Consider using changes instead.
@@ -4996,6 +5917,118 @@ export const EXPERIMENTALValidatorsOrderedRequestSchema = () =>
 export const EXPERIMENTALValidatorsOrderedResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_ArrayOf_ValidatorStakeViewAnd_RpcValidatorErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_view_access_key: Returns information about
+// a single access key for given account.
+
+export const EXPERIMENTALViewAccessKeyRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewAccessKeySchema());
+
+//
+// Response schema for EXPERIMENTAL_view_access_key: Returns information about
+// a single access key for given account.
+
+export const EXPERIMENTALViewAccessKeyResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcViewAccessKeyResponseAnd_RpcViewAccessKeyErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_view_access_key_list: Returns all access
+// keys for a given account.
+
+export const EXPERIMENTALViewAccessKeyListRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewAccessKeyListSchema());
+
+//
+// Response schema for EXPERIMENTAL_view_access_key_list: Returns all access
+// keys for a given account.
+
+export const EXPERIMENTALViewAccessKeyListResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcViewAccessKeyListResponseAnd_RpcViewAccessKeyListErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_view_account: Returns information about an
+// account for given account_id.
+
+export const EXPERIMENTALViewAccountRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewAccountSchema());
+
+//
+// Response schema for EXPERIMENTAL_view_account: Returns information about an
+// account for given account_id.
+
+export const EXPERIMENTALViewAccountResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcViewAccountResponseAnd_RpcViewAccountErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_view_code: Returns the contract code (Wasm
+// binary) deployed to the account.
+
+export const EXPERIMENTALViewCodeRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewCodeSchema());
+
+//
+// Response schema for EXPERIMENTAL_view_code: Returns the contract code (Wasm
+// binary) deployed to the account.
+
+export const EXPERIMENTALViewCodeResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_view_gas_key: Returns information about a
+// single gas key for given account.
+
+export const EXPERIMENTALViewGasKeyRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewGasKeySchema());
+
+//
+// Response schema for EXPERIMENTAL_view_gas_key: Returns information about a
+// single gas key for given account.
+
+export const EXPERIMENTALViewGasKeyResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_view_gas_key_list: Returns all gas keys for
+// a given account.
+
+export const EXPERIMENTALViewGasKeyListRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewGasKeyListSchema());
+
+//
+// Response schema for EXPERIMENTAL_view_gas_key_list: Returns all gas keys
+// for a given account.
+
+export const EXPERIMENTALViewGasKeyListResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_view_state: Returns the state (key-value
+// pairs) of a contract based on the key prefix.
+
+export const EXPERIMENTALViewStateRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewStateSchema());
+
+//
+// Response schema for EXPERIMENTAL_view_state: Returns the state (key-value
+// pairs) of a contract based on the key prefix.
+
+export const EXPERIMENTALViewStateResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcViewStateResponseAnd_RpcViewStateErrorSchema()
   );
 
 // Request schema for block: Returns block details for given height or hash
@@ -5307,6 +6340,10 @@ export const VALIDATION_SCHEMA_MAP: Record<
     responseSchema?: () => any;
   }
 > = {
+  EXPERIMENTAL_call_function: {
+    requestSchema: EXPERIMENTALCallFunctionRequestSchema,
+    responseSchema: EXPERIMENTALCallFunctionResponseSchema,
+  },
   EXPERIMENTAL_changes: {
     requestSchema: EXPERIMENTALChangesRequestSchema,
     responseSchema: EXPERIMENTALChangesResponseSchema,
@@ -5354,6 +6391,34 @@ export const VALIDATION_SCHEMA_MAP: Record<
   EXPERIMENTAL_validators_ordered: {
     requestSchema: EXPERIMENTALValidatorsOrderedRequestSchema,
     responseSchema: EXPERIMENTALValidatorsOrderedResponseSchema,
+  },
+  EXPERIMENTAL_view_access_key: {
+    requestSchema: EXPERIMENTALViewAccessKeyRequestSchema,
+    responseSchema: EXPERIMENTALViewAccessKeyResponseSchema,
+  },
+  EXPERIMENTAL_view_access_key_list: {
+    requestSchema: EXPERIMENTALViewAccessKeyListRequestSchema,
+    responseSchema: EXPERIMENTALViewAccessKeyListResponseSchema,
+  },
+  EXPERIMENTAL_view_account: {
+    requestSchema: EXPERIMENTALViewAccountRequestSchema,
+    responseSchema: EXPERIMENTALViewAccountResponseSchema,
+  },
+  EXPERIMENTAL_view_code: {
+    requestSchema: EXPERIMENTALViewCodeRequestSchema,
+    responseSchema: EXPERIMENTALViewCodeResponseSchema,
+  },
+  EXPERIMENTAL_view_gas_key: {
+    requestSchema: EXPERIMENTALViewGasKeyRequestSchema,
+    responseSchema: EXPERIMENTALViewGasKeyResponseSchema,
+  },
+  EXPERIMENTAL_view_gas_key_list: {
+    requestSchema: EXPERIMENTALViewGasKeyListRequestSchema,
+    responseSchema: EXPERIMENTALViewGasKeyListResponseSchema,
+  },
+  EXPERIMENTAL_view_state: {
+    requestSchema: EXPERIMENTALViewStateRequestSchema,
+    responseSchema: EXPERIMENTALViewStateResponseSchema,
   },
   block: {
     requestSchema: BlockRequestSchema,
@@ -5430,7 +6495,10 @@ export const VALIDATION_SCHEMA_MAP: Record<
   },
 };
 
-// Utility schemas
+// Base JSON-RPC utility schemas
+// These schemas are static utilities for the JSON-RPC 2.0 specification
+// They are not derived from the OpenAPI spec but are standard JSON-RPC primitives
+
 export const JsonRpcRequestSchema = () =>
   z.object({
     jsonrpc: z.literal('2.0'),
@@ -5446,10 +6514,22 @@ export const JsonRpcErrorSchema = () =>
     data: z.optional(z.unknown()),
   });
 
+// JSON-RPC 2.0 compliant response schema
+// Enforces exactly one of 'result' or 'error' must be present (JSON-RPC 2.0 spec)
+// Uses .check() with z.refine() to validate the constraint after parsing
 export const JsonRpcResponseSchema = () =>
-  z.object({
-    jsonrpc: z.literal('2.0'),
-    id: z.string(),
-    result: z.optional(z.unknown()),
-    error: z.optional(JsonRpcErrorSchema()),
-  });
+  z
+    .object({
+      jsonrpc: z.literal('2.0'),
+      id: z.string(),
+      result: z.optional(z.unknown()),
+      error: z.optional(JsonRpcErrorSchema()),
+    })
+    .check(
+      z.refine(val => {
+        const hasError = val.error !== undefined;
+        const hasResult = val.result !== undefined;
+        // Exactly one of error or result must be present (not both, not neither)
+        return (hasError && !hasResult) || (!hasError && hasResult);
+      })
+    );
