@@ -1,5 +1,5 @@
 // Auto-generated method mapping from NEAR OpenAPI spec
-// Generated on: 2025-12-24T06:05:58.049Z
+// Generated on: 2026-01-18T06:05:21.184Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 // Maps OpenAPI paths to actual JSON-RPC method names
@@ -22,8 +22,6 @@ export const PATH_TO_METHOD_MAP = {
   '/EXPERIMENTAL_view_access_key_list': 'EXPERIMENTAL_view_access_key_list',
   '/EXPERIMENTAL_view_account': 'EXPERIMENTAL_view_account',
   '/EXPERIMENTAL_view_code': 'EXPERIMENTAL_view_code',
-  '/EXPERIMENTAL_view_gas_key': 'EXPERIMENTAL_view_gas_key',
-  '/EXPERIMENTAL_view_gas_key_list': 'EXPERIMENTAL_view_gas_key_list',
   '/EXPERIMENTAL_view_state': 'EXPERIMENTAL_view_state',
   '/block': 'block',
   '/block_effects': 'block_effects',

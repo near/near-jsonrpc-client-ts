@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-12-24T06:05:58.038Z
+// Generated on: 2026-01-18T06:05:21.174Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -113,10 +113,6 @@ export type ActionView = z.infer<ReturnType<typeof schemas.ActionViewSchema>>;
 /** Describes the error for validating a list of actions. */
 export type ActionsValidationError = z.infer<
   ReturnType<typeof schemas.ActionsValidationErrorSchema>
->;
-
-export type AddGasKeyAction = z.infer<
-  ReturnType<typeof schemas.AddGasKeyActionSchema>
 >;
 
 /** An action that adds key with public key associated */
@@ -285,10 +281,6 @@ export type DeleteAccountAction = z.infer<
   ReturnType<typeof schemas.DeleteAccountActionSchema>
 >;
 
-export type DeleteGasKeyAction = z.infer<
-  ReturnType<typeof schemas.DeleteGasKeyActionSchema>
->;
-
 export type DeleteKeyAction = z.infer<
   ReturnType<typeof schemas.DeleteKeyActionSchema>
 >;
@@ -328,7 +320,10 @@ export type DurationAsStdSchemaProvider = z.infer<
   ReturnType<typeof schemas.DurationAsStdSchemaProviderSchema>
 >;
 
-/** Configuration for dynamic resharding feature */
+/**
+ * Configuration for dynamic resharding feature See
+ * [`DynamicReshardingConfig`] for more details.
+ */
 export type DynamicReshardingConfigView = z.infer<
   ReturnType<typeof schemas.DynamicReshardingConfigViewSchema>
 >;
@@ -430,14 +425,6 @@ export type ErrorWrapperFor_RpcViewAccountError = z.infer<
 
 export type ErrorWrapperFor_RpcViewCodeError = z.infer<
   ReturnType<typeof schemas.ErrorWrapperFor_RpcViewCodeErrorSchema>
->;
-
-export type ErrorWrapperFor_RpcViewGasKeyError = z.infer<
-  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewGasKeyErrorSchema>
->;
-
-export type ErrorWrapperFor_RpcViewGasKeyListError = z.infer<
-  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewGasKeyListErrorSchema>
 >;
 
 export type ErrorWrapperFor_RpcViewStateError = z.infer<
@@ -544,21 +531,6 @@ export type FunctionCallPermission = z.infer<
 
 /** Configuration for garbage collection. */
 export type GCConfig = z.infer<ReturnType<typeof schemas.GCConfigSchema>>;
-
-/**
- * Gas key is like an access key, except it stores a balance separately, and
- * transactions signed with it deduct their cost from the gas key balance
- * instead of the account balance.
- */
-export type GasKey = z.infer<ReturnType<typeof schemas.GasKeySchema>>;
-
-export type GasKeyInfoView = z.infer<
-  ReturnType<typeof schemas.GasKeyInfoViewSchema>
->;
-
-export type GasKeyList = z.infer<ReturnType<typeof schemas.GasKeyListSchema>>;
-
-export type GasKeyView = z.infer<ReturnType<typeof schemas.GasKeyViewSchema>>;
 
 export type GenesisConfig = z.infer<
   ReturnType<typeof schemas.GenesisConfigSchema>
@@ -677,14 +649,6 @@ export type JsonRpcRequestFor_EXPERIMENTALViewAccount = z.infer<
 
 export type JsonRpcRequestFor_EXPERIMENTALViewCode = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewCodeSchema>
->;
-
-export type JsonRpcRequestFor_EXPERIMENTALViewGasKey = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewGasKeySchema>
->;
-
-export type JsonRpcRequestFor_EXPERIMENTALViewGasKeyList = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewGasKeyListSchema>
 >;
 
 export type JsonRpcRequestFor_EXPERIMENTALViewState = z.infer<
@@ -953,20 +917,6 @@ export type JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeError =
   z.infer<
     ReturnType<
       typeof schemas.JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeErrorSchema
-    >
-  >;
-
-export type JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListErrorSchema
-    >
-  >;
-
-export type JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyErrorSchema
     >
   >;
 
@@ -1393,30 +1343,6 @@ export type RpcViewCodeResponse = z.infer<
   ReturnType<typeof schemas.RpcViewCodeResponseSchema>
 >;
 
-export type RpcViewGasKeyError = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyErrorSchema>
->;
-
-export type RpcViewGasKeyListError = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyListErrorSchema>
->;
-
-export type RpcViewGasKeyListRequest = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyListRequestSchema>
->;
-
-export type RpcViewGasKeyListResponse = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyListResponseSchema>
->;
-
-export type RpcViewGasKeyRequest = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyRequestSchema>
->;
-
-export type RpcViewGasKeyResponse = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyResponseSchema>
->;
-
 export type RpcViewStateError = z.infer<
   ReturnType<typeof schemas.RpcViewStateErrorSchema>
 >;
@@ -1622,10 +1548,6 @@ export type TrackedShardsConfig = z.infer<
 
 export type TransferAction = z.infer<
   ReturnType<typeof schemas.TransferActionSchema>
->;
-
-export type TransferToGasKeyAction = z.infer<
-  ReturnType<typeof schemas.TransferToGasKeyActionSchema>
 >;
 
 /** Error returned in the ExecutionOutcome in case of failure */
@@ -1980,38 +1902,6 @@ export type EXPERIMENTALViewCodeRequest = z.infer<
  */
 export type EXPERIMENTALViewCodeResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALViewCodeResponseSchema>
->;
-
-/**
- * Request parameters for EXPERIMENTAL_view_gas_key: Returns information about
- * a single gas key for given account.
- */
-export type EXPERIMENTALViewGasKeyRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyRequestSchema>
->;
-
-/**
- * Response type for EXPERIMENTAL_view_gas_key: Returns information about a
- * single gas key for given account.
- */
-export type EXPERIMENTALViewGasKeyResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyResponseSchema>
->;
-
-/**
- * Request parameters for EXPERIMENTAL_view_gas_key_list: Returns all gas keys
- * for a given account.
- */
-export type EXPERIMENTALViewGasKeyListRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyListRequestSchema>
->;
-
-/**
- * Response type for EXPERIMENTAL_view_gas_key_list: Returns all gas keys for
- * a given account.
- */
-export type EXPERIMENTALViewGasKeyListResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyListResponseSchema>
 >;
 
 /**

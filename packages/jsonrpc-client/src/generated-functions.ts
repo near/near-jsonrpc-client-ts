@@ -1,5 +1,5 @@
 // Auto-generated exports for tree-shakable functions
-// Generated at: 2025-12-24T06:06:08.511Z
+// Generated at: 2026-01-18T06:05:30.752Z
 // Do not edit manually - changes will be overwritten
 
 export {
@@ -20,8 +20,6 @@ export {
   experimentalViewAccessKeyList,
   experimentalViewAccount,
   experimentalViewCode,
-  experimentalViewGasKey,
-  experimentalViewGasKeyList,
   experimentalViewState,
   block,
   blockEffects,
