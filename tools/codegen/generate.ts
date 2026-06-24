@@ -103,6 +103,14 @@ function formatComment(description: string): string {
   return `/**\n${lines.map(line => ` * ${line}`).join('\n')}\n */\n`;
 }
 
+// A match-anything member ({} in the spec -> z.unknown()) collapses a union
+// to `unknown`, destroying type narrowing. Drop such members when the union
+// has other, meaningful options.
+function dropMatchAnyMembers(options: string[]): string[] {
+  const meaningful = options.filter(opt => opt !== 'z.unknown()');
+  return meaningful.length > 0 ? meaningful : options;
+}
+
 function generateZodSchema(
   schema: Schema,
   schemas: Record<string, Schema>,
@@ -116,8 +124,8 @@ function generateZodSchema(
   }
 
   if (schema.oneOf) {
-    const options = schema.oneOf.map(s =>
-      generateZodSchema(s, schemas, depth + 1)
+    const options = dropMatchAnyMembers(
+      schema.oneOf.map(s => generateZodSchema(s, schemas, depth + 1))
     );
     let unionSchema: string;
     if (options.length === 1) {
@@ -161,8 +169,8 @@ function generateZodSchema(
   }
 
   if (schema.anyOf) {
-    const options = schema.anyOf.map(s =>
-      generateZodSchema(s, schemas, depth + 1)
+    const options = dropMatchAnyMembers(
+      schema.anyOf.map(s => generateZodSchema(s, schemas, depth + 1))
     );
     let unionSchema: string;
     if (options.length === 1) {

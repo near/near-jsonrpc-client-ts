@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2026-06-24T09:10:55.739Z
+// Generated on: 2026-06-24T09:26:08.375Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -4612,7 +4612,6 @@ export const RpcTransactionResponseSchema = () =>
     z.union([
       z.lazy(() => FinalExecutionOutcomeWithReceiptViewSchema()),
       z.lazy(() => FinalExecutionOutcomeViewSchema()),
-      z.unknown(),
     ]),
     z.object({
       finalExecutionStatus: z.lazy(() => TxExecutionStatusSchema()),
