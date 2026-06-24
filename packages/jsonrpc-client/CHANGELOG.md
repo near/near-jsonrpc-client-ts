@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.2](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.7.1...jsonrpc-client-v1.7.2) (2026-06-24)
+
+
+### Bug Fixes
+
+* Fixed release publihsing pipeline
+
+
 ## [1.7.1](https://github.com/near/near-jsonrpc-client-ts/compare/jsonrpc-client-v1.7.0...jsonrpc-client-v1.7.1) (2026-06-24)
 
 
