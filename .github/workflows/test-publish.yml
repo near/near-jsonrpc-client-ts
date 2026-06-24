@@ -103,7 +103,7 @@ jobs:
               "strict": true,
               "esModuleInterop": true,
               "skipLibCheck": true,
-              "moduleResolution": "node",
+              "moduleResolution": "bundler",
               "noEmit": true
             }
           }
