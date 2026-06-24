@@ -4,5 +4,5 @@ packages:
   - 'examples'
   - 'examples/*'
 allowBuilds:
-  esbuild: set this to true or false
-  secp256k1: set this to true or false
+  esbuild: true
+  secp256k1: true
