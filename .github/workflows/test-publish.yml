@@ -12,11 +12,11 @@ jobs:
   test-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
         with:
           version: 11
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: 'pnpm'
@@ -30,33 +30,33 @@ jobs:
       - name: Create package tarballs (dry-run)
         run: |
           echo "📦 Creating package tarballs exactly as they would be published..."
-          
+
           # Use pnpm pack which handles workspace dependencies automatically
           (cd packages/jsonrpc-types && pnpm pack)
           echo "✅ Created jsonrpc-types tarball"
-          
+
           (cd packages/jsonrpc-client && pnpm pack)
           echo "✅ Created jsonrpc-client tarball"
 
       - name: Test package installation from tarballs
         run: |
           echo "🧪 Testing package installation from tarballs..."
-          
+
           # Get the actual tarball filenames
           TYPES_TARBALL=$(ls packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz)
           CLIENT_TARBALL=$(ls packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz)
-          
+
           echo "Found tarballs:"
           echo "  - $TYPES_TARBALL"
           echo "  - $CLIENT_TARBALL"
-          
+
           # Create test directory
           mkdir -p test-install
-          
+
           # Install packages in test directory
           (
             cd test-install
-            
+
             # Create test package.json
             cat > package.json << EOF
           {
@@ -66,26 +66,26 @@ jobs:
             "dependencies": {}
           }
           EOF
-            
+
             # Install from tarballs
             npm install "../$TYPES_TARBALL"
             npm install "../$CLIENT_TARBALL"
           )
-          
+
           echo "✅ Packages installed successfully from tarballs"
 
       - name: Test TypeScript compilation
         run: |
           echo "🔍 Testing TypeScript compilation with installed packages..."
-          
+
           (
             cd test-install
-            
+
             # Create TypeScript test file
             cat > test.ts << 'EOF'
           import { NearRpcClient, block, status } from '@near-js/jsonrpc-client';
           import { RPC_METHODS, RpcBlockResponse } from '@near-js/jsonrpc-types';
-          
+
           // Using top-level await
           const client = new NearRpcClient('https://rpc.testnet.fastnear.com');
           const blockResult: RpcBlockResponse = await block(client, { finality: 'final' });
@@ -93,7 +93,7 @@ jobs:
           console.log('Block height:', blockResult.header.height);
           console.log('✅ TypeScript compilation and runtime test passed');
           EOF
-            
+
             # Create tsconfig.json
             cat > tsconfig.json << EOF
           {
@@ -108,78 +108,78 @@ jobs:
             }
           }
           EOF
-            
+
             # Install TypeScript and tsx for running TypeScript
             npm install --save-dev typescript @types/node tsx
-            
+
             # Type check
             npx tsc --noEmit
             echo "✅ TypeScript compilation successful"
-            
+
             # Actually run the TypeScript code to ensure it works
             echo ""
             echo "🚀 Running TypeScript code..."
             npx tsx test.ts
           )
-          
+
           echo "✅ TypeScript code executed successfully"
 
       - name: Verify package contents
         run: |
           echo "📋 Verifying package contents..."
-          
+
           # Get the actual tarball filenames
           TYPES_TARBALL=$(ls packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz)
           CLIENT_TARBALL=$(ls packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz)
-          
+
           # List tarball contents
           echo "📦 jsonrpc-types tarball contents:"
           tar -tzf "$TYPES_TARBALL" | head -20
-          
+
           echo ""
           echo "📦 jsonrpc-client tarball contents:"
           tar -tzf "$CLIENT_TARBALL" | head -20
-          
+
           # Verify no source files are included
           echo ""
           echo "🔍 Checking for source files (should not be in tarballs)..."
-          
+
           # Check for actual source files (not dist files)
           if tar -tzf "$TYPES_TARBALL" | grep -E "package/src/|package/__tests__/|\.test\.[jt]s$" > /dev/null; then
             echo "❌ ERROR: Found source or test files in jsonrpc-types tarball!"
             tar -tzf "$TYPES_TARBALL" | grep -E "package/src/|package/__tests__/|\.test\.[jt]s$" || true
             exit 1
           fi
-          
+
           if tar -tzf "$CLIENT_TARBALL" | grep -E "package/src/|package/__tests__/|\.test\.[jt]s$" > /dev/null; then
             echo "❌ ERROR: Found source or test files in jsonrpc-client tarball!"
             tar -tzf "$CLIENT_TARBALL" | grep -E "package/src/|package/__tests__/|\.test\.[jt]s$" || true
             exit 1
           fi
-          
+
           # Also check that test-related files aren't in dist
           if tar -tzf "$CLIENT_TARBALL" | grep -E "package/dist/.*__tests__" > /dev/null; then
             echo "⚠️  Warning: Found test-related files in dist folder"
             echo "   These files will increase package size unnecessarily:"
             tar -tzf "$CLIENT_TARBALL" | grep -E "package/dist/.*__tests__" || true
           fi
-          
+
           echo "✅ Package contents verified - only distribution files included"
 
       - name: Test package size
         run: |
           echo "📏 Checking package sizes..."
-          
+
           # Get the actual tarball filenames
           TYPES_TARBALL=$(ls packages/jsonrpc-types/near-js-jsonrpc-types-*.tgz)
           CLIENT_TARBALL=$(ls packages/jsonrpc-client/near-js-jsonrpc-client-*.tgz)
-          
+
           TYPES_SIZE=$(stat -c%s "$TYPES_TARBALL")
           CLIENT_SIZE=$(stat -c%s "$CLIENT_TARBALL")
-          
+
           echo "jsonrpc-types: $(($TYPES_SIZE / 1024))KB"
           echo "jsonrpc-client: $(($CLIENT_SIZE / 1024))KB"
-          
+
           # Warn if packages grow significantly beyond current sizes
           # Current sizes: types ~240KB, client ~65KB
           # Alert if they grow more than 50% beyond current size
@@ -187,10 +187,10 @@ jobs:
             echo "⚠️  Warning: jsonrpc-types package is larger than expected (>360KB)"
             echo "   Consider checking if unnecessary files were included"
           fi
-          
+
           if [ $CLIENT_SIZE -gt 102400 ]; then  # 100KB (65KB + ~50%)
             echo "⚠️  Warning: jsonrpc-client package is larger than expected (>100KB)"
             echo "   Consider checking if unnecessary files were included"
           fi
-          
+
           echo "✅ Package size check completed"
