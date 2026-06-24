@@ -18,10 +18,9 @@ const client = new NearRpcClient({
 // Example 1: Get current validators
 console.log('👥 Getting current epoch validators...');
 
-const currentValidators: RpcValidatorResponse = await validators(
-  client,
-  'latest'
-);
+const currentValidators: RpcValidatorResponse = await validators(client, {
+  latest: null,
+});
 
 console.log(
   `✅ Found ${currentValidators.currentValidators?.length || 0} current validators`
@@ -50,7 +49,7 @@ if (
 // Example 2: Get validators for a specific block
 console.log('\n🔍 Getting validators for a specific block...');
 
-const blockValidators = await validators(client, 'latest');
+const blockValidators = await validators(client, { latest: null });
 
 console.log(`✅ Validators at final block:`);
 console.log(

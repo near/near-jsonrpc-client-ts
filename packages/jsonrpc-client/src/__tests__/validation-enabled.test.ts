@@ -82,8 +82,8 @@ describe('RPC Methods with Validated Functions', () => {
     });
 
     it('should validate validators request and response', async () => {
-      // Use 'latest' string instead of object
-      const result = await validators(client, 'latest');
+      // Latest validators: spec uses the { latest: null } object form
+      const result = await validators(client, { latest: null });
 
       // Verify response structure
       expect(result).toHaveProperty('currentValidators');

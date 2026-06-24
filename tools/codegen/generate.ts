@@ -139,8 +139,8 @@ function generateZodSchema(
           const camelKey = snakeToCamel(key);
           let zodSchema = generateZodSchema(prop, schemas, depth + 1);
 
-          // Handle nullable fields
-          if (prop.nullable) {
+          // Handle nullable fields (avoid redundant z.union([z.null(), z.null()]))
+          if (prop.nullable && zodSchema !== 'z.null()') {
             zodSchema = `z.union([${zodSchema}, z.null()])`;
           }
 
@@ -184,8 +184,8 @@ function generateZodSchema(
           const camelKey = snakeToCamel(key);
           let zodSchema = generateZodSchema(prop, schemas, depth + 1);
 
-          // Handle nullable fields
-          if (prop.nullable) {
+          // Handle nullable fields (avoid redundant z.union([z.null(), z.null()]))
+          if (prop.nullable && zodSchema !== 'z.null()') {
             zodSchema = `z.union([${zodSchema}, z.null()])`;
           }
 
@@ -276,8 +276,8 @@ function generateZodSchema(
           const camelKey = snakeToCamel(key);
           let zodSchema = generateZodSchema(prop, schemas, depth + 1);
 
-          // Handle nullable fields
-          if (prop.nullable) {
+          // Handle nullable fields (avoid redundant z.union([z.null(), z.null()]))
+          if (prop.nullable && zodSchema !== 'z.null()') {
             zodSchema = `z.union([${zodSchema}, z.null()])`;
           }
 
@@ -296,7 +296,7 @@ function generateZodSchema(
   }
 
   // Apply nullable at the root level if needed
-  if (schema.nullable) {
+  if (schema.nullable && baseSchema !== 'z.null()') {
     return `z.union([${baseSchema}, z.null()])`;
   }
 

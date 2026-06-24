@@ -1,5 +1,5 @@
 // Auto-generated method mapping from NEAR OpenAPI spec
-// Generated on: 2025-12-24T06:05:58.049Z
+// Generated on: 2026-06-24T09:10:55.739Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 // Maps OpenAPI paths to actual JSON-RPC method names
@@ -15,6 +15,7 @@ export const PATH_TO_METHOD_MAP = {
   '/EXPERIMENTAL_maintenance_windows': 'EXPERIMENTAL_maintenance_windows',
   '/EXPERIMENTAL_protocol_config': 'EXPERIMENTAL_protocol_config',
   '/EXPERIMENTAL_receipt': 'EXPERIMENTAL_receipt',
+  '/EXPERIMENTAL_receipt_to_tx': 'EXPERIMENTAL_receipt_to_tx',
   '/EXPERIMENTAL_split_storage_info': 'EXPERIMENTAL_split_storage_info',
   '/EXPERIMENTAL_tx_status': 'EXPERIMENTAL_tx_status',
   '/EXPERIMENTAL_validators_ordered': 'EXPERIMENTAL_validators_ordered',
@@ -22,8 +23,6 @@ export const PATH_TO_METHOD_MAP = {
   '/EXPERIMENTAL_view_access_key_list': 'EXPERIMENTAL_view_access_key_list',
   '/EXPERIMENTAL_view_account': 'EXPERIMENTAL_view_account',
   '/EXPERIMENTAL_view_code': 'EXPERIMENTAL_view_code',
-  '/EXPERIMENTAL_view_gas_key': 'EXPERIMENTAL_view_gas_key',
-  '/EXPERIMENTAL_view_gas_key_list': 'EXPERIMENTAL_view_gas_key_list',
   '/EXPERIMENTAL_view_state': 'EXPERIMENTAL_view_state',
   '/block': 'block',
   '/block_effects': 'block_effects',
