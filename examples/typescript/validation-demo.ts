@@ -55,7 +55,7 @@ try {
     hash: blockResult.header.hash,
   });
 
-  const validatorsResult = await validators(client, 'latest');
+  const validatorsResult = await validators(client, { latest: null });
   console.log('✅ Validators call successful:', {
     validatorCount: validatorsResult.currentValidators.length,
     epochHeight: validatorsResult.epochHeight,

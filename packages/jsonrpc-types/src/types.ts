@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2025-12-24T06:05:58.038Z
+// Generated on: 2026-06-24T09:26:08.359Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -19,7 +19,13 @@ export type AccessKeyCreationConfigView = z.infer<
   ReturnType<typeof schemas.AccessKeyCreationConfigViewSchema>
 >;
 
-/** Describes information about an access key including the public key. */
+/**
+ * Describes information about an access key including its on-trie identifier.
+ * For ed25519/secp256k1 access keys the `public_key` field is the full public
+ * key (string form unchanged from before); for ML-DSA-65 access keys it is a
+ * `ml-dsa-65-hash:...` SHA3-256 digest (the full pubkey is not stored
+ * on-chain).
+ */
 export type AccessKeyInfoView = z.infer<
   ReturnType<typeof schemas.AccessKeyInfoViewSchema>
 >;
@@ -45,6 +51,21 @@ export type AccessKeyPermissionView = z.infer<
 /** Describes access key permission scope and nonce. */
 export type AccessKeyView = z.infer<
   ReturnType<typeof schemas.AccessKeyViewSchema>
+>;
+
+/**
+ * RPC view of a non-empty [`AccountContract`]. The `AccountContract::None`
+ * variant is represented externally as a JSON `null` via `Option`, so this
+ * enum only carries the three "contract is present" cases. Serializes as an
+ * externally-tagged object: - `Local(hash)` → `{"local": "<CryptoHash>"}` -
+ * `GlobalHash(hash)` → `{"global_hash": "<CryptoHash>"}` -
+ * `GlobalAccountId(id)` → `{"global_account_id": "<AccountId>"}` Mirrors
+ * [`AccountContract`] 1:1 (minus `None`) so consumers can preserve the
+ * distinction between a global-by-hash and global-by-account contract without
+ * descending into a nested identifier.
+ */
+export type AccountContractView = z.infer<
+  ReturnType<typeof schemas.AccountContractViewSchema>
 >;
 
 /** The structure describes configuration for creation of new accounts. */
@@ -113,10 +134,6 @@ export type ActionView = z.infer<ReturnType<typeof schemas.ActionViewSchema>>;
 /** Describes the error for validating a list of actions. */
 export type ActionsValidationError = z.infer<
   ReturnType<typeof schemas.ActionsValidationErrorSchema>
->;
-
-export type AddGasKeyAction = z.infer<
-  ReturnType<typeof schemas.AddGasKeyActionSchema>
 >;
 
 /** An action that adds key with public key associated */
@@ -281,12 +298,17 @@ export type DelegateAction = z.infer<
   ReturnType<typeof schemas.DelegateActionSchema>
 >;
 
-export type DeleteAccountAction = z.infer<
-  ReturnType<typeof schemas.DeleteAccountActionSchema>
+/**
+ * Delegate action with gas key support: `nonce` selects either the access
+ * key's nonce or one of a gas key's parallel nonces by index, mirroring
+ * `TransactionV1`.
+ */
+export type DelegateActionV2 = z.infer<
+  ReturnType<typeof schemas.DelegateActionV2Schema>
 >;
 
-export type DeleteGasKeyAction = z.infer<
-  ReturnType<typeof schemas.DeleteGasKeyActionSchema>
+export type DeleteAccountAction = z.infer<
+  ReturnType<typeof schemas.DeleteAccountActionSchema>
 >;
 
 export type DeleteKeyAction = z.infer<
@@ -301,6 +323,14 @@ export type DeployContractAction = z.infer<
 /** Deploy global contract action */
 export type DeployGlobalContractAction = z.infer<
   ReturnType<typeof schemas.DeployGlobalContractActionSchema>
+>;
+
+/**
+ * Reason why a gas key transaction failed at the deposit/account level. In
+ * these cases, gas is still charged from the gas key.
+ */
+export type DepositCostFailureReason = z.infer<
+  ReturnType<typeof schemas.DepositCostFailureReasonSchema>
 >;
 
 export type DetailedDebugStatus = z.infer<
@@ -326,11 +356,6 @@ export type DumpConfig = z.infer<ReturnType<typeof schemas.DumpConfigSchema>>;
 
 export type DurationAsStdSchemaProvider = z.infer<
   ReturnType<typeof schemas.DurationAsStdSchemaProviderSchema>
->;
-
-/** Configuration for dynamic resharding feature */
-export type DynamicReshardingConfigView = z.infer<
-  ReturnType<typeof schemas.DynamicReshardingConfigViewSchema>
 >;
 
 /**
@@ -396,6 +421,10 @@ export type ErrorWrapperFor_RpcReceiptError = z.infer<
   ReturnType<typeof schemas.ErrorWrapperFor_RpcReceiptErrorSchema>
 >;
 
+export type ErrorWrapperFor_RpcReceiptToTxError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcReceiptToTxErrorSchema>
+>;
+
 export type ErrorWrapperFor_RpcSplitStorageInfoError = z.infer<
   ReturnType<typeof schemas.ErrorWrapperFor_RpcSplitStorageInfoErrorSchema>
 >;
@@ -430,14 +459,6 @@ export type ErrorWrapperFor_RpcViewAccountError = z.infer<
 
 export type ErrorWrapperFor_RpcViewCodeError = z.infer<
   ReturnType<typeof schemas.ErrorWrapperFor_RpcViewCodeErrorSchema>
->;
-
-export type ErrorWrapperFor_RpcViewGasKeyError = z.infer<
-  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewGasKeyErrorSchema>
->;
-
-export type ErrorWrapperFor_RpcViewGasKeyListError = z.infer<
-  ReturnType<typeof schemas.ErrorWrapperFor_RpcViewGasKeyListErrorSchema>
 >;
 
 export type ErrorWrapperFor_RpcViewStateError = z.infer<
@@ -545,20 +566,12 @@ export type FunctionCallPermission = z.infer<
 /** Configuration for garbage collection. */
 export type GCConfig = z.infer<ReturnType<typeof schemas.GCConfigSchema>>;
 
-/**
- * Gas key is like an access key, except it stores a balance separately, and
- * transactions signed with it deduct their cost from the gas key balance
- * instead of the account balance.
- */
-export type GasKey = z.infer<ReturnType<typeof schemas.GasKeySchema>>;
+export type GasKeyInfo = z.infer<ReturnType<typeof schemas.GasKeyInfoSchema>>;
 
-export type GasKeyInfoView = z.infer<
-  ReturnType<typeof schemas.GasKeyInfoViewSchema>
+/** Gas key nonces view returned by the `view_gas_key_nonces` RPC query. */
+export type GasKeyNoncesView = z.infer<
+  ReturnType<typeof schemas.GasKeyNoncesViewSchema>
 >;
-
-export type GasKeyList = z.infer<ReturnType<typeof schemas.GasKeyListSchema>>;
-
-export type GasKeyView = z.infer<ReturnType<typeof schemas.GasKeyViewSchema>>;
 
 export type GenesisConfig = z.infer<
   ReturnType<typeof schemas.GenesisConfigSchema>
@@ -645,6 +658,10 @@ export type JsonRpcRequestFor_EXPERIMENTALReceipt = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALReceiptSchema>
 >;
 
+export type JsonRpcRequestFor_EXPERIMENTALReceiptToTx = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALReceiptToTxSchema>
+>;
+
 export type JsonRpcRequestFor_EXPERIMENTALSplitStorageInfo = z.infer<
   ReturnType<
     typeof schemas.JsonRpcRequestFor_EXPERIMENTALSplitStorageInfoSchema
@@ -677,14 +694,6 @@ export type JsonRpcRequestFor_EXPERIMENTALViewAccount = z.infer<
 
 export type JsonRpcRequestFor_EXPERIMENTALViewCode = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewCodeSchema>
->;
-
-export type JsonRpcRequestFor_EXPERIMENTALViewGasKey = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewGasKeySchema>
->;
-
-export type JsonRpcRequestFor_EXPERIMENTALViewGasKeyList = z.infer<
-  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALViewGasKeyListSchema>
 >;
 
 export type JsonRpcRequestFor_EXPERIMENTALViewState = z.infer<
@@ -887,6 +896,13 @@ export type JsonRpcResponseFor_RpcReceiptResponseAnd_RpcReceiptError = z.infer<
   >
 >;
 
+export type JsonRpcResponseFor_RpcReceiptToTxResponseAnd_RpcReceiptToTxError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcReceiptToTxResponseAnd_RpcReceiptToTxErrorSchema
+    >
+  >;
+
 export type JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcSplitStorageInfoError =
   z.infer<
     ReturnType<
@@ -953,20 +969,6 @@ export type JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeError =
   z.infer<
     ReturnType<
       typeof schemas.JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeErrorSchema
-    >
-  >;
-
-export type JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListErrorSchema
-    >
-  >;
-
-export type JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyError =
-  z.infer<
-    ReturnType<
-      typeof schemas.JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyErrorSchema
     >
   >;
 
@@ -1041,6 +1043,9 @@ export type NonDelegateAction = z.infer<
   ReturnType<typeof schemas.NonDelegateActionSchema>
 >;
 
+/** Controls how the transaction nonce is validated against the access key nonce. */
+export type NonceMode = z.infer<ReturnType<typeof schemas.NonceModeSchema>>;
+
 /** Peer id is the public key. */
 export type PeerId = z.infer<ReturnType<typeof schemas.PeerIdSchema>>;
 
@@ -1062,6 +1067,10 @@ export type ProtocolVersionCheckConfig = z.infer<
 >;
 
 export type PublicKey = z.infer<ReturnType<typeof schemas.PublicKeySchema>>;
+
+export type PublicKeyHandle = z.infer<
+  ReturnType<typeof schemas.PublicKeyHandleSchema>
+>;
 
 export type RangeOfUint64 = z.infer<
   ReturnType<typeof schemas.RangeOfUint64Schema>
@@ -1254,6 +1263,18 @@ export type RpcReceiptResponse = z.infer<
   ReturnType<typeof schemas.RpcReceiptResponseSchema>
 >;
 
+export type RpcReceiptToTxError = z.infer<
+  ReturnType<typeof schemas.RpcReceiptToTxErrorSchema>
+>;
+
+export type RpcReceiptToTxRequest = z.infer<
+  ReturnType<typeof schemas.RpcReceiptToTxRequestSchema>
+>;
+
+export type RpcReceiptToTxResponse = z.infer<
+  ReturnType<typeof schemas.RpcReceiptToTxResponseSchema>
+>;
+
 export type RpcRequestValidationErrorKind = z.infer<
   ReturnType<typeof schemas.RpcRequestValidationErrorKindSchema>
 >;
@@ -1393,30 +1414,6 @@ export type RpcViewCodeResponse = z.infer<
   ReturnType<typeof schemas.RpcViewCodeResponseSchema>
 >;
 
-export type RpcViewGasKeyError = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyErrorSchema>
->;
-
-export type RpcViewGasKeyListError = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyListErrorSchema>
->;
-
-export type RpcViewGasKeyListRequest = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyListRequestSchema>
->;
-
-export type RpcViewGasKeyListResponse = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyListResponseSchema>
->;
-
-export type RpcViewGasKeyRequest = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyRequestSchema>
->;
-
-export type RpcViewGasKeyResponse = z.infer<
-  ReturnType<typeof schemas.RpcViewGasKeyResponseSchema>
->;
-
 export type RpcViewStateError = z.infer<
   ReturnType<typeof schemas.RpcViewStateErrorSchema>
 >;
@@ -1525,6 +1522,16 @@ export type SlashedValidator = z.infer<
   ReturnType<typeof schemas.SlashedValidatorSchema>
 >;
 
+/**
+ * Per-validator chunk endorsement stats accumulated over a spice epoch,
+ * indexed by the current epoch's validator id. Carried on the last block of
+ * the epoch (see `BlockHeaderInnerRestV7`) and consumed by reward and
+ * kickout.
+ */
+export type SpiceChunkEndorsementStats = z.infer<
+  ReturnType<typeof schemas.SpiceChunkEndorsementStatsSchema>
+>;
+
 /** An action which stakes signer_id tokens and setup's validator public key */
 export type StakeAction = z.infer<ReturnType<typeof schemas.StakeActionSchema>>;
 
@@ -1620,13 +1627,27 @@ export type TrackedShardsConfig = z.infer<
   ReturnType<typeof schemas.TrackedShardsConfigSchema>
 >;
 
+export type TransactionNonce = z.infer<
+  ReturnType<typeof schemas.TransactionNonceSchema>
+>;
+
 export type TransferAction = z.infer<
   ReturnType<typeof schemas.TransferActionSchema>
 >;
 
+/** Transfer NEAR to a gas key's balance */
 export type TransferToGasKeyAction = z.infer<
   ReturnType<typeof schemas.TransferToGasKeyActionSchema>
 >;
+
+/**
+ * The result of splitting a memtrie into two possibly even parts, according
+ * to `memory_usage` stored in the trie nodes. **NOTE: This is an artificial
+ * value calculated according to `TRIE_COST`. Hence, it does not represent
+ * actual memory allocation, but the split ratio should be roughly consistent
+ * with that.**
+ */
+export type TrieSplit = z.infer<ReturnType<typeof schemas.TrieSplitSchema>>;
 
 /** Error returned in the ExecutionOutcome in case of failure */
 export type TxExecutionError = z.infer<
@@ -1672,6 +1693,20 @@ export type ValidatorStakeViewV1 = z.infer<
 /** Data structure for semver version and github tag or commit. */
 export type Version = z.infer<ReturnType<typeof schemas.VersionSchema>>;
 
+/**
+ * Versions of the delegate action carried by `Action::DelegateV2`. New
+ * versions add a variant here rather than a new `Action` variant. The variant
+ * is part of the signed payload, so a signature can't be ambiguous across
+ * versions.
+ */
+export type VersionedDelegateActionPayload = z.infer<
+  ReturnType<typeof schemas.VersionedDelegateActionPayloadSchema>
+>;
+
+export type VersionedSignedDelegateAction = z.infer<
+  ReturnType<typeof schemas.VersionedSignedDelegateActionSchema>
+>;
+
 /** Resulting state values for a view state query request */
 export type ViewStateResult = z.infer<
   ReturnType<typeof schemas.ViewStateResultSchema>
@@ -1679,6 +1714,15 @@ export type ViewStateResult = z.infer<
 
 /** A kind of a trap happened during execution of a binary */
 export type WasmTrap = z.infer<ReturnType<typeof schemas.WasmTrapSchema>>;
+
+/**
+ * Withdraw NEAR from a gas key's balance to the account. This action must
+ * only be available via transactions, not via contract execution (there is no
+ * corresponding promise batch action host function).
+ */
+export type WithdrawFromGasKeyAction = z.infer<
+  ReturnType<typeof schemas.WithdrawFromGasKeyActionSchema>
+>;
 
 /** Configuration specific to ChunkStateWitness. */
 export type WitnessConfigView = z.infer<
@@ -1863,6 +1907,22 @@ export type EXPERIMENTALReceiptResponse = z.infer<
 >;
 
 /**
+ * Request parameters for EXPERIMENTAL_receipt_to_tx: Resolves a receipt ID
+ * back to the originating transaction hash and sender account
+ */
+export type EXPERIMENTALReceiptToTxRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALReceiptToTxRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_receipt_to_tx: Resolves a receipt ID back to
+ * the originating transaction hash and sender account
+ */
+export type EXPERIMENTALReceiptToTxResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALReceiptToTxResponseSchema>
+>;
+
+/**
  * Request parameters for EXPERIMENTAL_split_storage_info: Contains the split
  * storage information. More info on split storage
  * [here](https://near-nodes.io/archival/split-storage-archival)
@@ -1980,38 +2040,6 @@ export type EXPERIMENTALViewCodeRequest = z.infer<
  */
 export type EXPERIMENTALViewCodeResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALViewCodeResponseSchema>
->;
-
-/**
- * Request parameters for EXPERIMENTAL_view_gas_key: Returns information about
- * a single gas key for given account.
- */
-export type EXPERIMENTALViewGasKeyRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyRequestSchema>
->;
-
-/**
- * Response type for EXPERIMENTAL_view_gas_key: Returns information about a
- * single gas key for given account.
- */
-export type EXPERIMENTALViewGasKeyResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyResponseSchema>
->;
-
-/**
- * Request parameters for EXPERIMENTAL_view_gas_key_list: Returns all gas keys
- * for a given account.
- */
-export type EXPERIMENTALViewGasKeyListRequest = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyListRequestSchema>
->;
-
-/**
- * Response type for EXPERIMENTAL_view_gas_key_list: Returns all gas keys for
- * a given account.
- */
-export type EXPERIMENTALViewGasKeyListResponse = z.infer<
-  ReturnType<typeof schemas.EXPERIMENTALViewGasKeyListResponseSchema>
 >;
 
 /**

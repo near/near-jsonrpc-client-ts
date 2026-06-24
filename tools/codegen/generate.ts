@@ -103,6 +103,14 @@ function formatComment(description: string): string {
   return `/**\n${lines.map(line => ` * ${line}`).join('\n')}\n */\n`;
 }
 
+// A match-anything member ({} in the spec -> z.unknown()) collapses a union
+// to `unknown`, destroying type narrowing. Drop such members when the union
+// has other, meaningful options.
+function dropMatchAnyMembers(options: string[]): string[] {
+  const meaningful = options.filter(opt => opt !== 'z.unknown()');
+  return meaningful.length > 0 ? meaningful : options;
+}
+
 function generateZodSchema(
   schema: Schema,
   schemas: Record<string, Schema>,
@@ -116,8 +124,8 @@ function generateZodSchema(
   }
 
   if (schema.oneOf) {
-    const options = schema.oneOf.map(s =>
-      generateZodSchema(s, schemas, depth + 1)
+    const options = dropMatchAnyMembers(
+      schema.oneOf.map(s => generateZodSchema(s, schemas, depth + 1))
     );
     let unionSchema: string;
     if (options.length === 1) {
@@ -139,8 +147,8 @@ function generateZodSchema(
           const camelKey = snakeToCamel(key);
           let zodSchema = generateZodSchema(prop, schemas, depth + 1);
 
-          // Handle nullable fields
-          if (prop.nullable) {
+          // Handle nullable fields (avoid redundant z.union([z.null(), z.null()]))
+          if (prop.nullable && zodSchema !== 'z.null()') {
             zodSchema = `z.union([${zodSchema}, z.null()])`;
           }
 
@@ -161,8 +169,8 @@ function generateZodSchema(
   }
 
   if (schema.anyOf) {
-    const options = schema.anyOf.map(s =>
-      generateZodSchema(s, schemas, depth + 1)
+    const options = dropMatchAnyMembers(
+      schema.anyOf.map(s => generateZodSchema(s, schemas, depth + 1))
     );
     let unionSchema: string;
     if (options.length === 1) {
@@ -184,8 +192,8 @@ function generateZodSchema(
           const camelKey = snakeToCamel(key);
           let zodSchema = generateZodSchema(prop, schemas, depth + 1);
 
-          // Handle nullable fields
-          if (prop.nullable) {
+          // Handle nullable fields (avoid redundant z.union([z.null(), z.null()]))
+          if (prop.nullable && zodSchema !== 'z.null()') {
             zodSchema = `z.union([${zodSchema}, z.null()])`;
           }
 
@@ -276,8 +284,8 @@ function generateZodSchema(
           const camelKey = snakeToCamel(key);
           let zodSchema = generateZodSchema(prop, schemas, depth + 1);
 
-          // Handle nullable fields
-          if (prop.nullable) {
+          // Handle nullable fields (avoid redundant z.union([z.null(), z.null()]))
+          if (prop.nullable && zodSchema !== 'z.null()') {
             zodSchema = `z.union([${zodSchema}, z.null()])`;
           }
 
@@ -296,7 +304,7 @@ function generateZodSchema(
   }
 
   // Apply nullable at the root level if needed
-  if (schema.nullable) {
+  if (schema.nullable && baseSchema !== 'z.null()') {
     return `z.union([${baseSchema}, z.null()])`;
   }
 

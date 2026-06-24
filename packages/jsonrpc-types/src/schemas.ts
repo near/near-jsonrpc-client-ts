@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2025-12-24T06:05:58.049Z
+// Generated on: 2026-06-24T09:26:08.375Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -25,11 +25,17 @@ export const AccessKeyCreationConfigViewSchema = () =>
     functionCallCostPerByte: z.lazy(() => FeeSchema()),
   });
 
-// Describes information about an access key including the public key.
+//
+// Describes information about an access key including its on-trie identifier.
+// For ed25519/secp256k1 access keys the `public_key` field is the full public
+// key (string form unchanged from before); for ML-DSA-65 access keys it is a
+// `ml-dsa-65-hash:...` SHA3-256 digest (the full pubkey is not stored
+// on-chain).
+
 export const AccessKeyInfoViewSchema = () =>
   z.object({
     accessKey: z.lazy(() => AccessKeyViewSchema()),
-    publicKey: z.lazy(() => PublicKeySchema()),
+    publicKey: z.lazy(() => PublicKeyHandleSchema()),
   });
 
 // Lists access keys
@@ -45,6 +51,12 @@ export const AccessKeyPermissionSchema = () =>
       FunctionCall: z.lazy(() => FunctionCallPermissionSchema()),
     }),
     z.enum(['FullAccess']),
+    z.object({
+      GasKeyFunctionCall: z.array(z.unknown()),
+    }),
+    z.object({
+      GasKeyFullAccess: z.lazy(() => GasKeyInfoSchema()),
+    }),
   ]);
 
 //
@@ -63,6 +75,23 @@ export const AccessKeyPermissionViewSchema = () =>
         receiverId: z.string(),
       }),
     }),
+    z.object({
+      GasKeyFunctionCall: z.object({
+        allowance: z.optional(
+          z.union([z.lazy(() => NearTokenSchema()), z.null()])
+        ),
+        balance: z.lazy(() => NearTokenSchema()),
+        methodNames: z.array(z.string()),
+        numNonces: z.number(),
+        receiverId: z.string(),
+      }),
+    }),
+    z.object({
+      GasKeyFullAccess: z.object({
+        balance: z.lazy(() => NearTokenSchema()),
+        numNonces: z.number(),
+      }),
+    }),
   ]);
 
 // Describes access key permission scope and nonce.
@@ -71,6 +100,30 @@ export const AccessKeyViewSchema = () =>
     nonce: z.number(),
     permission: z.lazy(() => AccessKeyPermissionViewSchema()),
   });
+
+//
+// RPC view of a non-empty [`AccountContract`]. The `AccountContract::None`
+// variant is represented externally as a JSON `null` via `Option`, so this
+// enum only carries the three "contract is present" cases. Serializes as an
+// externally-tagged object: - `Local(hash)` → `{"local": "<CryptoHash>"}` -
+// `GlobalHash(hash)` → `{"global_hash": "<CryptoHash>"}` -
+// `GlobalAccountId(id)` → `{"global_account_id": "<AccountId>"}` Mirrors
+// [`AccountContract`] 1:1 (minus `None`) so consumers can preserve the
+// distinction between a global-by-hash and global-by-account contract without
+// descending into a nested identifier.
+
+export const AccountContractViewSchema = () =>
+  z.union([
+    z.object({
+      local: z.lazy(() => CryptoHashSchema()),
+    }),
+    z.object({
+      globalHash: z.lazy(() => CryptoHashSchema()),
+    }),
+    z.object({
+      globalAccountId: z.lazy(() => AccountIdSchema()),
+    }),
+  ]);
 
 // The structure describes configuration for creation of new accounts.
 export const AccountCreationConfigViewSchema = () =>
@@ -293,9 +346,26 @@ export const ActionErrorKindSchema = () =>
       }),
     }),
     z.object({
-      GasKeyAlreadyExists: z.object({
+      InsufficientGasKeyBalance: z.object({
         accountId: z.lazy(() => AccountIdSchema()),
+        balance: z.lazy(() => NearTokenSchema()),
         publicKey: z.lazy(() => PublicKeySchema()),
+        required: z.lazy(() => NearTokenSchema()),
+      }),
+    }),
+    z.object({
+      GasKeyBalanceTooHigh: z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+        balance: z.lazy(() => NearTokenSchema()),
+        publicKey: z.optional(
+          z.union([z.lazy(() => PublicKeySchema()), z.null()])
+        ),
+      }),
+    }),
+    z.object({
+      DelegateActionInvalidNonceIndex: z.object({
+        nonceIndex: z.number(),
+        numNonces: z.number(),
       }),
     }),
   ]);
@@ -350,6 +420,12 @@ export const ActionViewSchema = () =>
       }),
     }),
     z.object({
+      DelegateV2: z.object({
+        delegateAction: z.lazy(() => VersionedDelegateActionPayloadSchema()),
+        signature: z.lazy(() => SignatureSchema()),
+      }),
+    }),
+    z.object({
       DeployGlobalContract: z.object({
         code: z.string(),
       }),
@@ -377,19 +453,13 @@ export const ActionViewSchema = () =>
       }),
     }),
     z.object({
-      AddGasKey: z.object({
-        numNonces: z.number(),
-        permission: z.lazy(() => AccessKeyPermissionViewSchema()),
-        publicKey: z.lazy(() => PublicKeySchema()),
-      }),
-    }),
-    z.object({
-      DeleteGasKey: z.object({
-        publicKey: z.lazy(() => PublicKeySchema()),
-      }),
-    }),
-    z.object({
       TransferToGasKey: z.object({
+        deposit: z.lazy(() => NearTokenSchema()),
+        publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+    }),
+    z.object({
+      WithdrawFromGasKey: z.object({
         amount: z.lazy(() => NearTokenSchema()),
         publicKey: z.lazy(() => PublicKeySchema()),
       }),
@@ -480,24 +550,24 @@ export const ActionsValidationErrorSchema = () =>
       }),
     }),
     z.object({
-      GasKeyPermissionInvalid: z.object({
-        permission: z.lazy(() => AccessKeyPermissionSchema()),
-      }),
-    }),
-    z.object({
-      GasKeyTooManyNoncesRequested: z.object({
+      GasKeyInvalidNumNonces: z.object({
         limit: z.number(),
         requestedNonces: z.number(),
       }),
     }),
+    z.object({
+      AddGasKeyWithNonZeroBalance: z.object({
+        balance: z.lazy(() => NearTokenSchema()),
+      }),
+    }),
+    z.enum(['GasKeyFunctionCallAllowanceNotAllowed']),
+    z.object({
+      TotalNumberOfDeployActionsExceeded: z.object({
+        limit: z.number(),
+        numberOfDeployActions: z.number(),
+      }),
+    }),
   ]);
-
-export const AddGasKeyActionSchema = () =>
-  z.object({
-    numNonces: z.number(),
-    permission: z.lazy(() => AccessKeyPermissionSchema()),
-    publicKey: z.lazy(() => PublicKeySchema()),
-  });
 
 // An action that adds key with public key associated
 export const AddKeyActionSchema = () =>
@@ -598,10 +668,25 @@ export const BlockHeaderViewSchema = () =>
     prevHeight: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
+    prevLastCertifiedBlockEpochId: z.optional(
+      z.union([z.lazy(() => EpochIdSchema()), z.null()])
+    ),
     prevStateRoot: z.lazy(() => CryptoHashSchema()),
     randomValue: z.lazy(() => CryptoHashSchema()),
     rentPaid: z.optional(z.lazy(() => NearTokenSchema())),
+    shardSplit: z.optional(
+      z.union([z.union([z.array(z.unknown()), z.null()]), z.null()])
+    ),
     signature: z.lazy(() => SignatureSchema()),
+    spiceChunkEndorsementStats: z.optional(
+      z.union([
+        z.union([
+          z.array(z.lazy(() => SpiceChunkEndorsementStatsSchema())),
+          z.null(),
+        ]),
+        z.null(),
+      ])
+    ),
     timestamp: z.number(),
     timestampNanosec: z.string(),
     totalSupply: z.lazy(() => NearTokenSchema()),
@@ -694,6 +779,9 @@ export const ChunkHeaderViewSchema = () =>
     outgoingReceiptsRoot: z.lazy(() => CryptoHashSchema()),
     prevBlockHash: z.lazy(() => CryptoHashSchema()),
     prevStateRoot: z.lazy(() => CryptoHashSchema()),
+    proposedSplit: z.optional(
+      z.union([z.lazy(() => TrieSplitSchema()), z.null()])
+    ),
     rentPaid: z.optional(z.lazy(() => NearTokenSchema())),
     shardId: z.lazy(() => ShardIdSchema()),
     signature: z.lazy(() => SignatureSchema()),
@@ -714,6 +802,7 @@ export const CloudArchivalWriterConfigSchema = () =>
     pollingInterval: z.optional(
       z.lazy(() => DurationAsStdSchemaProviderSchema())
     ),
+    snapshotEveryNEpochs: z.optional(z.number()),
   });
 
 export const CompilationErrorSchema = () =>
@@ -834,14 +923,24 @@ export const DelegateActionSchema = () =>
     senderId: z.lazy(() => AccountIdSchema()),
   });
 
+//
+// Delegate action with gas key support: `nonce` selects either the access
+// key's nonce or one of a gas key's parallel nonces by index, mirroring
+// `TransactionV1`.
+
+export const DelegateActionV2Schema = () =>
+  z.object({
+    actions: z.array(z.lazy(() => NonDelegateActionSchema())),
+    maxBlockHeight: z.number(),
+    nonce: z.lazy(() => TransactionNonceSchema()),
+    publicKey: z.lazy(() => PublicKeySchema()),
+    receiverId: z.lazy(() => AccountIdSchema()),
+    senderId: z.lazy(() => AccountIdSchema()),
+  });
+
 export const DeleteAccountActionSchema = () =>
   z.object({
     beneficiaryId: z.lazy(() => AccountIdSchema()),
-  });
-
-export const DeleteGasKeyActionSchema = () =>
-  z.object({
-    publicKey: z.lazy(() => PublicKeySchema()),
   });
 
 export const DeleteKeyActionSchema = () =>
@@ -861,6 +960,13 @@ export const DeployGlobalContractActionSchema = () =>
     code: z.string(),
     deployMode: z.lazy(() => GlobalContractDeployModeSchema()),
   });
+
+//
+// Reason why a gas key transaction failed at the deposit/account level. In
+// these cases, gas is still charged from the gas key.
+
+export const DepositCostFailureReasonSchema = () =>
+  z.enum(['NotEnoughBalance', 'LackBalanceForState']);
 
 export const DetailedDebugStatusSchema = () =>
   z.object({
@@ -915,15 +1021,6 @@ export const DurationAsStdSchemaProviderSchema = () =>
     secs: z.number(),
   });
 
-// Configuration for dynamic resharding feature
-export const DynamicReshardingConfigViewSchema = () =>
-  z.object({
-    maxNumberOfShards: z.number(),
-    memoryUsageThreshold: z.number(),
-    minChildMemoryUsage: z.number(),
-    minEpochsBetweenResharding: z.number(),
-  });
-
 //
 // Epoch identifier -- wrapped hash, to make it easier to distinguish. EpochId
 // of epoch T is the hash of last block in T-2 EpochId of first two epochs is
@@ -933,9 +1030,7 @@ export const EpochIdSchema = () => z.lazy(() => CryptoHashSchema());
 
 export const EpochSyncConfigSchema = () =>
   z.object({
-    disableEpochSyncForBootstrapping: z.optional(z.boolean()),
-    epochSyncHorizon: z.optional(z.number()),
-    ignoreEpochSyncNetworkRequests: z.optional(z.boolean()),
+    epochSyncHorizonNumEpochs: z.optional(z.number()),
     timeoutForEpochSync: z.optional(
       z.lazy(() => DurationAsStdSchemaProviderSchema())
     ),
@@ -1149,6 +1244,22 @@ export const ErrorWrapperFor_RpcReceiptErrorSchema = () =>
     }),
   ]);
 
+export const ErrorWrapperFor_RpcReceiptToTxErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcReceiptToTxErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
 export const ErrorWrapperFor_RpcSplitStorageInfoErrorSchema = () =>
   z.union([
     z.object({
@@ -1293,38 +1404,6 @@ export const ErrorWrapperFor_RpcViewCodeErrorSchema = () =>
     }),
   ]);
 
-export const ErrorWrapperFor_RpcViewGasKeyErrorSchema = () =>
-  z.union([
-    z.object({
-      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
-      name: z.enum(['REQUEST_VALIDATION_ERROR']),
-    }),
-    z.object({
-      cause: z.lazy(() => RpcViewGasKeyErrorSchema()),
-      name: z.enum(['HANDLER_ERROR']),
-    }),
-    z.object({
-      cause: z.lazy(() => InternalErrorSchema()),
-      name: z.enum(['INTERNAL_ERROR']),
-    }),
-  ]);
-
-export const ErrorWrapperFor_RpcViewGasKeyListErrorSchema = () =>
-  z.union([
-    z.object({
-      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
-      name: z.enum(['REQUEST_VALIDATION_ERROR']),
-    }),
-    z.object({
-      cause: z.lazy(() => RpcViewGasKeyListErrorSchema()),
-      name: z.enum(['HANDLER_ERROR']),
-    }),
-    z.object({
-      cause: z.lazy(() => InternalErrorSchema()),
-      name: z.enum(['INTERNAL_ERROR']),
-    }),
-  ]);
-
 export const ErrorWrapperFor_RpcViewStateErrorSchema = () =>
   z.union([
     z.object({
@@ -1343,6 +1422,17 @@ export const ErrorWrapperFor_RpcViewStateErrorSchema = () =>
 
 export const ExecutionMetadataViewSchema = () =>
   z.object({
+    contracts: z.optional(
+      z.union([
+        z.union([
+          z.array(
+            z.union([z.lazy(() => AccountContractViewSchema()), z.null()])
+          ),
+          z.null(),
+        ]),
+        z.null(),
+      ])
+    ),
     gasProfile: z.optional(
       z.union([
         z.union([z.array(z.lazy(() => CostGasUsedSchema())), z.null()]),
@@ -1429,6 +1519,8 @@ export const ExtCostsConfigViewSchema = () =>
     keccak512Byte: z.optional(z.lazy(() => NearGasSchema())),
     logBase: z.optional(z.lazy(() => NearGasSchema())),
     logByte: z.optional(z.lazy(() => NearGasSchema())),
+    p256VerifyBase: z.optional(z.lazy(() => NearGasSchema())),
+    p256VerifyByte: z.optional(z.lazy(() => NearGasSchema())),
     promiseAndBase: z.optional(z.lazy(() => NearGasSchema())),
     promiseAndPerPromise: z.optional(z.lazy(() => NearGasSchema())),
     promiseReturn: z.optional(z.lazy(() => NearGasSchema())),
@@ -1476,6 +1568,7 @@ export const ExtCostsConfigViewSchema = () =>
     writeRegisterByte: z.optional(z.lazy(() => NearGasSchema())),
     yieldCreateBase: z.optional(z.lazy(() => NearGasSchema())),
     yieldCreateByte: z.optional(z.lazy(() => NearGasSchema())),
+    yieldCreateWithIdBase: z.optional(z.lazy(() => NearGasSchema())),
     yieldResumeBase: z.optional(z.lazy(() => NearGasSchema())),
     yieldResumeByte: z.optional(z.lazy(() => NearGasSchema())),
   });
@@ -1632,40 +1725,20 @@ export const GCConfigSchema = () =>
     gcStepPeriod: z.optional(z.lazy(() => DurationAsStdSchemaProviderSchema())),
   });
 
-//
-// Gas key is like an access key, except it stores a balance separately, and
-// transactions signed with it deduct their cost from the gas key balance
-// instead of the account balance.
-
-export const GasKeySchema = () =>
+export const GasKeyInfoSchema = () =>
   z.object({
     balance: z.lazy(() => NearTokenSchema()),
     numNonces: z.number(),
-    permission: z.lazy(() => AccessKeyPermissionSchema()),
   });
 
-export const GasKeyInfoViewSchema = () =>
+// Gas key nonces view returned by the `view_gas_key_nonces` RPC query.
+export const GasKeyNoncesViewSchema = () =>
   z.object({
-    gasKey: z.lazy(() => GasKeyViewSchema()),
-    publicKey: z.lazy(() => PublicKeySchema()),
-  });
-
-export const GasKeyListSchema = () =>
-  z.object({
-    keys: z.array(z.lazy(() => GasKeyInfoViewSchema())),
-  });
-
-export const GasKeyViewSchema = () =>
-  z.object({
-    balance: z.lazy(() => NearTokenSchema()),
     nonces: z.array(z.number()),
-    numNonces: z.number(),
-    permission: z.lazy(() => AccessKeyPermissionViewSchema()),
   });
 
 export const GenesisConfigSchema = () =>
   z.object({
-    avgHiddenValidatorSeatsPerShard: z.array(z.number()),
     blockProducerKickoutThreshold: z.number(),
     chainId: z.string(),
     chunkProducerAssignmentChangesLimit: z.optional(z.number()),
@@ -1686,9 +1759,7 @@ export const GenesisConfigSchema = () =>
     minimumStakeRatio: z.optional(z.array(z.number())),
     minimumValidatorsPerShard: z.optional(z.number()),
     numBlockProducerSeats: z.number(),
-    numBlockProducerSeatsPerShard: z.array(z.number()),
     numBlocksPerYear: z.number(),
-    numChunkOnlyProducerSeats: z.optional(z.number()),
     numChunkProducerSeats: z.optional(z.number()),
     numChunkValidatorSeats: z.optional(z.number()),
     onlineMaxThreshold: z.optional(z.array(z.number())),
@@ -1716,10 +1787,10 @@ export const GlobalContractDeployModeSchema = () =>
 export const GlobalContractIdentifierSchema = () =>
   z.union([
     z.object({
-      CodeHash: z.lazy(() => CryptoHashSchema()),
+      hash: z.lazy(() => CryptoHashSchema()),
     }),
     z.object({
-      AccountId: z.lazy(() => AccountIdSchema()),
+      accountId: z.lazy(() => AccountIdSchema()),
     }),
   ]);
 
@@ -1855,6 +1926,11 @@ export const HostErrorSchema = () =>
         msg: z.string(),
       }),
     }),
+    z.object({
+      P256VerifyInvalidInput: z.object({
+        msg: z.string(),
+      }),
+    }),
   ]);
 
 export const InternalErrorSchema = () =>
@@ -1894,6 +1970,8 @@ export const InvalidAccessKeyErrorSchema = () =>
       }),
     }),
     z.enum(['DepositWithFunctionCall']),
+    z.enum(['DelegateActionRequiresNonGasKey']),
+    z.enum(['DelegateActionRequiresGasKey']),
   ]);
 
 // An error happened during TX execution
@@ -1969,6 +2047,29 @@ export const InvalidTxErrorSchema = () =>
       ShardStuck: z.object({
         missedChunks: z.number(),
         shardId: z.number(),
+      }),
+    }),
+    z.object({
+      InvalidNonceIndex: z.object({
+        numNonces: z.number(),
+        txNonceIndex: z.optional(
+          z.union([z.union([z.number(), z.null()]), z.null()])
+        ),
+      }),
+    }),
+    z.object({
+      NotEnoughGasKeyBalance: z.object({
+        balance: z.lazy(() => NearTokenSchema()),
+        cost: z.lazy(() => NearTokenSchema()),
+        signerId: z.lazy(() => AccountIdSchema()),
+      }),
+    }),
+    z.object({
+      NotEnoughBalanceForDeposit: z.object({
+        balance: z.lazy(() => NearTokenSchema()),
+        cost: z.lazy(() => NearTokenSchema()),
+        reason: z.lazy(() => DepositCostFailureReasonSchema()),
+        signerId: z.lazy(() => AccountIdSchema()),
       }),
     }),
   ]);
@@ -2053,6 +2154,14 @@ export const JsonRpcRequestFor_EXPERIMENTALReceiptSchema = () =>
     params: z.lazy(() => RpcReceiptRequestSchema()),
   });
 
+export const JsonRpcRequestFor_EXPERIMENTALReceiptToTxSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_receipt_to_tx']),
+    params: z.lazy(() => RpcReceiptToTxRequestSchema()),
+  });
+
 export const JsonRpcRequestFor_EXPERIMENTALSplitStorageInfoSchema = () =>
   z.object({
     id: z.string(),
@@ -2107,22 +2216,6 @@ export const JsonRpcRequestFor_EXPERIMENTALViewCodeSchema = () =>
     jsonrpc: z.string(),
     method: z.enum(['EXPERIMENTAL_view_code']),
     params: z.lazy(() => RpcViewCodeRequestSchema()),
-  });
-
-export const JsonRpcRequestFor_EXPERIMENTALViewGasKeySchema = () =>
-  z.object({
-    id: z.string(),
-    jsonrpc: z.string(),
-    method: z.enum(['EXPERIMENTAL_view_gas_key']),
-    params: z.lazy(() => RpcViewGasKeyRequestSchema()),
-  });
-
-export const JsonRpcRequestFor_EXPERIMENTALViewGasKeyListSchema = () =>
-  z.object({
-    id: z.string(),
-    jsonrpc: z.string(),
-    method: z.enum(['EXPERIMENTAL_view_gas_key_list']),
-    params: z.lazy(() => RpcViewGasKeyListRequestSchema()),
   });
 
 export const JsonRpcRequestFor_EXPERIMENTALViewStateSchema = () =>
@@ -2591,6 +2684,23 @@ export const JsonRpcResponseFor_RpcReceiptResponseAnd_RpcReceiptErrorSchema =
       })
     );
 
+export const JsonRpcResponseFor_RpcReceiptToTxResponseAnd_RpcReceiptToTxErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcReceiptToTxResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcReceiptToTxErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
 export const JsonRpcResponseFor_RpcSplitStorageInfoResponseAnd_RpcSplitStorageInfoErrorSchema =
   () =>
     z.intersection(
@@ -2763,40 +2873,6 @@ export const JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeErrorSchema =
       })
     );
 
-export const JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListErrorSchema =
-  () =>
-    z.intersection(
-      z.union([
-        z.object({
-          result: z.lazy(() => RpcViewGasKeyListResponseSchema()),
-        }),
-        z.object({
-          error: z.lazy(() => ErrorWrapperFor_RpcViewGasKeyListErrorSchema()),
-        }),
-      ]),
-      z.object({
-        id: z.string(),
-        jsonrpc: z.string(),
-      })
-    );
-
-export const JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyErrorSchema =
-  () =>
-    z.intersection(
-      z.union([
-        z.object({
-          result: z.lazy(() => RpcViewGasKeyResponseSchema()),
-        }),
-        z.object({
-          error: z.lazy(() => ErrorWrapperFor_RpcViewGasKeyErrorSchema()),
-        }),
-      ]),
-      z.object({
-        id: z.string(),
-        jsonrpc: z.string(),
-      })
-    );
-
 export const JsonRpcResponseFor_RpcViewStateResponseAnd_RpcViewStateErrorSchema =
   () =>
     z.intersection(
@@ -2849,14 +2925,27 @@ export const LimitConfigSchema = () =>
     initialMemoryPages: z.optional(z.number()),
     maxActionsPerReceipt: z.optional(z.number()),
     maxArgumentsLength: z.optional(z.number()),
+    maxBlocksPerContract: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
+    maxBlocksPerFunction: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     maxContractSize: z.optional(z.number()),
+    maxDeployActionsPerReceipt: z.optional(z.number()),
     maxElementsPerContractTable: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
+    maxFunctionBodySize: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
     maxFunctionsNumberPerContract: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
     maxGasBurnt: z.optional(z.lazy(() => NearGasSchema())),
+    maxInstrumentedCodeSize: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     maxLengthMethodName: z.optional(z.number()),
     maxLengthReturnedData: z.optional(z.number()),
     maxLengthStorageKey: z.optional(z.number()),
@@ -2869,6 +2958,15 @@ export const LimitConfigSchema = () =>
     maxNumberInputDataDependencies: z.optional(z.number()),
     maxNumberLogs: z.optional(z.number()),
     maxNumberRegisters: z.optional(z.number()),
+    maxOperandStackBytesPerFunction: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
+    maxParamsPerContract: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
+    maxParamsPerFunction: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     maxPromisesPerFunctionCallAction: z.optional(z.number()),
     maxReceiptSize: z.optional(z.number()),
     maxRegisterSize: z.optional(z.number()),
@@ -2879,6 +2977,9 @@ export const LimitConfigSchema = () =>
     maxTotalLogLength: z.optional(z.number()),
     maxTotalPrepaidGas: z.optional(z.lazy(() => NearGasSchema())),
     maxTransactionSize: z.optional(z.number()),
+    maxTypesPerContract: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     maxYieldPayloadSize: z.optional(z.number()),
     perReceiptStorageProofSizeLimit: z.optional(z.number()),
     registersMemoryLimit: z.optional(z.number()),
@@ -2979,15 +3080,16 @@ export const NonDelegateActionSchema = () =>
       ),
     }),
     z.object({
-      AddGasKey: z.lazy(() => AddGasKeyActionSchema()),
-    }),
-    z.object({
-      DeleteGasKey: z.lazy(() => DeleteGasKeyActionSchema()),
-    }),
-    z.object({
       TransferToGasKey: z.lazy(() => TransferToGasKeyActionSchema()),
     }),
+    z.object({
+      WithdrawFromGasKey: z.lazy(() => WithdrawFromGasKeyActionSchema()),
+    }),
   ]);
+
+// Controls how the transaction nonce is validated against the access key nonce.
+export const NonceModeSchema = () =>
+  z.union([z.enum(['monotonic']), z.enum(['strict'])]);
 
 // Peer id is the public key.
 export const PeerIdSchema = () => z.lazy(() => PublicKeySchema());
@@ -3027,6 +3129,14 @@ export const PrepareErrorSchema = () =>
     z.enum(['TooManyLocals']),
     z.enum(['TooManyTables']),
     z.enum(['TooManyTableElements']),
+    z.enum(['FunctionBodyTooLarge']),
+    z.enum(['InstrumentedCodeTooLarge']),
+    z.enum(['TooManyBlocksPerFunction']),
+    z.enum(['TooManyBlocksPerContract']),
+    z.enum(['TooManyTypes']),
+    z.enum(['TooManyParamsPerFunction']),
+    z.enum(['TooManyParamsPerContract']),
+    z.enum(['OperandStackTooLarge']),
   ]);
 
 //
@@ -3037,6 +3147,8 @@ export const ProtocolVersionCheckConfigSchema = () =>
   z.enum(['Next', 'NextNext']);
 
 export const PublicKeySchema = () => z.string();
+
+export const PublicKeyHandleSchema = () => z.string();
 
 export const RangeOfUint64Schema = () =>
   z.object({
@@ -3072,6 +3184,7 @@ export const ReceiptEnumViewSchema = () =>
         alreadyDeliveredShards: z.array(z.lazy(() => ShardIdSchema())),
         code: z.string(),
         id: z.lazy(() => GlobalContractIdentifierSchema()),
+        nonce: z.optional(z.union([z.union([z.number(), z.null()]), z.null()])),
         targetShard: z.lazy(() => ShardIdSchema()),
       }),
     }),
@@ -3310,9 +3423,10 @@ export const RpcClientConfigRequestSchema = () => z.null();
 export const RpcClientConfigResponseSchema = () =>
   z.object({
     archive: z.optional(z.boolean()),
-    blockFetchHorizon: z.optional(z.number()),
     blockHeaderFetchHorizon: z.optional(z.number()),
-    blockProductionTrackingDelay: z.optional(z.array(z.number())),
+    blockProductionTrackingDelay: z.optional(
+      z.lazy(() => MutableConfigValueSchema())
+    ),
     catchupStepPeriod: z.optional(z.array(z.number())),
     chainId: z.optional(z.string()),
     chunkDistributionNetwork: z.optional(
@@ -3320,14 +3434,14 @@ export const RpcClientConfigResponseSchema = () =>
     ),
     chunkRequestRetryPeriod: z.optional(z.array(z.number())),
     chunkValidationThreads: z.optional(z.number()),
-    chunkWaitMult: z.optional(z.array(z.number())),
+    chunkWaitMult: z.optional(z.lazy(() => MutableConfigValueSchema())),
     chunksCacheHeightHorizon: z.optional(z.number()),
     clientBackgroundMigrationThreads: z.optional(z.number()),
     cloudArchivalWriter: z.optional(
       z.union([z.lazy(() => CloudArchivalWriterConfigSchema()), z.null()])
     ),
     disableTxRouting: z.optional(z.boolean()),
-    doomslugStepPeriod: z.optional(z.array(z.number())),
+    doomslugStepPeriod: z.optional(z.lazy(() => MutableConfigValueSchema())),
     enableEarlyPrepareTransactions: z.optional(z.boolean()),
     enableMultilineLogging: z.optional(z.boolean()),
     enableStatisticsExport: z.optional(z.boolean()),
@@ -3341,12 +3455,16 @@ export const RpcClientConfigResponseSchema = () =>
     headerSyncStallBanTimeout: z.optional(z.array(z.number())),
     logSummaryPeriod: z.optional(z.array(z.number())),
     logSummaryStyle: z.optional(z.lazy(() => LogSummaryStyleSchema())),
-    maxBlockProductionDelay: z.optional(z.array(z.number())),
-    maxBlockWaitDelay: z.optional(z.array(z.number())),
+    maxBlockProductionDelay: z.optional(
+      z.lazy(() => MutableConfigValueSchema())
+    ),
+    maxBlockWaitDelay: z.optional(z.lazy(() => MutableConfigValueSchema())),
     maxGasBurntView: z.optional(
       z.union([z.lazy(() => NearGasSchema()), z.null()])
     ),
-    minBlockProductionDelay: z.optional(z.array(z.number())),
+    minBlockProductionDelay: z.optional(
+      z.lazy(() => MutableConfigValueSchema())
+    ),
     minNumPeers: z.optional(z.number()),
     numBlockProducerSeats: z.optional(z.number()),
     orphanStateWitnessMaxSize: z.optional(z.number()),
@@ -3356,10 +3474,14 @@ export const RpcClientConfigResponseSchema = () =>
     protocolVersionCheck: z.optional(
       z.lazy(() => ProtocolVersionCheckConfigSchema())
     ),
+    receiptToTxMaxHintWindow: z.optional(z.number()),
+    receiptToTxMaxHopDistance: z.optional(z.number()),
+    receiptToTxMaxOutcomesPerRequest: z.optional(z.number()),
     reshardingConfig: z.optional(z.lazy(() => MutableConfigValueSchema())),
     rpcAddr: z.optional(z.union([z.union([z.string(), z.null()]), z.null()])),
     saveInvalidWitnesses: z.optional(z.boolean()),
     saveLatestWitnesses: z.optional(z.boolean()),
+    saveReceiptToTx: z.optional(z.boolean()),
     saveStateChanges: z.optional(z.boolean()),
     saveTrieChanges: z.optional(z.boolean()),
     saveTxOutcomes: z.optional(z.boolean()),
@@ -3369,7 +3491,6 @@ export const RpcClientConfigResponseSchema = () =>
     stateRequestThrottlePeriod: z.optional(z.array(z.number())),
     stateRequestsPerThrottlePeriod: z.optional(z.number()),
     stateSync: z.optional(z.lazy(() => StateSyncConfigSchema())),
-    stateSyncEnabled: z.optional(z.boolean()),
     stateSyncExternalBackoff: z.optional(z.array(z.number())),
     stateSyncExternalTimeout: z.optional(z.array(z.number())),
     stateSyncP2pTimeout: z.optional(z.array(z.number())),
@@ -3382,6 +3503,7 @@ export const RpcClientConfigResponseSchema = () =>
     transactionPoolSizeLimit: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
+    transactionPoolStrictNonceTtlBlocks: z.optional(z.number()),
     transactionRequestHandlerThreads: z.optional(z.number()),
     trieViewerStateSizeLimit: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
@@ -3637,7 +3759,6 @@ export const RpcProtocolConfigRequestSchema = () =>
 
 export const RpcProtocolConfigResponseSchema = () =>
   z.object({
-    avgHiddenValidatorSeatsPerShard: z.optional(z.array(z.number())),
     blockProducerKickoutThreshold: z.optional(z.number()),
     chainId: z.optional(z.string()),
     chunkProducerKickoutThreshold: z.optional(z.number()),
@@ -3657,7 +3778,6 @@ export const RpcProtocolConfigResponseSchema = () =>
     minimumStakeRatio: z.optional(z.array(z.number())),
     minimumValidatorsPerShard: z.optional(z.number()),
     numBlockProducerSeats: z.optional(z.number()),
-    numBlockProducerSeatsPerShard: z.optional(z.array(z.number())),
     numBlocksPerYear: z.optional(z.number()),
     onlineMaxThreshold: z.optional(z.array(z.number())),
     onlineMinThreshold: z.optional(z.array(z.number())),
@@ -3795,7 +3915,11 @@ export const RpcQueryRequestSchema = () =>
       }),
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
+        afterKeyBase64: z.optional(
+          z.union([z.lazy(() => StoreKeySchema()), z.null()])
+        ),
         includeProof: z.optional(z.boolean()),
+        limit: z.optional(z.union([z.union([z.number(), z.null()]), z.null()])),
         prefixBase64: z.lazy(() => StoreKeySchema()),
         requestType: z.enum(['view_state']),
       })
@@ -3826,16 +3950,7 @@ export const RpcQueryRequestSchema = () =>
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
         publicKey: z.lazy(() => PublicKeySchema()),
-        requestType: z.enum(['view_gas_key']),
-      })
-    ),
-    z.intersection(
-      z.object({
-        blockId: z.lazy(() => BlockIdSchema()),
-      }),
-      z.object({
-        accountId: z.lazy(() => AccountIdSchema()),
-        requestType: z.enum(['view_gas_key_list']),
+        requestType: z.enum(['view_gas_key_nonces']),
       })
     ),
     z.intersection(
@@ -3891,7 +4006,11 @@ export const RpcQueryRequestSchema = () =>
       }),
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
+        afterKeyBase64: z.optional(
+          z.union([z.lazy(() => StoreKeySchema()), z.null()])
+        ),
         includeProof: z.optional(z.boolean()),
+        limit: z.optional(z.union([z.union([z.number(), z.null()]), z.null()])),
         prefixBase64: z.lazy(() => StoreKeySchema()),
         requestType: z.enum(['view_state']),
       })
@@ -3922,16 +4041,7 @@ export const RpcQueryRequestSchema = () =>
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
         publicKey: z.lazy(() => PublicKeySchema()),
-        requestType: z.enum(['view_gas_key']),
-      })
-    ),
-    z.intersection(
-      z.object({
-        finality: z.lazy(() => FinalitySchema()),
-      }),
-      z.object({
-        accountId: z.lazy(() => AccountIdSchema()),
-        requestType: z.enum(['view_gas_key_list']),
+        requestType: z.enum(['view_gas_key_nonces']),
       })
     ),
     z.intersection(
@@ -3987,7 +4097,11 @@ export const RpcQueryRequestSchema = () =>
       }),
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
+        afterKeyBase64: z.optional(
+          z.union([z.lazy(() => StoreKeySchema()), z.null()])
+        ),
         includeProof: z.optional(z.boolean()),
+        limit: z.optional(z.union([z.union([z.number(), z.null()]), z.null()])),
         prefixBase64: z.lazy(() => StoreKeySchema()),
         requestType: z.enum(['view_state']),
       })
@@ -4018,16 +4132,7 @@ export const RpcQueryRequestSchema = () =>
       z.object({
         accountId: z.lazy(() => AccountIdSchema()),
         publicKey: z.lazy(() => PublicKeySchema()),
-        requestType: z.enum(['view_gas_key']),
-      })
-    ),
-    z.intersection(
-      z.object({
-        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
-      }),
-      z.object({
-        accountId: z.lazy(() => AccountIdSchema()),
-        requestType: z.enum(['view_gas_key_list']),
+        requestType: z.enum(['view_gas_key_nonces']),
       })
     ),
     z.intersection(
@@ -4070,8 +4175,7 @@ export const RpcQueryResponseSchema = () =>
       z.lazy(() => CallResultSchema()),
       z.lazy(() => AccessKeyViewSchema()),
       z.lazy(() => AccessKeyListSchema()),
-      z.lazy(() => GasKeyViewSchema()),
-      z.lazy(() => GasKeyListSchema()),
+      z.lazy(() => GasKeyNoncesViewSchema()),
     ]),
     z.object({
       blockHash: z.lazy(() => CryptoHashSchema()),
@@ -4107,6 +4211,74 @@ export const RpcReceiptResponseSchema = () =>
     receipt: z.lazy(() => ReceiptEnumViewSchema()),
     receiptId: z.lazy(() => CryptoHashSchema()),
     receiverId: z.lazy(() => AccountIdSchema()),
+  });
+
+export const RpcReceiptToTxErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        receiptId: z.lazy(() => CryptoHashSchema()),
+      }),
+      name: z.enum(['UNKNOWN_RECEIPT']),
+    }),
+    z.object({
+      info: z.object({
+        limit: z.number(),
+        receiptId: z.lazy(() => CryptoHashSchema()),
+      }),
+      name: z.enum(['DEPTH_EXCEEDED']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['UNSUPPORTED']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+    z.object({
+      name: z.enum(['OUTCOMES_NOT_STORED']),
+    }),
+    z.object({
+      info: z.object({
+        maximum: z.number(),
+        requested: z.number(),
+      }),
+      name: z.enum(['WINDOW_TOO_LARGE']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['MALFORMED_HINT']),
+    }),
+    z.object({
+      info: z.object({
+        limit: z.number(),
+        scanned: z.number(),
+      }),
+      name: z.enum(['BUDGET_EXCEEDED']),
+    }),
+  ]);
+
+export const RpcReceiptToTxRequestSchema = () =>
+  z.object({
+    blockHeight: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
+    receiptId: z.lazy(() => CryptoHashSchema()),
+    shardId: z.optional(z.union([z.lazy(() => ShardIdSchema()), z.null()])),
+    window: z.optional(z.union([z.union([z.number(), z.null()]), z.null()])),
+  });
+
+export const RpcReceiptToTxResponseSchema = () =>
+  z.object({
+    senderAccountId: z.lazy(() => AccountIdSchema()),
+    transactionHash: z.lazy(() => CryptoHashSchema()),
   });
 
 export const RpcRequestValidationErrorKindSchema = () =>
@@ -4172,6 +4344,12 @@ export const RpcStateChangesErrorSchema = () =>
       }),
       name: z.enum(['INTERNAL_ERROR']),
     }),
+    z.object({
+      info: z.object({
+        shardId: z.lazy(() => ShardIdSchema()),
+      }),
+      name: z.enum(['SHARD_NOT_APPLIED']),
+    }),
   ]);
 
 //
@@ -4204,26 +4382,8 @@ export const RpcStateChangesInBlockByTypeRequestSchema = () =>
         blockId: z.lazy(() => BlockIdSchema()),
       }),
       z.object({
-        changesType: z.enum(['single_gas_key_changes']),
-        keys: z.array(z.lazy(() => AccountWithPublicKeySchema())),
-      })
-    ),
-    z.intersection(
-      z.object({
-        blockId: z.lazy(() => BlockIdSchema()),
-      }),
-      z.object({
         accountIds: z.array(z.lazy(() => AccountIdSchema())),
         changesType: z.enum(['all_access_key_changes']),
-      })
-    ),
-    z.intersection(
-      z.object({
-        blockId: z.lazy(() => BlockIdSchema()),
-      }),
-      z.object({
-        accountIds: z.array(z.lazy(() => AccountIdSchema())),
-        changesType: z.enum(['all_gas_key_changes']),
       })
     ),
     z.intersection(
@@ -4268,26 +4428,8 @@ export const RpcStateChangesInBlockByTypeRequestSchema = () =>
         finality: z.lazy(() => FinalitySchema()),
       }),
       z.object({
-        changesType: z.enum(['single_gas_key_changes']),
-        keys: z.array(z.lazy(() => AccountWithPublicKeySchema())),
-      })
-    ),
-    z.intersection(
-      z.object({
-        finality: z.lazy(() => FinalitySchema()),
-      }),
-      z.object({
         accountIds: z.array(z.lazy(() => AccountIdSchema())),
         changesType: z.enum(['all_access_key_changes']),
-      })
-    ),
-    z.intersection(
-      z.object({
-        finality: z.lazy(() => FinalitySchema()),
-      }),
-      z.object({
-        accountIds: z.array(z.lazy(() => AccountIdSchema())),
-        changesType: z.enum(['all_gas_key_changes']),
       })
     ),
     z.intersection(
@@ -4332,26 +4474,8 @@ export const RpcStateChangesInBlockByTypeRequestSchema = () =>
         syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
       }),
       z.object({
-        changesType: z.enum(['single_gas_key_changes']),
-        keys: z.array(z.lazy(() => AccountWithPublicKeySchema())),
-      })
-    ),
-    z.intersection(
-      z.object({
-        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
-      }),
-      z.object({
         accountIds: z.array(z.lazy(() => AccountIdSchema())),
         changesType: z.enum(['all_access_key_changes']),
-      })
-    ),
-    z.intersection(
-      z.object({
-        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
-      }),
-      z.object({
-        accountIds: z.array(z.lazy(() => AccountIdSchema())),
-        changesType: z.enum(['all_gas_key_changes']),
       })
     ),
     z.intersection(
@@ -4528,12 +4652,14 @@ export const RpcValidatorErrorSchema = () =>
 
 export const RpcValidatorRequestSchema = () =>
   z.union([
-    z.enum(['latest']),
     z.object({
       epochId: z.lazy(() => EpochIdSchema()),
     }),
     z.object({
       blockId: z.lazy(() => BlockIdSchema()),
+    }),
+    z.object({
+      latest: z.null(),
     }),
   ]);
 
@@ -4548,6 +4674,12 @@ export const RpcValidatorResponseSchema = () =>
     nextFishermen: z.array(z.lazy(() => ValidatorStakeViewSchema())),
     nextValidators: z.array(z.lazy(() => NextEpochValidatorInfoSchema())),
     prevEpochKickout: z.array(z.lazy(() => ValidatorKickoutViewSchema())),
+    validatorRewardPaidPrevEpoch: z.optional(
+      z.record(
+        z.string(),
+        z.lazy(() => NearTokenSchema())
+      )
+    ),
   });
 
 export const RpcValidatorsOrderedRequestSchema = () =>
@@ -4816,132 +4948,6 @@ export const RpcViewCodeResponseSchema = () =>
     hash: z.lazy(() => CryptoHashSchema()),
   });
 
-export const RpcViewGasKeyErrorSchema = () =>
-  z.union([
-    z.object({
-      info: z.object({
-        blockReference: z.lazy(() => BlockReferenceSchema()),
-      }),
-      name: z.enum(['UNKNOWN_BLOCK']),
-    }),
-    z.object({
-      info: z.object({
-        blockHash: z.lazy(() => CryptoHashSchema()),
-        blockHeight: z.number(),
-        requestedAccountId: z.lazy(() => AccountIdSchema()),
-      }),
-      name: z.enum(['INVALID_ACCOUNT']),
-    }),
-    z.object({
-      info: z.object({
-        blockHash: z.lazy(() => CryptoHashSchema()),
-        blockHeight: z.number(),
-        requestedAccountId: z.lazy(() => AccountIdSchema()),
-      }),
-      name: z.enum(['UNKNOWN_ACCOUNT']),
-    }),
-    z.object({
-      info: z.object({
-        blockHash: z.lazy(() => CryptoHashSchema()),
-        blockHeight: z.number(),
-        publicKey: z.lazy(() => PublicKeySchema()),
-      }),
-      name: z.enum(['UNKNOWN_GAS_KEY']),
-    }),
-    z.object({
-      info: z.object({
-        errorMessage: z.string(),
-      }),
-      name: z.enum(['INTERNAL_ERROR']),
-    }),
-  ]);
-
-export const RpcViewGasKeyListErrorSchema = () =>
-  z.union([
-    z.object({
-      info: z.object({
-        blockReference: z.lazy(() => BlockReferenceSchema()),
-      }),
-      name: z.enum(['UNKNOWN_BLOCK']),
-    }),
-    z.object({
-      info: z.object({
-        blockHash: z.lazy(() => CryptoHashSchema()),
-        blockHeight: z.number(),
-        requestedAccountId: z.lazy(() => AccountIdSchema()),
-      }),
-      name: z.enum(['INVALID_ACCOUNT']),
-    }),
-    z.object({
-      info: z.object({
-        blockHash: z.lazy(() => CryptoHashSchema()),
-        blockHeight: z.number(),
-        requestedAccountId: z.lazy(() => AccountIdSchema()),
-      }),
-      name: z.enum(['UNKNOWN_ACCOUNT']),
-    }),
-    z.object({
-      info: z.object({
-        errorMessage: z.string(),
-      }),
-      name: z.enum(['INTERNAL_ERROR']),
-    }),
-  ]);
-
-export const RpcViewGasKeyListRequestSchema = () =>
-  z.intersection(
-    z.union([
-      z.object({
-        blockId: z.lazy(() => BlockIdSchema()),
-      }),
-      z.object({
-        finality: z.lazy(() => FinalitySchema()),
-      }),
-      z.object({
-        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
-      }),
-    ]),
-    z.object({
-      accountId: z.lazy(() => AccountIdSchema()),
-    })
-  );
-
-export const RpcViewGasKeyListResponseSchema = () =>
-  z.object({
-    blockHash: z.lazy(() => CryptoHashSchema()),
-    blockHeight: z.number(),
-    keys: z.array(z.lazy(() => GasKeyInfoViewSchema())),
-  });
-
-export const RpcViewGasKeyRequestSchema = () =>
-  z.intersection(
-    z.union([
-      z.object({
-        blockId: z.lazy(() => BlockIdSchema()),
-      }),
-      z.object({
-        finality: z.lazy(() => FinalitySchema()),
-      }),
-      z.object({
-        syncCheckpoint: z.lazy(() => SyncCheckpointSchema()),
-      }),
-    ]),
-    z.object({
-      accountId: z.lazy(() => AccountIdSchema()),
-      publicKey: z.lazy(() => PublicKeySchema()),
-    })
-  );
-
-export const RpcViewGasKeyResponseSchema = () =>
-  z.object({
-    balance: z.lazy(() => NearTokenSchema()),
-    blockHash: z.lazy(() => CryptoHashSchema()),
-    blockHeight: z.number(),
-    nonces: z.array(z.number()),
-    numNonces: z.number(),
-    permission: z.lazy(() => AccessKeyPermissionViewSchema()),
-  });
-
 export const RpcViewStateErrorSchema = () =>
   z.union([
     z.object({
@@ -4997,7 +5003,11 @@ export const RpcViewStateRequestSchema = () =>
     ]),
     z.object({
       accountId: z.lazy(() => AccountIdSchema()),
+      afterKeyBase64: z.optional(
+        z.union([z.lazy(() => StoreKeySchema()), z.null()])
+      ),
       includeProof: z.optional(z.boolean()),
+      limit: z.optional(z.union([z.union([z.number(), z.null()]), z.null()])),
       prefixBase64: z.lazy(() => StoreKeySchema()),
     })
   );
@@ -5007,6 +5017,7 @@ export const RpcViewStateResponseSchema = () =>
   z.object({
     blockHash: z.lazy(() => CryptoHashSchema()),
     blockHeight: z.number(),
+    lastKey: z.optional(z.union([z.lazy(() => StoreKeySchema()), z.null()])),
     proof: z.optional(z.array(z.string())),
     values: z.array(z.lazy(() => StateItemSchema())),
   });
@@ -5014,15 +5025,14 @@ export const RpcViewStateResponseSchema = () =>
 // View that preserves JSON format of the runtime config.
 export const RuntimeConfigViewSchema = () =>
   z.object({
+    accountCreationCharge: z.optional(z.lazy(() => NearTokenSchema())),
     accountCreationConfig: z.optional(
       z.lazy(() => AccountCreationConfigViewSchema())
     ),
     congestionControlConfig: z.optional(
       z.lazy(() => CongestionControlConfigViewSchema())
     ),
-    dynamicReshardingConfig: z.optional(
-      z.lazy(() => DynamicReshardingConfigViewSchema())
-    ),
+    minGasPurchasePrice: z.optional(z.lazy(() => NearTokenSchema())),
     storageAmountPerByte: z.optional(z.lazy(() => NearTokenSchema())),
     transactionCosts: z.optional(z.lazy(() => RuntimeFeesConfigViewSchema())),
     wasmConfig: z.optional(z.lazy(() => VMConfigViewSchema())),
@@ -5040,6 +5050,7 @@ export const RuntimeFeesConfigViewSchema = () =>
     dataReceiptCreationConfig: z.optional(
       z.lazy(() => DataReceiptCreationConfigViewSchema())
     ),
+    mlDsa_65VerificationCost: z.optional(z.lazy(() => NearGasSchema())),
     pessimisticGasPriceInflationRatio: z.optional(z.array(z.number())),
     storageUsageConfig: z.optional(
       z.lazy(() => StorageUsageConfigViewSchema())
@@ -5199,6 +5210,10 @@ export const SignedTransactionViewSchema = () =>
     actions: z.array(z.lazy(() => ActionViewSchema())),
     hash: z.lazy(() => CryptoHashSchema()),
     nonce: z.number(),
+    nonceIndex: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
+    nonceMode: z.optional(z.union([z.lazy(() => NonceModeSchema()), z.null()])),
     priorityFee: z.optional(z.number()),
     publicKey: z.lazy(() => PublicKeySchema()),
     receiverId: z.lazy(() => AccountIdSchema()),
@@ -5210,6 +5225,18 @@ export const SlashedValidatorSchema = () =>
   z.object({
     accountId: z.lazy(() => AccountIdSchema()),
     isDoubleSign: z.boolean(),
+  });
+
+//
+// Per-validator chunk endorsement stats accumulated over a spice epoch,
+// indexed by the current epoch's validator id. Carried on the last block of
+// the epoch (see `BlockHeaderInnerRestV7`) and consumed by reward and
+// kickout.
+
+export const SpiceChunkEndorsementStatsSchema = () =>
+  z.object({
+    expected: z.number(),
+    produced: z.number(),
   });
 
 // An action which stakes signer_id tokens and setup's validator public key
@@ -5316,40 +5343,25 @@ export const StateChangeWithCauseViewSchema = () =>
         change: z.object({
           accessKey: z.lazy(() => AccessKeyViewSchema()),
           accountId: z.lazy(() => AccountIdSchema()),
-          publicKey: z.lazy(() => PublicKeySchema()),
+          publicKey: z.lazy(() => PublicKeyHandleSchema()),
         }),
         type: z.enum(['access_key_update']),
       }),
       z.object({
         change: z.object({
           accountId: z.lazy(() => AccountIdSchema()),
-          publicKey: z.lazy(() => PublicKeySchema()),
+          publicKey: z.lazy(() => PublicKeyHandleSchema()),
         }),
         type: z.enum(['access_key_deletion']),
       }),
       z.object({
         change: z.object({
           accountId: z.lazy(() => AccountIdSchema()),
-          gasKey: z.lazy(() => GasKeySchema()),
-          publicKey: z.lazy(() => PublicKeySchema()),
-        }),
-        type: z.enum(['gas_key_update']),
-      }),
-      z.object({
-        change: z.object({
-          accountId: z.lazy(() => AccountIdSchema()),
           index: z.number(),
           nonce: z.number(),
-          publicKey: z.lazy(() => PublicKeySchema()),
+          publicKey: z.lazy(() => PublicKeyHandleSchema()),
         }),
         type: z.enum(['gas_key_nonce_update']),
-      }),
-      z.object({
-        change: z.object({
-          accountId: z.lazy(() => AccountIdSchema()),
-          publicKey: z.lazy(() => PublicKeySchema()),
-        }),
-        type: z.enum(['gas_key_deletion']),
       }),
       z.object({
         change: z.object({
@@ -5525,15 +5537,45 @@ export const TrackedShardsConfigSchema = () =>
     }),
   ]);
 
+export const TransactionNonceSchema = () =>
+  z.union([
+    z.object({
+      Nonce: z.object({
+        nonce: z.number(),
+      }),
+    }),
+    z.object({
+      GasKeyNonce: z.object({
+        nonce: z.number(),
+        nonceIndex: z.number(),
+      }),
+    }),
+  ]);
+
 export const TransferActionSchema = () =>
   z.object({
     deposit: z.lazy(() => NearTokenSchema()),
   });
 
+// Transfer NEAR to a gas key's balance
 export const TransferToGasKeyActionSchema = () =>
   z.object({
     deposit: z.lazy(() => NearTokenSchema()),
     publicKey: z.lazy(() => PublicKeySchema()),
+  });
+
+//
+// The result of splitting a memtrie into two possibly even parts, according
+// to `memory_usage` stored in the trie nodes. **NOTE: This is an artificial
+// value calculated according to `TRIE_COST`. Hence, it does not represent
+// actual memory allocation, but the split ratio should be roughly consistent
+// with that.**
+
+export const TrieSplitSchema = () =>
+  z.object({
+    boundaryAccount: z.lazy(() => AccountIdSchema()),
+    leftMemory: z.number(),
+    rightMemory: z.number(),
   });
 
 // Error returned in the ExecutionOutcome in case of failure
@@ -5565,22 +5607,26 @@ export const UseGlobalContractActionSchema = () =>
 
 export const VMConfigViewSchema = () =>
   z.object({
-    deterministicAccountIds: z.optional(z.boolean()),
+    bls12381NotInGroupFix: z.optional(z.boolean()),
+    chainIdHostFn: z.optional(z.boolean()),
     discardCustomSections: z.optional(z.boolean()),
     ethImplicitAccounts: z.optional(z.boolean()),
     extCosts: z.optional(z.lazy(() => ExtCostsConfigViewSchema())),
     fixContractLoadingCost: z.optional(z.boolean()),
+    gasKeyHostFns: z.optional(z.boolean()),
     globalContractHostFns: z.optional(z.boolean()),
     growMemCost: z.optional(z.number()),
     implicitAccountCreation: z.optional(z.boolean()),
     limitConfig: z.optional(z.lazy(() => LimitConfigSchema())),
     linearOpBaseCost: z.optional(z.number()),
     linearOpUnitCost: z.optional(z.number()),
+    oneYoctoOnPromise: z.optional(z.boolean()),
+    p256VerifyHostFn: z.optional(z.boolean()),
     reftypesBulkMemory: z.optional(z.boolean()),
     regularOpCost: z.optional(z.number()),
-    saturatingFloatToInt: z.optional(z.boolean()),
     storageGetMode: z.optional(z.lazy(() => StorageGetModeSchema())),
     vmKind: z.optional(z.lazy(() => VMKindSchema())),
+    yieldWithIdHostFns: z.optional(z.boolean()),
   });
 
 export const VMKindSchema = () =>
@@ -5659,9 +5705,27 @@ export const VersionSchema = () =>
     version: z.string(),
   });
 
+//
+// Versions of the delegate action carried by `Action::DelegateV2`. New
+// versions add a variant here rather than a new `Action` variant. The variant
+// is part of the signed payload, so a signature can't be ambiguous across
+// versions.
+
+export const VersionedDelegateActionPayloadSchema = () =>
+  z.object({
+    V2: z.lazy(() => DelegateActionV2Schema()),
+  });
+
+export const VersionedSignedDelegateActionSchema = () =>
+  z.object({
+    delegateAction: z.lazy(() => VersionedDelegateActionPayloadSchema()),
+    signature: z.lazy(() => SignatureSchema()),
+  });
+
 // Resulting state values for a view state query request
 export const ViewStateResultSchema = () =>
   z.object({
+    lastKey: z.optional(z.union([z.lazy(() => StoreKeySchema()), z.null()])),
     proof: z.optional(z.array(z.string())),
     values: z.array(z.lazy(() => StateItemSchema())),
   });
@@ -5679,6 +5743,17 @@ export const WasmTrapSchema = () =>
     z.enum(['StackOverflow']),
     z.enum(['GenericTrap']),
   ]);
+
+//
+// Withdraw NEAR from a gas key's balance to the account. This action must
+// only be available via transactions, not via contract execution (there is no
+// corresponding promise batch action host function).
+
+export const WithdrawFromGasKeyActionSchema = () =>
+  z.object({
+    amount: z.lazy(() => NearTokenSchema()),
+    publicKey: z.lazy(() => PublicKeySchema()),
+  });
 
 // Configuration specific to ChunkStateWitness.
 export const WitnessConfigViewSchema = () =>
@@ -5864,6 +5939,22 @@ export const EXPERIMENTALReceiptResponseSchema = () =>
   );
 
 //
+// Request schema for EXPERIMENTAL_receipt_to_tx: Resolves a receipt ID back
+// to the originating transaction hash and sender account
+
+export const EXPERIMENTALReceiptToTxRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALReceiptToTxSchema());
+
+//
+// Response schema for EXPERIMENTAL_receipt_to_tx: Resolves a receipt ID back
+// to the originating transaction hash and sender account
+
+export const EXPERIMENTALReceiptToTxResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcReceiptToTxResponseAnd_RpcReceiptToTxErrorSchema()
+  );
+
+//
 // Request schema for EXPERIMENTAL_split_storage_info: Contains the split
 // storage information. More info on split storage
 // [here](https://near-nodes.io/archival/split-storage-archival)
@@ -5981,38 +6072,6 @@ export const EXPERIMENTALViewCodeRequestSchema = () =>
 export const EXPERIMENTALViewCodeResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcViewCodeResponseAnd_RpcViewCodeErrorSchema()
-  );
-
-//
-// Request schema for EXPERIMENTAL_view_gas_key: Returns information about a
-// single gas key for given account.
-
-export const EXPERIMENTALViewGasKeyRequestSchema = () =>
-  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewGasKeySchema());
-
-//
-// Response schema for EXPERIMENTAL_view_gas_key: Returns information about a
-// single gas key for given account.
-
-export const EXPERIMENTALViewGasKeyResponseSchema = () =>
-  z.lazy(() =>
-    JsonRpcResponseFor_RpcViewGasKeyResponseAnd_RpcViewGasKeyErrorSchema()
-  );
-
-//
-// Request schema for EXPERIMENTAL_view_gas_key_list: Returns all gas keys for
-// a given account.
-
-export const EXPERIMENTALViewGasKeyListRequestSchema = () =>
-  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALViewGasKeyListSchema());
-
-//
-// Response schema for EXPERIMENTAL_view_gas_key_list: Returns all gas keys
-// for a given account.
-
-export const EXPERIMENTALViewGasKeyListResponseSchema = () =>
-  z.lazy(() =>
-    JsonRpcResponseFor_RpcViewGasKeyListResponseAnd_RpcViewGasKeyListErrorSchema()
   );
 
 //
@@ -6380,6 +6439,10 @@ export const VALIDATION_SCHEMA_MAP: Record<
     requestSchema: EXPERIMENTALReceiptRequestSchema,
     responseSchema: EXPERIMENTALReceiptResponseSchema,
   },
+  EXPERIMENTAL_receipt_to_tx: {
+    requestSchema: EXPERIMENTALReceiptToTxRequestSchema,
+    responseSchema: EXPERIMENTALReceiptToTxResponseSchema,
+  },
   EXPERIMENTAL_split_storage_info: {
     requestSchema: EXPERIMENTALSplitStorageInfoRequestSchema,
     responseSchema: EXPERIMENTALSplitStorageInfoResponseSchema,
@@ -6407,14 +6470,6 @@ export const VALIDATION_SCHEMA_MAP: Record<
   EXPERIMENTAL_view_code: {
     requestSchema: EXPERIMENTALViewCodeRequestSchema,
     responseSchema: EXPERIMENTALViewCodeResponseSchema,
-  },
-  EXPERIMENTAL_view_gas_key: {
-    requestSchema: EXPERIMENTALViewGasKeyRequestSchema,
-    responseSchema: EXPERIMENTALViewGasKeyResponseSchema,
-  },
-  EXPERIMENTAL_view_gas_key_list: {
-    requestSchema: EXPERIMENTALViewGasKeyListRequestSchema,
-    responseSchema: EXPERIMENTALViewGasKeyListResponseSchema,
   },
   EXPERIMENTAL_view_state: {
     requestSchema: EXPERIMENTALViewStateRequestSchema,

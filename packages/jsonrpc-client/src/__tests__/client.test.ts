@@ -78,7 +78,7 @@ describe('NearRpcClient', () => {
     });
 
     it('should make validators call', async () => {
-      const result = await validators(client, 'latest');
+      const result = await validators(client, { latest: null });
       expect(result).toHaveProperty('currentValidators');
     });
 
