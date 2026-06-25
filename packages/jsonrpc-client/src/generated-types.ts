@@ -315,8 +315,7 @@ export interface ConvenienceMethods {
 
 // Combined interface for the complete client
 export interface CompleteClientInterface
-  extends DynamicRpcMethods,
-    ConvenienceMethods {
+  extends DynamicRpcMethods, ConvenienceMethods {
   // Generic call method for ultimate flexibility
   call<TParams = unknown, TResult = unknown>(
     method: string,

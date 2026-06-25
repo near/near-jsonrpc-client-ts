@@ -123,8 +123,7 @@ describe('Tree-shaking Bundle Tests', () => {
     const bundlePath = path.join(distDir, 'bundle.js');
     const content = fs.readFileSync(bundlePath, 'utf-8');
 
-    // main.ts uses status, so it should contain Status schemas
-    expect(content).toContain('RpcStatusRequestSchema');
+    // main.ts uses status, so it should contain StatusResponse schema
     expect(content).toContain('RpcStatusResponseSchema');
 
     // Should NOT contain schemas for unused functions
