@@ -4,8 +4,9 @@ test.describe('NEAR RPC One-Liner Browser Tests', () => {
   test('should work as one-liner dynamic import from any page', async ({
     page,
   }) => {
-    // Go to any page (using about:blank for minimal load)
-    await page.goto('about:blank');
+    // Serve from the local origin so cross-origin/opaque-origin module
+    // imports are allowed (modern Chromium blocks http imports from about:blank)
+    await page.goto('http://localhost:3000/');
 
     // Execute the one-liner from the README
     const result = await page.evaluate(async () => {
@@ -34,7 +35,7 @@ test.describe('NEAR RPC One-Liner Browser Tests', () => {
 
   test('should work with local bundle via data URL', async ({ page }) => {
     // Go to any page
-    await page.goto('about:blank');
+    await page.goto('http://localhost:3000/');
 
     // Read the local bundle and create a data URL
     const { readFileSync } = await import('fs');
@@ -71,10 +72,11 @@ test.describe('NEAR RPC One-Liner Browser Tests', () => {
   });
 
   test('should work when pasted into any website console', async ({ page }) => {
-    // Go to a simple page to simulate real-world usage
-    await page.goto(
-      'data:text/html,<html><head><title>Test Page</title></head><body><h1>Test Page</h1></body></html>'
-    );
+    // Simulate a real third-party website by loading a different origin
+    // (127.0.0.1 vs localhost) and importing the bundle cross-origin via CORS.
+    // Modern Chromium blocks module imports from opaque origins (e.g. data: or
+    // about:blank), so an opaque-origin page is not a realistic console paste.
+    await page.goto('http://127.0.0.1:3000/');
 
     // Wait for page to load
     await page.waitForLoadState('domcontentloaded');
@@ -111,7 +113,7 @@ test.describe('NEAR RPC One-Liner Browser Tests', () => {
   });
 
   test('should handle errors gracefully in one-liner', async ({ page }) => {
-    await page.goto('about:blank');
+    await page.goto('http://localhost:3000/');
 
     // Test error handling with invalid endpoint
     const result = await page.evaluate(async () => {
@@ -141,7 +143,7 @@ test.describe('NEAR RPC One-Liner Browser Tests', () => {
   test('should work with different RPC methods in one-liner style', async ({
     page,
   }) => {
-    await page.goto('about:blank');
+    await page.goto('http://localhost:3000/');
 
     // Test various RPC methods that can be called in one-liner style
     const result = await page.evaluate(async () => {
@@ -185,8 +187,9 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
   test('should work as one-liner with mini bundle from local server', async ({
     page,
   }) => {
-    // Go to any page (using about:blank for minimal load)
-    await page.goto('about:blank');
+    // Serve from the local origin so cross-origin/opaque-origin module
+    // imports are allowed (modern Chromium blocks http imports from about:blank)
+    await page.goto('http://localhost:3000/');
 
     // Execute the one-liner using the local mini bundle
     const result = await page.evaluate(async () => {
@@ -216,7 +219,7 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
 
   test('should work with mini bundle via data URL', async ({ page }) => {
     // Go to any page
-    await page.goto('about:blank');
+    await page.goto('http://localhost:3000/');
 
     // Read the local mini bundle and create a data URL
     const { readFileSync } = await import('fs');
@@ -262,10 +265,11 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
       browserName === 'webkit',
       'WebKit blocks cross-origin dynamic imports stricter than other browsers'
     );
-    // Go to a simple page to simulate real-world usage
-    await page.goto(
-      'data:text/html,<html><head><title>Test Page</title></head><body><h1>Test Page</h1></body></html>'
-    );
+    // Simulate a real third-party website by loading a different origin
+    // (127.0.0.1 vs localhost) and importing the bundle cross-origin via CORS.
+    // Modern Chromium blocks module imports from opaque origins (e.g. data: or
+    // about:blank), so an opaque-origin page is not a realistic console paste.
+    await page.goto('http://127.0.0.1:3000/');
 
     // Wait for page to load
     await page.waitForLoadState('domcontentloaded');
@@ -306,7 +310,7 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
   test('should handle errors gracefully in mini bundle one-liner', async ({
     page,
   }) => {
-    await page.goto('about:blank');
+    await page.goto('http://localhost:3000/');
 
     // Test error handling with invalid endpoint
     const result = await page.evaluate(async () => {
@@ -336,7 +340,7 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
   test('should work with different RPC methods in mini bundle one-liner style', async ({
     page,
   }) => {
-    await page.goto('about:blank');
+    await page.goto('http://localhost:3000/');
 
     // Test various RPC methods that can be called in one-liner style with mini bundle
     const result = await page.evaluate(async () => {
@@ -380,7 +384,7 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
   test('should validate schemas correctly with zod/mini functions', async ({
     page,
   }) => {
-    await page.goto('about:blank');
+    await page.goto('http://localhost:3000/');
 
     // Test that both regular and minified bundles work with zod/mini schema functions
     const result = await page.evaluate(async () => {
