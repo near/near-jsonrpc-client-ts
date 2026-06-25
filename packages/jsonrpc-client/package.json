@@ -21,7 +21,6 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "cd ../../tools/codegen && npx tsx generate-client-interface.ts",
     "build": "tsup && rollup -c",
     "build:node": "tsup",
     "build:browser": "rollup -c",
