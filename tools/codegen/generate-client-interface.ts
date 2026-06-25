@@ -809,9 +809,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   async function main() {
     try {
       // Import RPC_METHODS from the types package
-      const { RPC_METHODS } = await import(
-        '../../packages/jsonrpc-types/dist/index.mjs'
-      );
+      const { RPC_METHODS } =
+        await import('../../packages/jsonrpc-types/dist/index.mjs');
 
       // Output path - resolve relative to the project root, not codegen directory
       const projectRoot = join(

@@ -9,9 +9,8 @@ test.describe('NEAR RPC One-Liner Browser Tests', () => {
 
     // Execute the one-liner from the README
     const result = await page.evaluate(async () => {
-      const module = await import(
-        'http://localhost:3000/browser-standalone.js'
-      );
+      const module =
+        await import('http://localhost:3000/browser-standalone.js');
       const { NearRpcClient, block } = module;
       const client = new NearRpcClient('https://rpc.testnet.fastnear.com');
       const blockResult = await block(client, { finality: 'final' });
@@ -83,9 +82,8 @@ test.describe('NEAR RPC One-Liner Browser Tests', () => {
     // Execute the one-liner as if pasted into console
     const result = await page.evaluate(async () => {
       // This simulates what a user would paste into browser console
-      const { NearRpcClient, block, status, gasPrice } = await import(
-        'http://localhost:3000/browser-standalone.js'
-      );
+      const { NearRpcClient, block, status, gasPrice } =
+        await import('http://localhost:3000/browser-standalone.js');
       const client = new NearRpcClient('https://rpc.testnet.fastnear.com');
 
       // Test multiple RPC calls to ensure robustness
@@ -118,9 +116,8 @@ test.describe('NEAR RPC One-Liner Browser Tests', () => {
     // Test error handling with invalid endpoint
     const result = await page.evaluate(async () => {
       try {
-        const { NearRpcClient, block } = await import(
-          'http://localhost:3000/browser-standalone.js'
-        );
+        const { NearRpcClient, block } =
+          await import('http://localhost:3000/browser-standalone.js');
         const client = new NearRpcClient(
           'https://invalid-endpoint.example.com'
         );
@@ -193,9 +190,8 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
 
     // Execute the one-liner using the local mini bundle
     const result = await page.evaluate(async () => {
-      const { NearRpcClient, block } = await import(
-        'http://localhost:3000/browser-standalone.min.js'
-      );
+      const { NearRpcClient, block } =
+        await import('http://localhost:3000/browser-standalone.min.js');
       const client = new NearRpcClient({
         endpoint: 'https://rpc.testnet.fastnear.com',
       });
@@ -277,9 +273,8 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
     // Execute the one-liner as if pasted into console with mini bundle
     const result = await page.evaluate(async () => {
       // This simulates what a user would paste into browser console with mini bundle
-      const { NearRpcClient, block, status, gasPrice } = await import(
-        'http://localhost:3000/browser-standalone.min.js'
-      );
+      const { NearRpcClient, block, status, gasPrice } =
+        await import('http://localhost:3000/browser-standalone.min.js');
       const client = new NearRpcClient({
         endpoint: 'https://rpc.testnet.fastnear.com',
       });
@@ -316,9 +311,8 @@ test.describe('NEAR RPC One-Liner Mini Bundle Tests', () => {
     // Test error handling with invalid endpoint
     const result = await page.evaluate(async () => {
       try {
-        const { NearRpcClient, block } = await import(
-          'http://localhost:3000/browser-standalone.min.js'
-        );
+        const { NearRpcClient, block } =
+          await import('http://localhost:3000/browser-standalone.min.js');
         const client = new NearRpcClient({
           endpoint: 'https://invalid-endpoint.example.com',
         });
