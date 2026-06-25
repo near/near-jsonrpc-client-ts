@@ -123,8 +123,11 @@ describe('Tree-shaking Bundle Tests', () => {
     const bundlePath = path.join(distDir, 'bundle.js');
     const content = fs.readFileSync(bundlePath, 'utf-8');
 
-    // main.ts uses status, so it should contain Status schemas
-    expect(content).toContain('RpcStatusRequestSchema');
+    // main.ts uses status, so it should contain the Status response schema.
+    // Note: the status *request* schema is `z.null()` (status takes no params)
+    // and main.ts calls status() without params, so its trivial request
+    // validation is dead code that rollup tree-shakes away. Only the response
+    // schema remains as proof that a used function's schema is bundled.
     expect(content).toContain('RpcStatusResponseSchema');
 
     // Should NOT contain schemas for unused functions
