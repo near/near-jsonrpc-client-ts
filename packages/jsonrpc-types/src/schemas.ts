@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2026-06-24T09:26:08.375Z
+// Generated on: 2026-07-02T07:10:51.740Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -1571,14 +1571,6 @@ export const ExtCostsConfigViewSchema = () =>
     yieldCreateWithIdBase: z.optional(z.lazy(() => NearGasSchema())),
     yieldResumeBase: z.optional(z.lazy(() => NearGasSchema())),
     yieldResumeByte: z.optional(z.lazy(() => NearGasSchema())),
-  });
-
-export const ExternalStorageConfigSchema = () =>
-  z.object({
-    externalStorageFallbackThreshold: z.optional(z.number()),
-    location: z.optional(z.lazy(() => ExternalStorageLocationSchema())),
-    numConcurrentRequests: z.optional(z.number()),
-    numConcurrentRequestsDuringCatchup: z.optional(z.number()),
   });
 
 // Supported external storage backends and their minimal config.
@@ -3491,7 +3483,6 @@ export const RpcClientConfigResponseSchema = () =>
     stateRequestThrottlePeriod: z.optional(z.array(z.number())),
     stateRequestsPerThrottlePeriod: z.optional(z.number()),
     stateSync: z.optional(z.lazy(() => StateSyncConfigSchema())),
-    stateSyncExternalBackoff: z.optional(z.array(z.number())),
     stateSyncExternalTimeout: z.optional(z.array(z.number())),
     stateSyncP2pTimeout: z.optional(z.array(z.number())),
     stateSyncRetryBackoff: z.optional(z.array(z.number())),
@@ -5500,13 +5491,7 @@ export const SyncConcurrencySchema = () =>
   });
 
 // Configures how to fetch state parts during state sync.
-export const SyncConfigSchema = () =>
-  z.union([
-    z.enum(['Peers']),
-    z.object({
-      ExternalStorage: z.lazy(() => ExternalStorageConfigSchema()),
-    }),
-  ]);
+export const SyncConfigSchema = () => z.enum(['Peers']);
 
 export const Tier1ProxyViewSchema = () =>
   z.object({

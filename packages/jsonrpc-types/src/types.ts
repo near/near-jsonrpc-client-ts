@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2026-06-24T09:26:08.359Z
+// Generated on: 2026-07-02T07:10:51.731Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -487,10 +487,6 @@ export type ExecutionStatusView = z.infer<
  */
 export type ExtCostsConfigView = z.infer<
   ReturnType<typeof schemas.ExtCostsConfigViewSchema>
->;
-
-export type ExternalStorageConfig = z.infer<
-  ReturnType<typeof schemas.ExternalStorageConfigSchema>
 >;
 
 /** Supported external storage backends and their minimal config. */
