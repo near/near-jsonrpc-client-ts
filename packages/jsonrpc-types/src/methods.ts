@@ -1,5 +1,5 @@
 // Auto-generated method mapping from NEAR OpenAPI spec
-// Generated on: 2026-08-11T06:20:14.580Z
+// Generated on: 2026-09-19T06:15:36.833Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 // Maps OpenAPI paths to actual JSON-RPC method names
@@ -9,9 +9,16 @@ export const PATH_TO_METHOD_MAP = {
   '/EXPERIMENTAL_changes_in_block': 'EXPERIMENTAL_changes_in_block',
   '/EXPERIMENTAL_congestion_level': 'EXPERIMENTAL_congestion_level',
   '/EXPERIMENTAL_genesis_config': 'EXPERIMENTAL_genesis_config',
+  '/EXPERIMENTAL_indexer_block': 'EXPERIMENTAL_indexer_block',
   '/EXPERIMENTAL_light_client_block_proof':
     'EXPERIMENTAL_light_client_block_proof',
+  '/EXPERIMENTAL_light_client_chunk_execution_proof':
+    'EXPERIMENTAL_light_client_chunk_execution_proof',
+  '/EXPERIMENTAL_light_client_execution_outcome_proof':
+    'EXPERIMENTAL_light_client_execution_outcome_proof',
   '/EXPERIMENTAL_light_client_proof': 'EXPERIMENTAL_light_client_proof',
+  '/EXPERIMENTAL_light_client_state_proof':
+    'EXPERIMENTAL_light_client_state_proof',
   '/EXPERIMENTAL_maintenance_windows': 'EXPERIMENTAL_maintenance_windows',
   '/EXPERIMENTAL_protocol_config': 'EXPERIMENTAL_protocol_config',
   '/EXPERIMENTAL_receipt': 'EXPERIMENTAL_receipt',
@@ -42,6 +49,7 @@ export const PATH_TO_METHOD_MAP = {
   '/send_tx': 'send_tx',
   '/status': 'status',
   '/tx': 'tx',
+  '/tx_status': 'tx_status',
   '/validators': 'validators',
 };
 
