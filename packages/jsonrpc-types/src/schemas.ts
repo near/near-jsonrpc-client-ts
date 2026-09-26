@@ -1,5 +1,5 @@
 // Auto-generated Zod schemas from NEAR OpenAPI spec (zod/mini version)
-// Generated on: 2026-08-11T06:20:14.580Z
+// Generated on: 2026-09-26T06:16:04.564Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -165,8 +165,6 @@ export const AccountDataViewSchema = () =>
 
 export const AccountIdSchema = () => z.string();
 
-export const AccountIdValidityRulesVersionSchema = () => z.number();
-
 // Account info for validators
 export const AccountInfoSchema = () =>
   z.object({
@@ -175,10 +173,23 @@ export const AccountInfoSchema = () =>
     publicKey: z.lazy(() => PublicKeySchema()),
   });
 
+//
+// Whether an account's state has been installed. Only universal accounts can
+// be uninitialized: they come into existence when a transfer funds a `0u` id
+// whose state init has not been applied yet. A deterministic `0s` account
+// waiting for its state init is an ordinary V1 account with no contract, not
+// this.
+
+export const AccountStateSchema = () =>
+  z.enum(['initialized', 'uninitialized']);
+
 // A view of the account
 export const AccountViewSchema = () =>
   z.object({
     amount: z.lazy(() => NearTokenSchema()),
+    bootstrapNonce: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     codeHash: z.lazy(() => CryptoHashSchema()),
     globalContractAccountId: z.optional(
       z.union([z.lazy(() => AccountIdSchema()), z.null()])
@@ -187,6 +198,7 @@ export const AccountViewSchema = () =>
       z.union([z.lazy(() => CryptoHashSchema()), z.null()])
     ),
     locked: z.lazy(() => NearTokenSchema()),
+    state: z.optional(z.lazy(() => AccountStateSchema())),
     storagePaidAt: z.optional(z.number()),
     storageUsage: z.number(),
   });
@@ -382,6 +394,12 @@ export const ActionErrorKindSchema = () =>
         limit: z.number(),
       }),
     }),
+    z.enum(['MalformedUniversalStateInit']),
+    z.object({
+      AccountNotInitialized: z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+      }),
+    }),
   ]);
 
 export const ActionViewSchema = () =>
@@ -476,6 +494,12 @@ export const ActionViewSchema = () =>
       WithdrawFromGasKey: z.object({
         amount: z.lazy(() => NearTokenSchema()),
         publicKey: z.lazy(() => PublicKeySchema()),
+      }),
+    }),
+    z.object({
+      UniversalStateInit: z.object({
+        deposit: z.lazy(() => NearTokenSchema()),
+        stateInit: z.lazy(() => RawStateInitSchema()),
       }),
     }),
   ]);
@@ -582,6 +606,44 @@ export const ActionsValidationErrorSchema = () =>
       }),
     }),
     z.enum(['FunctionCallEmptyMethodName']),
+    z.object({
+      InvalidUniversalStateInitReceiver: z.object({
+        derivedId: z.lazy(() => AccountIdSchema()),
+        receiverId: z.lazy(() => AccountIdSchema()),
+      }),
+    }),
+    z.object({
+      UniversalStateInitKeyLengthExceeded: z.object({
+        length: z.number(),
+        limit: z.number(),
+      }),
+    }),
+    z.object({
+      UniversalStateInitValueLengthExceeded: z.object({
+        length: z.number(),
+        limit: z.number(),
+      }),
+    }),
+    z.enum(['MalformedUniversalStateInit']),
+    z.object({
+      RemovedProtocolFeature: z.object({
+        protocolFeature: z.string(),
+        version: z.number(),
+      }),
+    }),
+    z.enum(['WithdrawFromGasKeyNotAllowedInDelegate']),
+    z.object({
+      TotalNumberOfStateInitKeysExceeded: z.object({
+        limit: z.number(),
+        numberOfKeys: z.number(),
+      }),
+    }),
+    z.object({
+      TotalNumberOfStateInitEntriesExceeded: z.object({
+        limit: z.number(),
+        numberOfEntries: z.number(),
+      }),
+    }),
   ]);
 
 // An action that adds key with public key associated
@@ -738,6 +800,13 @@ export const BlockStatusViewSchema = () =>
     height: z.number(),
   });
 
+export const BlockViewSchema = () =>
+  z.object({
+    author: z.lazy(() => AccountIdSchema()),
+    chunks: z.array(z.lazy(() => ChunkHeaderViewSchema())),
+    header: z.lazy(() => BlockHeaderViewSchema()),
+  });
+
 // A result returned by contract method
 export const CallResultSchema = () =>
   z.object({
@@ -775,6 +844,39 @@ export const ChunkDistributionUrisSchema = () =>
   z.object({
     get: z.optional(z.string()),
     set: z.optional(z.string()),
+  });
+
+//
+// Proof that a chunk's certified execution roots are committed by a spice
+// block that a light client can trust via its `light_client_head`.
+// `roots_proof` recomputes the certifying block's `chunk_execution_root` from
+// the leaf; `certifying_block_proof` places the certifying block into the
+// head's block merkle tree.
+
+export const ChunkExecutionProofViewSchema = () =>
+  z.object({
+    certifyingBlockHeaderLite: z.lazy(() => LightClientBlockLiteViewSchema()),
+    certifyingBlockProof: z.array(z.lazy(() => MerklePathItemSchema())),
+    roots: z.lazy(() => ChunkExecutionRootsSchema()),
+    rootsProof: z.array(z.lazy(() => MerklePathItemSchema())),
+  });
+
+//
+// Merkle leaf committing to a single chunk's certified execution roots. The
+// `chunk_execution_root` in a spice block header is the merkle root over
+// these leaves, sorted by `chunk_id`.
+
+export const ChunkExecutionRootsSchema = () =>
+  z.object({
+    V1: z.lazy(() => ChunkExecutionRootsV1Schema()),
+  });
+
+export const ChunkExecutionRootsV1Schema = () =>
+  z.object({
+    chunkId: z.lazy(() => SpiceChunkIdSchema()),
+    outcomeRoot: z.lazy(() => CryptoHashSchema()),
+    outgoingReceiptsRoot: z.lazy(() => CryptoHashSchema()),
+    stateRoot: z.lazy(() => CryptoHashSchema()),
   });
 
 export const ChunkHashSchema = () => z.lazy(() => CryptoHashSchema());
@@ -1148,6 +1250,22 @@ export const ErrorWrapperFor_RpcGasPriceErrorSchema = () =>
     }),
     z.object({
       cause: z.lazy(() => RpcGasPriceErrorSchema()),
+      name: z.enum(['HANDLER_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => InternalErrorSchema()),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const ErrorWrapperFor_RpcIndexerBlockErrorSchema = () =>
+  z.union([
+    z.object({
+      cause: z.lazy(() => RpcRequestValidationErrorKindSchema()),
+      name: z.enum(['REQUEST_VALIDATION_ERROR']),
+    }),
+    z.object({
+      cause: z.lazy(() => RpcIndexerBlockErrorSchema()),
       name: z.enum(['HANDLER_ERROR']),
     }),
     z.object({
@@ -1588,6 +1706,12 @@ export const ExtCostsConfigViewSchema = () =>
     storageWriteKeyByte: z.optional(z.lazy(() => NearGasSchema())),
     storageWriteValueByte: z.optional(z.lazy(() => NearGasSchema())),
     touchingTrieNode: z.optional(z.lazy(() => NearGasSchema())),
+    universalStateInitToAccountIdBase: z.optional(
+      z.lazy(() => NearGasSchema())
+    ),
+    universalStateInitToAccountIdByte: z.optional(
+      z.lazy(() => NearGasSchema())
+    ),
     utf16DecodingBase: z.optional(z.lazy(() => NearGasSchema())),
     utf16DecodingByte: z.optional(z.lazy(() => NearGasSchema())),
     utf8DecodingBase: z.optional(z.lazy(() => NearGasSchema())),
@@ -1962,6 +2086,46 @@ export const HostErrorSchema = () =>
     }),
   ]);
 
+export const IndexerChunkViewSchema = () =>
+  z.object({
+    author: z.lazy(() => AccountIdSchema()),
+    header: z.lazy(() => ChunkHeaderViewSchema()),
+    instantReceipts: z.optional(z.array(z.lazy(() => ReceiptViewSchema()))),
+    localReceipts: z.optional(z.array(z.lazy(() => ReceiptViewSchema()))),
+    receipts: z.array(z.lazy(() => ReceiptViewSchema())),
+    transactions: z.array(z.lazy(() => IndexerTransactionWithOutcomeSchema())),
+  });
+
+export const IndexerExecutionOutcomeWithOptionalReceiptSchema = () =>
+  z.object({
+    executionOutcome: z.lazy(() => ExecutionOutcomeWithIdViewSchema()),
+    receipt: z.optional(z.union([z.lazy(() => ReceiptViewSchema()), z.null()])),
+  });
+
+export const IndexerExecutionOutcomeWithReceiptSchema = () =>
+  z.object({
+    executionOutcome: z.lazy(() => ExecutionOutcomeWithIdViewSchema()),
+    receipt: z.lazy(() => ReceiptViewSchema()),
+  });
+
+export const IndexerShardSchema = () =>
+  z.object({
+    chunk: z.optional(
+      z.union([z.lazy(() => IndexerChunkViewSchema()), z.null()])
+    ),
+    receiptExecutionOutcomes: z.array(
+      z.lazy(() => IndexerExecutionOutcomeWithReceiptSchema())
+    ),
+    shardId: z.lazy(() => ShardIdSchema()),
+    stateChanges: z.array(z.lazy(() => StateChangeWithCauseViewSchema())),
+  });
+
+export const IndexerTransactionWithOutcomeSchema = () =>
+  z.object({
+    outcome: z.lazy(() => IndexerExecutionOutcomeWithOptionalReceiptSchema()),
+    transaction: z.lazy(() => SignedTransactionViewSchema()),
+  });
+
 export const InternalErrorSchema = () =>
   z.object({
     info: z.object({
@@ -2143,6 +2307,14 @@ export const JsonRpcRequestFor_EXPERIMENTALGenesisConfigSchema = () =>
     params: z.lazy(() => GenesisConfigRequestSchema()),
   });
 
+export const JsonRpcRequestFor_EXPERIMENTALIndexerBlockSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_indexer_block']),
+    params: z.lazy(() => RpcIndexerBlockRequestSchema()),
+  });
+
 export const JsonRpcRequestFor_EXPERIMENTALLightClientBlockProofSchema = () =>
   z.object({
     id: z.string(),
@@ -2151,12 +2323,38 @@ export const JsonRpcRequestFor_EXPERIMENTALLightClientBlockProofSchema = () =>
     params: z.lazy(() => RpcLightClientBlockProofRequestSchema()),
   });
 
+export const JsonRpcRequestFor_EXPERIMENTALLightClientChunkExecutionProofSchema =
+  () =>
+    z.object({
+      id: z.string(),
+      jsonrpc: z.string(),
+      method: z.enum(['EXPERIMENTAL_light_client_chunk_execution_proof']),
+      params: z.lazy(() => RpcLightClientChunkExecutionProofRequestSchema()),
+    });
+
+export const JsonRpcRequestFor_EXPERIMENTALLightClientExecutionOutcomeProofSchema =
+  () =>
+    z.object({
+      id: z.string(),
+      jsonrpc: z.string(),
+      method: z.enum(['EXPERIMENTAL_light_client_execution_outcome_proof']),
+      params: z.lazy(() => RpcLightClientExecutionOutcomeProofRequestSchema()),
+    });
+
 export const JsonRpcRequestFor_EXPERIMENTALLightClientProofSchema = () =>
   z.object({
     id: z.string(),
     jsonrpc: z.string(),
     method: z.enum(['EXPERIMENTAL_light_client_proof']),
     params: z.lazy(() => RpcLightClientExecutionProofRequestSchema()),
+  });
+
+export const JsonRpcRequestFor_EXPERIMENTALLightClientStateProofSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['EXPERIMENTAL_light_client_state_proof']),
+    params: z.lazy(() => RpcLightClientStateProofRequestSchema()),
   });
 
 export const JsonRpcRequestFor_EXPERIMENTALMaintenanceWindowsSchema = () =>
@@ -2399,6 +2597,14 @@ export const JsonRpcRequestForTxSchema = () =>
     params: z.lazy(() => RpcTransactionStatusRequestSchema()),
   });
 
+export const JsonRpcRequestForTxStatusSchema = () =>
+  z.object({
+    id: z.string(),
+    jsonrpc: z.string(),
+    method: z.enum(['tx_status']),
+    params: z.lazy(() => RpcTransactionStatusRequestSchema()),
+  });
+
 export const JsonRpcRequestForValidatorsSchema = () =>
   z.object({
     id: z.string(),
@@ -2593,12 +2799,67 @@ export const JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcGasPriceErrorSchema =
       })
     );
 
+export const JsonRpcResponseFor_RpcIndexerBlockResponseAnd_RpcIndexerBlockErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcIndexerBlockResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcIndexerBlockErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
 export const JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcLightClientProofErrorSchema =
   () =>
     z.intersection(
       z.union([
         z.object({
           result: z.lazy(() => RpcLightClientBlockProofResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcLightClientProofErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcLightClientChunkExecutionProofResponseAnd_RpcLightClientProofErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() =>
+            RpcLightClientChunkExecutionProofResponseSchema()
+          ),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcLightClientProofErrorSchema()),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcLightClientExecutionOutcomeProofResponseAnd_RpcLightClientProofErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() =>
+            RpcLightClientExecutionOutcomeProofResponseSchema()
+          ),
         }),
         z.object({
           error: z.lazy(() => ErrorWrapperFor_RpcLightClientProofErrorSchema()),
@@ -2638,6 +2899,23 @@ export const JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcLightClien
           error: z.lazy(() =>
             ErrorWrapperFor_RpcLightClientNextBlockErrorSchema()
           ),
+        }),
+      ]),
+      z.object({
+        id: z.string(),
+        jsonrpc: z.string(),
+      })
+    );
+
+export const JsonRpcResponseFor_RpcLightClientStateProofResponseAnd_RpcLightClientProofErrorSchema =
+  () =>
+    z.intersection(
+      z.union([
+        z.object({
+          result: z.lazy(() => RpcLightClientStateProofResponseSchema()),
+        }),
+        z.object({
+          error: z.lazy(() => ErrorWrapperFor_RpcLightClientProofErrorSchema()),
         }),
       ]),
       z.object({
@@ -2948,9 +3226,7 @@ export const LightClientBlockLiteViewSchema = () =>
 
 export const LimitConfigSchema = () =>
   z.object({
-    accountIdValidityRulesVersion: z.optional(
-      z.lazy(() => AccountIdValidityRulesVersionSchema())
-    ),
+    accountIdValidityRulesVersion: z.optional(z.number()),
     initialMemoryPages: z.optional(z.number()),
     maxActionsPerReceipt: z.optional(z.number()),
     maxArgumentsLength: z.optional(z.number()),
@@ -3004,6 +3280,7 @@ export const LimitConfigSchema = () =>
     maxReceiptTotalInputSize: z.optional(z.number()),
     maxRegisterSize: z.optional(z.number()),
     maxStackHeight: z.optional(z.number()),
+    maxStateInitEntries: z.optional(z.number()),
     maxTablesPerContract: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
@@ -3013,7 +3290,11 @@ export const LimitConfigSchema = () =>
     maxTypesPerContract: z.optional(
       z.union([z.union([z.number(), z.null()]), z.null()])
     ),
+    maxUniversalStateInitKeys: z.optional(z.number()),
     maxYieldPayloadSize: z.optional(z.number()),
+    minContractSizePerLocal: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     perReceiptStorageProofSizeLimit: z.optional(z.number()),
     registersMemoryLimit: z.optional(z.number()),
     yieldTimeoutLengthInBlocks: z.optional(z.number()),
@@ -3118,6 +3399,9 @@ export const NonDelegateActionSchema = () =>
     z.object({
       WithdrawFromGasKey: z.lazy(() => WithdrawFromGasKeyActionSchema()),
     }),
+    z.object({
+      UniversalStateInit: z.lazy(() => UniversalStateInitActionSchema()),
+    }),
   ]);
 
 // Controls how the transaction nonce is validated against the access key nonce.
@@ -3189,6 +3473,24 @@ export const RangeOfUint64Schema = () =>
     end: z.number(),
     start: z.number(),
   });
+
+//
+// Raw bytes containing borsh-serialized `UniversalStateInit`. This is the
+// protocol's view of a state init, not a mere transport wrapper: the account
+// ID is SHA3-256 over exactly these bytes. The typed form is a decoded *view*
+// of them, used to install the state and to price the action, and it is never
+// re-serialized to derive an ID. Two encodings of the same logical value are
+// two different accounts, which is deliberate: canonical encoding cannot be
+// enforced end to end anyway, since contracts serialize their own nested
+// state inside the opaque storage values. It also lets an immutable contract
+// pass through a `UniversalStateInit` version it predates: the bytes travel
+// verbatim, so a version added after the contract was compiled still works.
+// Borsh-serializing `RawStateInit` writes a 4-byte length prefix before the
+// bytes, which is how the `UniversalStateInit` action carries it as a field;
+// over serde the bytes are base64. Neither is what the account ID hashes:
+// that is `self.0` alone, never `borsh::to_vec(self)`.
+
+export const RawStateInitSchema = () => z.string();
 
 export const ReceiptEnumViewSchema = () =>
   z.union([
@@ -3592,6 +3894,53 @@ export const RpcHealthRequestSchema = () => z.null();
 
 export const RpcHealthResponseSchema = () => z.null();
 
+export const RpcIndexerBlockErrorSchema = () =>
+  z.union([
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['DATA_UNAVAILABLE']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INCOMPLETE_DATA']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['UNSUPPORTED']),
+    }),
+    z.object({
+      name: z.enum(['LIMIT_EXCEEDED']),
+    }),
+    z.object({
+      name: z.enum(['BUSY']),
+    }),
+    z.object({
+      info: z.object({
+        errorMessage: z.string(),
+      }),
+      name: z.enum(['INTERNAL_ERROR']),
+    }),
+  ]);
+
+export const RpcIndexerBlockRequestSchema = () =>
+  z.object({
+    blockHash: z.lazy(() => CryptoHashSchema()),
+  });
+
+// Resulting struct represents block with chunks
+export const RpcIndexerBlockResponseSchema = () =>
+  z.object({
+    block: z.lazy(() => BlockViewSchema()),
+    shards: z.array(z.lazy(() => IndexerShardSchema())),
+    trackedShards: z.array(z.lazy(() => ShardIdSchema())),
+  });
+
 export const RpcKnownProducerSchema = () =>
   z.object({
     accountId: z.lazy(() => AccountIdSchema()),
@@ -3609,6 +3958,42 @@ export const RpcLightClientBlockProofResponseSchema = () =>
   z.object({
     blockHeaderLite: z.lazy(() => LightClientBlockLiteViewSchema()),
     blockProof: z.array(z.lazy(() => MerklePathItemSchema())),
+  });
+
+export const RpcLightClientChunkExecutionProofRequestSchema = () =>
+  z.object({
+    chunkId: z.lazy(() => SpiceChunkIdSchema()),
+    lightClientHead: z.lazy(() => CryptoHashSchema()),
+  });
+
+export const RpcLightClientChunkExecutionProofResponseSchema = () =>
+  z.object({
+    chunkExecutionProof: z.lazy(() => ChunkExecutionProofViewSchema()),
+  });
+
+export const RpcLightClientExecutionOutcomeProofRequestSchema = () =>
+  z.intersection(
+    z.union([
+      z.object({
+        senderId: z.lazy(() => AccountIdSchema()),
+        transactionHash: z.lazy(() => CryptoHashSchema()),
+        type: z.enum(['transaction']),
+      }),
+      z.object({
+        receiptId: z.lazy(() => CryptoHashSchema()),
+        receiverId: z.lazy(() => AccountIdSchema()),
+        type: z.enum(['receipt']),
+      }),
+    ]),
+    z.object({
+      lightClientHead: z.lazy(() => CryptoHashSchema()),
+    })
+  );
+
+export const RpcLightClientExecutionOutcomeProofResponseSchema = () =>
+  z.object({
+    chunkExecutionProof: z.lazy(() => ChunkExecutionProofViewSchema()),
+    outcomeProof: z.lazy(() => ExecutionOutcomeWithIdViewSchema()),
   });
 
 export const RpcLightClientExecutionProofRequestSchema = () =>
@@ -3718,11 +4103,58 @@ export const RpcLightClientProofErrorSchema = () =>
     }),
     z.object({
       info: z.object({
+        shardId: z.lazy(() => ShardIdSchema()),
+      }),
+      name: z.enum(['SHARD_NOT_TRACKED']),
+    }),
+    z.object({
+      info: z.object({
+        accountId: z.lazy(() => AccountIdSchema()),
+        accountShardId: z.lazy(() => ShardIdSchema()),
+        requestedShardId: z.lazy(() => ShardIdSchema()),
+      }),
+      name: z.enum(['TARGET_SHARD_MISMATCH']),
+    }),
+    z.object({
+      info: z.object({
+        chunkId: z.lazy(() => SpiceChunkIdSchema()),
+      }),
+      name: z.enum(['STATE_NOT_AVAILABLE']),
+    }),
+    z.object({
+      info: z.object({
+        chunkId: z.lazy(() => SpiceChunkIdSchema()),
+      }),
+      name: z.enum(['CHUNK_NOT_CERTIFIED']),
+    }),
+    z.object({
+      info: z.object({
+        certifyingBlockHeight: z.number(),
+        chunkId: z.lazy(() => SpiceChunkIdSchema()),
+        headHeight: z.number(),
+      }),
+      name: z.enum(['LIGHT_CLIENT_HEAD_TOO_OLD']),
+    }),
+    z.object({
+      info: z.object({
         errorMessage: z.string(),
       }),
       name: z.enum(['INTERNAL_ERROR']),
     }),
   ]);
+
+export const RpcLightClientStateProofRequestSchema = () =>
+  z.object({
+    chunkId: z.lazy(() => SpiceChunkIdSchema()),
+    lightClientHead: z.lazy(() => CryptoHashSchema()),
+    target: z.lazy(() => StateProofTargetSchema()),
+  });
+
+export const RpcLightClientStateProofResponseSchema = () =>
+  z.object({
+    chunkExecutionProof: z.lazy(() => ChunkExecutionProofViewSchema()),
+    stateProof: z.lazy(() => StateProofViewSchema()),
+  });
 
 export const RpcMaintenanceWindowsErrorSchema = () =>
   z.object({
@@ -4934,6 +5366,9 @@ export const RpcViewAccountResponseSchema = () =>
     amount: z.lazy(() => NearTokenSchema()),
     blockHash: z.lazy(() => CryptoHashSchema()),
     blockHeight: z.number(),
+    bootstrapNonce: z.optional(
+      z.union([z.union([z.number(), z.null()]), z.null()])
+    ),
     codeHash: z.lazy(() => CryptoHashSchema()),
     globalContractAccountId: z.optional(
       z.union([z.lazy(() => AccountIdSchema()), z.null()])
@@ -4942,6 +5377,7 @@ export const RpcViewAccountResponseSchema = () =>
       z.union([z.lazy(() => CryptoHashSchema()), z.null()])
     ),
     locked: z.lazy(() => NearTokenSchema()),
+    state: z.optional(z.lazy(() => AccountStateSchema())),
     storagePaidAt: z.optional(z.number()),
     storageUsage: z.number(),
   });
@@ -5304,6 +5740,16 @@ export const SpiceChunkEndorsementStatsSchema = () =>
     produced: z.number(),
   });
 
+//
+// In spice missing chunks and equivalent to empty chunks so block hash and
+// shard id always uniquely identifies chunks.
+
+export const SpiceChunkIdSchema = () =>
+  z.object({
+    blockHash: z.lazy(() => CryptoHashSchema()),
+    shardId: z.lazy(() => ShardIdSchema()),
+  });
+
 // An action which stakes signer_id tokens and setup's validator public key
 export const StakeActionSchema = () =>
   z.object({
@@ -5385,6 +5831,9 @@ export const StateChangeWithCauseViewSchema = () =>
         change: z.object({
           accountId: z.lazy(() => AccountIdSchema()),
           amount: z.lazy(() => NearTokenSchema()),
+          bootstrapNonce: z.optional(
+            z.union([z.union([z.number(), z.null()]), z.null()])
+          ),
           codeHash: z.lazy(() => CryptoHashSchema()),
           globalContractAccountId: z.optional(
             z.union([z.lazy(() => AccountIdSchema()), z.null()])
@@ -5393,6 +5842,7 @@ export const StateChangeWithCauseViewSchema = () =>
             z.union([z.lazy(() => CryptoHashSchema()), z.null()])
           ),
           locked: z.lazy(() => NearTokenSchema()),
+          state: z.optional(z.lazy(() => AccountStateSchema())),
           storagePaidAt: z.optional(z.number()),
           storageUsage: z.number(),
         }),
@@ -5470,6 +5920,44 @@ export const StateItemSchema = () =>
   z.object({
     key: z.lazy(() => StoreKeySchema()),
     value: z.lazy(() => StoreValueSchema()),
+  });
+
+//
+// Which piece of a shard's state a light-client state proof targets. An
+// account that runs a global contract has no local code, so
+// `LocalContractCode` is absent for it. `Account::contract()` says which case
+// applies.
+
+export const StateProofTargetSchema = () =>
+  z.union([
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+      targetType: z.enum(['account']),
+    }),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+      targetType: z.enum(['local_contract_code']),
+    }),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+      key: z.lazy(() => StoreKeySchema()),
+      targetType: z.enum(['contract_data']),
+    }),
+    z.object({
+      accountId: z.lazy(() => AccountIdSchema()),
+      publicKey: z.lazy(() => PublicKeySchema()),
+      targetType: z.enum(['access_key']),
+    }),
+  ]);
+
+//
+// A value read from a shard's state, with the trie nodes that prove it
+// against the chunk's `state_root`. An absent `value` is proved the same way.
+
+export const StateProofViewSchema = () =>
+  z.object({
+    nodes: z.array(z.string()),
+    value: z.optional(z.union([z.lazy(() => StoreValueSchema()), z.null()])),
   });
 
 export const StateSyncConfigSchema = () =>
@@ -5681,6 +6169,20 @@ export const TxExecutionStatusSchema = () =>
     z.enum(['FINAL']),
   ]);
 
+//
+// Create a `0u` universal account from its state init. The receiver id must
+// equal `derive_universal_account_id(state_init)`; the attached `deposit`
+// covers the new account's storage staking. The state init travels as the
+// bytes the producer serialized, because the receiver id commits to exactly
+// those bytes. The typed [`UniversalStateInit`] is a decoded view of them,
+// used where the state has to be installed or priced.
+
+export const UniversalStateInitActionSchema = () =>
+  z.object({
+    deposit: z.lazy(() => NearTokenSchema()),
+    stateInit: z.lazy(() => RawStateInitSchema()),
+  });
+
 // Use global contract action
 export const UseGlobalContractActionSchema = () =>
   z.object({
@@ -5709,6 +6211,7 @@ export const VMConfigViewSchema = () =>
     regularOpCost: z.optional(z.number()),
     sha3HostFns: z.optional(z.boolean()),
     storageGetMode: z.optional(z.lazy(() => StorageGetModeSchema())),
+    universalAccounts: z.optional(z.boolean()),
     vmKind: z.optional(z.lazy(() => VMKindSchema())),
     yieldWithIdHostFns: z.optional(z.boolean()),
   });
@@ -5937,6 +6440,24 @@ export const EXPERIMENTALGenesisConfigResponseSchema = () =>
   z.lazy(() => JsonRpcResponseFor_GenesisConfigAnd_GenesisConfigErrorSchema());
 
 //
+// Request schema for EXPERIMENTAL_indexer_block: Returns an indexer streamer
+// message and tracked shard coverage for a block hash. Requires
+// enable_indexer_rpc and retained execution data.
+
+export const EXPERIMENTALIndexerBlockRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALIndexerBlockSchema());
+
+//
+// Response schema for EXPERIMENTAL_indexer_block: Returns an indexer streamer
+// message and tracked shard coverage for a block hash. Requires
+// enable_indexer_rpc and retained execution data.
+
+export const EXPERIMENTALIndexerBlockResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcIndexerBlockResponseAnd_RpcIndexerBlockErrorSchema()
+  );
+
+//
 // Request schema for EXPERIMENTAL_light_client_block_proof: Returns the
 // proofs for a transaction execution.
 
@@ -5953,6 +6474,48 @@ export const EXPERIMENTALLightClientBlockProofResponseSchema = () =>
   );
 
 //
+// Request schema for EXPERIMENTAL_light_client_chunk_execution_proof: Returns
+// a proof that a chunk's certified execution roots are committed by the
+// chain, verifiable against a trusted light client head.
+
+export const EXPERIMENTALLightClientChunkExecutionProofRequestSchema = () =>
+  z.lazy(() =>
+    JsonRpcRequestFor_EXPERIMENTALLightClientChunkExecutionProofSchema()
+  );
+
+//
+// Response schema for EXPERIMENTAL_light_client_chunk_execution_proof:
+// Returns a proof that a chunk's certified execution roots are committed by
+// the chain, verifiable against a trusted light client head.
+
+export const EXPERIMENTALLightClientChunkExecutionProofResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcLightClientChunkExecutionProofResponseAnd_RpcLightClientProofErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_light_client_execution_outcome_proof:
+// Returns a transaction or receipt execution outcome together with its proof
+// against the chunk's certified outcome root, verifiable against a trusted
+// light client head.
+
+export const EXPERIMENTALLightClientExecutionOutcomeProofRequestSchema = () =>
+  z.lazy(() =>
+    JsonRpcRequestFor_EXPERIMENTALLightClientExecutionOutcomeProofSchema()
+  );
+
+//
+// Response schema for EXPERIMENTAL_light_client_execution_outcome_proof:
+// Returns a transaction or receipt execution outcome together with its proof
+// against the chunk's certified outcome root, verifiable against a trusted
+// light client head.
+
+export const EXPERIMENTALLightClientExecutionOutcomeProofResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcLightClientExecutionOutcomeProofResponseAnd_RpcLightClientProofErrorSchema()
+  );
+
+//
 // Request schema for EXPERIMENTAL_light_client_proof: Returns the proofs for
 // a transaction execution.
 
@@ -5966,6 +6529,24 @@ export const EXPERIMENTALLightClientProofRequestSchema = () =>
 export const EXPERIMENTALLightClientProofResponseSchema = () =>
   z.lazy(() =>
     JsonRpcResponseFor_RpcLightClientExecutionProofResponseAnd_RpcLightClientProofErrorSchema()
+  );
+
+//
+// Request schema for EXPERIMENTAL_light_client_state_proof: Returns a value
+// from a shard's state together with its trie proof against the chunk's
+// certified state root, verifiable against a trusted light client head.
+
+export const EXPERIMENTALLightClientStateProofRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestFor_EXPERIMENTALLightClientStateProofSchema());
+
+//
+// Response schema for EXPERIMENTAL_light_client_state_proof: Returns a value
+// from a shard's state together with its trie proof against the chunk's
+// certified state root, verifiable against a trusted light client head.
+
+export const EXPERIMENTALLightClientStateProofResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcLightClientStateProofResponseAnd_RpcLightClientProofErrorSchema()
   );
 
 //
@@ -6057,17 +6638,17 @@ export const EXPERIMENTALSplitStorageInfoResponseSchema = () =>
   );
 
 //
-// Request schema for EXPERIMENTAL_tx_status: Queries status of a transaction
-// by hash, returning the final transaction result and details of all
-// receipts.
+// Request schema for EXPERIMENTAL_tx_status: [Deprecated] Queries status of a
+// transaction by hash, returning the final transaction result and details of
+// all receipts. Consider using `tx_status` instead.
 
 export const EXPERIMENTALTxStatusRequestSchema = () =>
   z.lazy(() => JsonRpcRequestFor_EXPERIMENTALTxStatusSchema());
 
 //
-// Response schema for EXPERIMENTAL_tx_status: Queries status of a transaction
-// by hash, returning the final transaction result and details of all
-// receipts.
+// Response schema for EXPERIMENTAL_tx_status: [Deprecated] Queries status of
+// a transaction by hash, returning the final transaction result and details
+// of all receipts. Consider using `tx_status` instead.
 
 export const EXPERIMENTALTxStatusResponseSchema = () =>
   z.lazy(() =>
@@ -6459,6 +7040,22 @@ export const TxResponseSchema = () =>
   );
 
 //
+// Request schema for tx_status: Queries status of a transaction by hash,
+// returning the final transaction result and details of all receipts.
+
+export const TxStatusRequestSchema = () =>
+  z.lazy(() => JsonRpcRequestForTxStatusSchema());
+
+//
+// Response schema for tx_status: Queries status of a transaction by hash,
+// returning the final transaction result and details of all receipts.
+
+export const TxStatusResponseSchema = () =>
+  z.lazy(() =>
+    JsonRpcResponseFor_RpcTransactionResponseAnd_RpcTransactionErrorSchema()
+  );
+
+//
 // Request schema for validators: Queries active validators on the network.
 // Returns details and the state of validation on the blockchain.
 
@@ -6503,13 +7100,29 @@ export const VALIDATION_SCHEMA_MAP: Record<
     requestSchema: EXPERIMENTALGenesisConfigRequestSchema,
     responseSchema: EXPERIMENTALGenesisConfigResponseSchema,
   },
+  EXPERIMENTAL_indexer_block: {
+    requestSchema: EXPERIMENTALIndexerBlockRequestSchema,
+    responseSchema: EXPERIMENTALIndexerBlockResponseSchema,
+  },
   EXPERIMENTAL_light_client_block_proof: {
     requestSchema: EXPERIMENTALLightClientBlockProofRequestSchema,
     responseSchema: EXPERIMENTALLightClientBlockProofResponseSchema,
   },
+  EXPERIMENTAL_light_client_chunk_execution_proof: {
+    requestSchema: EXPERIMENTALLightClientChunkExecutionProofRequestSchema,
+    responseSchema: EXPERIMENTALLightClientChunkExecutionProofResponseSchema,
+  },
+  EXPERIMENTAL_light_client_execution_outcome_proof: {
+    requestSchema: EXPERIMENTALLightClientExecutionOutcomeProofRequestSchema,
+    responseSchema: EXPERIMENTALLightClientExecutionOutcomeProofResponseSchema,
+  },
   EXPERIMENTAL_light_client_proof: {
     requestSchema: EXPERIMENTALLightClientProofRequestSchema,
     responseSchema: EXPERIMENTALLightClientProofResponseSchema,
+  },
+  EXPERIMENTAL_light_client_state_proof: {
+    requestSchema: EXPERIMENTALLightClientStateProofRequestSchema,
+    responseSchema: EXPERIMENTALLightClientStateProofResponseSchema,
   },
   EXPERIMENTAL_maintenance_windows: {
     requestSchema: EXPERIMENTALMaintenanceWindowsRequestSchema,
@@ -6628,6 +7241,10 @@ export const VALIDATION_SCHEMA_MAP: Record<
     responseSchema: StatusResponseSchema,
   },
   tx: { requestSchema: TxRequestSchema, responseSchema: TxResponseSchema },
+  tx_status: {
+    requestSchema: TxStatusRequestSchema,
+    responseSchema: TxStatusResponseSchema,
+  },
   validators: {
     requestSchema: ValidatorsRequestSchema,
     responseSchema: ValidatorsResponseSchema,

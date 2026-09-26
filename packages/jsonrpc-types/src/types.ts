@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2026-08-11T06:20:14.569Z
+// Generated on: 2026-09-26T06:16:04.551Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -99,12 +99,19 @@ export type AccountDataView = z.infer<
  */
 export type AccountId = z.infer<ReturnType<typeof schemas.AccountIdSchema>>;
 
-export type AccountIdValidityRulesVersion = z.infer<
-  ReturnType<typeof schemas.AccountIdValidityRulesVersionSchema>
->;
-
 /** Account info for validators */
 export type AccountInfo = z.infer<ReturnType<typeof schemas.AccountInfoSchema>>;
+
+/**
+ * Whether an account's state has been installed. Only universal accounts can
+ * be uninitialized: they come into existence when a transfer funds a `0u` id
+ * whose state init has not been applied yet. A deterministic `0s` account
+ * waiting for its state init is an ordinary V1 account with no contract, not
+ * this.
+ */
+export type AccountState = z.infer<
+  ReturnType<typeof schemas.AccountStateSchema>
+>;
 
 /** A view of the account */
 export type AccountView = z.infer<ReturnType<typeof schemas.AccountViewSchema>>;
@@ -197,6 +204,8 @@ export type BlockStatusView = z.infer<
   ReturnType<typeof schemas.BlockStatusViewSchema>
 >;
 
+export type BlockView = z.infer<ReturnType<typeof schemas.BlockViewSchema>>;
+
 /** A result returned by contract method */
 export type CallResult = z.infer<ReturnType<typeof schemas.CallResultSchema>>;
 
@@ -222,6 +231,30 @@ export type ChunkDistributionNetworkConfig = z.infer<
 /** URIs for the Chunk Distribution Network feature. */
 export type ChunkDistributionUris = z.infer<
   ReturnType<typeof schemas.ChunkDistributionUrisSchema>
+>;
+
+/**
+ * Proof that a chunk's certified execution roots are committed by a spice
+ * block that a light client can trust via its `light_client_head`.
+ * `roots_proof` recomputes the certifying block's `chunk_execution_root` from
+ * the leaf; `certifying_block_proof` places the certifying block into the
+ * head's block merkle tree.
+ */
+export type ChunkExecutionProofView = z.infer<
+  ReturnType<typeof schemas.ChunkExecutionProofViewSchema>
+>;
+
+/**
+ * Merkle leaf committing to a single chunk's certified execution roots. The
+ * `chunk_execution_root` in a spice block header is the merkle root over
+ * these leaves, sorted by `chunk_id`.
+ */
+export type ChunkExecutionRoots = z.infer<
+  ReturnType<typeof schemas.ChunkExecutionRootsSchema>
+>;
+
+export type ChunkExecutionRootsV1 = z.infer<
+  ReturnType<typeof schemas.ChunkExecutionRootsV1Schema>
 >;
 
 export type ChunkHash = z.infer<ReturnType<typeof schemas.ChunkHashSchema>>;
@@ -391,6 +424,10 @@ export type ErrorWrapperFor_RpcClientConfigError = z.infer<
 
 export type ErrorWrapperFor_RpcGasPriceError = z.infer<
   ReturnType<typeof schemas.ErrorWrapperFor_RpcGasPriceErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcIndexerBlockError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcIndexerBlockErrorSchema>
 >;
 
 export type ErrorWrapperFor_RpcLightClientNextBlockError = z.infer<
@@ -595,6 +632,26 @@ export type GlobalContractIdentifierView = z.infer<
 
 export type HostError = z.infer<ReturnType<typeof schemas.HostErrorSchema>>;
 
+export type IndexerChunkView = z.infer<
+  ReturnType<typeof schemas.IndexerChunkViewSchema>
+>;
+
+export type IndexerExecutionOutcomeWithOptionalReceipt = z.infer<
+  ReturnType<typeof schemas.IndexerExecutionOutcomeWithOptionalReceiptSchema>
+>;
+
+export type IndexerExecutionOutcomeWithReceipt = z.infer<
+  ReturnType<typeof schemas.IndexerExecutionOutcomeWithReceiptSchema>
+>;
+
+export type IndexerShard = z.infer<
+  ReturnType<typeof schemas.IndexerShardSchema>
+>;
+
+export type IndexerTransactionWithOutcome = z.infer<
+  ReturnType<typeof schemas.IndexerTransactionWithOutcomeSchema>
+>;
+
 export type InternalError = z.infer<
   ReturnType<typeof schemas.InternalErrorSchema>
 >;
@@ -628,15 +685,39 @@ export type JsonRpcRequestFor_EXPERIMENTALGenesisConfig = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALGenesisConfigSchema>
 >;
 
+export type JsonRpcRequestFor_EXPERIMENTALIndexerBlock = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALIndexerBlockSchema>
+>;
+
 export type JsonRpcRequestFor_EXPERIMENTALLightClientBlockProof = z.infer<
   ReturnType<
     typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientBlockProofSchema
   >
 >;
 
+export type JsonRpcRequestFor_EXPERIMENTALLightClientChunkExecutionProof =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientChunkExecutionProofSchema
+    >
+  >;
+
+export type JsonRpcRequestFor_EXPERIMENTALLightClientExecutionOutcomeProof =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientExecutionOutcomeProofSchema
+    >
+  >;
+
 export type JsonRpcRequestFor_EXPERIMENTALLightClientProof = z.infer<
   ReturnType<
     typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientProofSchema
+  >
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALLightClientStateProof = z.infer<
+  ReturnType<
+    typeof schemas.JsonRpcRequestFor_EXPERIMENTALLightClientStateProofSchema
   >
 >;
 
@@ -768,6 +849,10 @@ export type JsonRpcRequestForTx = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestForTxSchema>
 >;
 
+export type JsonRpcRequestForTxStatus = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestForTxStatusSchema>
+>;
+
 export type JsonRpcRequestForValidators = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestForValidatorsSchema>
 >;
@@ -845,10 +930,31 @@ export type JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcGasPriceError =
     >
   >;
 
+export type JsonRpcResponseFor_RpcIndexerBlockResponseAnd_RpcIndexerBlockError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcIndexerBlockResponseAnd_RpcIndexerBlockErrorSchema
+    >
+  >;
+
 export type JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcLightClientProofError =
   z.infer<
     ReturnType<
       typeof schemas.JsonRpcResponseFor_RpcLightClientBlockProofResponseAnd_RpcLightClientProofErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcLightClientChunkExecutionProofResponseAnd_RpcLightClientProofError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcLightClientChunkExecutionProofResponseAnd_RpcLightClientProofErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcLightClientExecutionOutcomeProofResponseAnd_RpcLightClientProofError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcLightClientExecutionOutcomeProofResponseAnd_RpcLightClientProofErrorSchema
     >
   >;
 
@@ -863,6 +969,13 @@ export type JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcLightClient
   z.infer<
     ReturnType<
       typeof schemas.JsonRpcResponseFor_RpcLightClientNextBlockResponseAnd_RpcLightClientNextBlockErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcLightClientStateProofResponseAnd_RpcLightClientProofError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcLightClientStateProofResponseAnd_RpcLightClientProofErrorSchema
     >
   >;
 
@@ -1072,6 +1185,26 @@ export type RangeOfUint64 = z.infer<
   ReturnType<typeof schemas.RangeOfUint64Schema>
 >;
 
+/**
+ * Raw bytes containing borsh-serialized `UniversalStateInit`. This is the
+ * protocol's view of a state init, not a mere transport wrapper: the account
+ * ID is SHA3-256 over exactly these bytes. The typed form is a decoded *view*
+ * of them, used to install the state and to price the action, and it is never
+ * re-serialized to derive an ID. Two encodings of the same logical value are
+ * two different accounts, which is deliberate: canonical encoding cannot be
+ * enforced end to end anyway, since contracts serialize their own nested
+ * state inside the opaque storage values. It also lets an immutable contract
+ * pass through a `UniversalStateInit` version it predates: the bytes travel
+ * verbatim, so a version added after the contract was compiled still works.
+ * Borsh-serializing `RawStateInit` writes a 4-byte length prefix before the
+ * bytes, which is how the `UniversalStateInit` action carries it as a field;
+ * over serde the bytes are base64. Neither is what the account ID hashes:
+ * that is `self.0` alone, never `borsh::to_vec(self)`.
+ */
+export type RawStateInit = z.infer<
+  ReturnType<typeof schemas.RawStateInitSchema>
+>;
+
 export type ReceiptEnumView = z.infer<
   ReturnType<typeof schemas.ReceiptEnumViewSchema>
 >;
@@ -1161,6 +1294,19 @@ export type RpcHealthResponse = z.infer<
   ReturnType<typeof schemas.RpcHealthResponseSchema>
 >;
 
+export type RpcIndexerBlockError = z.infer<
+  ReturnType<typeof schemas.RpcIndexerBlockErrorSchema>
+>;
+
+export type RpcIndexerBlockRequest = z.infer<
+  ReturnType<typeof schemas.RpcIndexerBlockRequestSchema>
+>;
+
+/** Resulting struct represents block with chunks */
+export type RpcIndexerBlockResponse = z.infer<
+  ReturnType<typeof schemas.RpcIndexerBlockResponseSchema>
+>;
+
 export type RpcKnownProducer = z.infer<
   ReturnType<typeof schemas.RpcKnownProducerSchema>
 >;
@@ -1171,6 +1317,22 @@ export type RpcLightClientBlockProofRequest = z.infer<
 
 export type RpcLightClientBlockProofResponse = z.infer<
   ReturnType<typeof schemas.RpcLightClientBlockProofResponseSchema>
+>;
+
+export type RpcLightClientChunkExecutionProofRequest = z.infer<
+  ReturnType<typeof schemas.RpcLightClientChunkExecutionProofRequestSchema>
+>;
+
+export type RpcLightClientChunkExecutionProofResponse = z.infer<
+  ReturnType<typeof schemas.RpcLightClientChunkExecutionProofResponseSchema>
+>;
+
+export type RpcLightClientExecutionOutcomeProofRequest = z.infer<
+  ReturnType<typeof schemas.RpcLightClientExecutionOutcomeProofRequestSchema>
+>;
+
+export type RpcLightClientExecutionOutcomeProofResponse = z.infer<
+  ReturnType<typeof schemas.RpcLightClientExecutionOutcomeProofResponseSchema>
 >;
 
 export type RpcLightClientExecutionProofRequest = z.infer<
@@ -1199,6 +1361,14 @@ export type RpcLightClientNextBlockResponse = z.infer<
 
 export type RpcLightClientProofError = z.infer<
   ReturnType<typeof schemas.RpcLightClientProofErrorSchema>
+>;
+
+export type RpcLightClientStateProofRequest = z.infer<
+  ReturnType<typeof schemas.RpcLightClientStateProofRequestSchema>
+>;
+
+export type RpcLightClientStateProofResponse = z.infer<
+  ReturnType<typeof schemas.RpcLightClientStateProofResponseSchema>
 >;
 
 export type RpcMaintenanceWindowsError = z.infer<
@@ -1528,6 +1698,14 @@ export type SpiceChunkEndorsementStats = z.infer<
   ReturnType<typeof schemas.SpiceChunkEndorsementStatsSchema>
 >;
 
+/**
+ * In spice missing chunks and equivalent to empty chunks so block hash and
+ * shard id always uniquely identifies chunks.
+ */
+export type SpiceChunkId = z.infer<
+  ReturnType<typeof schemas.SpiceChunkIdSchema>
+>;
+
 /** An action which stakes signer_id tokens and setup's validator public key */
 export type StakeAction = z.infer<ReturnType<typeof schemas.StakeActionSchema>>;
 
@@ -1553,6 +1731,24 @@ export type StateChangeWithCauseView = z.infer<
  * inclusion of given state item.
  */
 export type StateItem = z.infer<ReturnType<typeof schemas.StateItemSchema>>;
+
+/**
+ * Which piece of a shard's state a light-client state proof targets. An
+ * account that runs a global contract has no local code, so
+ * `LocalContractCode` is absent for it. `Account::contract()` says which case
+ * applies.
+ */
+export type StateProofTarget = z.infer<
+  ReturnType<typeof schemas.StateProofTargetSchema>
+>;
+
+/**
+ * A value read from a shard's state, with the trie nodes that prove it
+ * against the chunk's `state_root`. An absent `value` is proved the same way.
+ */
+export type StateProofView = z.infer<
+  ReturnType<typeof schemas.StateProofViewSchema>
+>;
 
 export type StateSyncConfig = z.infer<
   ReturnType<typeof schemas.StateSyncConfigSchema>
@@ -1660,6 +1856,18 @@ export type TxExecutionError = z.infer<
 
 export type TxExecutionStatus = z.infer<
   ReturnType<typeof schemas.TxExecutionStatusSchema>
+>;
+
+/**
+ * Create a `0u` universal account from its state init. The receiver id must
+ * equal `derive_universal_account_id(state_init)`; the attached `deposit`
+ * covers the new account's storage staking. The state init travels as the
+ * bytes the producer serialized, because the receiver id commits to exactly
+ * those bytes. The typed [`UniversalStateInit`] is a decoded view of them,
+ * used where the state has to be installed or priced.
+ */
+export type UniversalStateInitAction = z.infer<
+  ReturnType<typeof schemas.UniversalStateInitActionSchema>
 >;
 
 /** Use global contract action */
@@ -1825,6 +2033,24 @@ export type EXPERIMENTALGenesisConfigResponse = z.infer<
 >;
 
 /**
+ * Request parameters for EXPERIMENTAL_indexer_block: Returns an indexer
+ * streamer message and tracked shard coverage for a block hash. Requires
+ * enable_indexer_rpc and retained execution data.
+ */
+export type EXPERIMENTALIndexerBlockRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALIndexerBlockRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_indexer_block: Returns an indexer streamer
+ * message and tracked shard coverage for a block hash. Requires
+ * enable_indexer_rpc and retained execution data.
+ */
+export type EXPERIMENTALIndexerBlockResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALIndexerBlockResponseSchema>
+>;
+
+/**
  * Request parameters for EXPERIMENTAL_light_client_block_proof: Returns the
  * proofs for a transaction execution.
  */
@@ -1841,6 +2067,52 @@ export type EXPERIMENTALLightClientBlockProofResponse = z.infer<
 >;
 
 /**
+ * Request parameters for EXPERIMENTAL_light_client_chunk_execution_proof:
+ * Returns a proof that a chunk's certified execution roots are committed by
+ * the chain, verifiable against a trusted light client head.
+ */
+export type EXPERIMENTALLightClientChunkExecutionProofRequest = z.infer<
+  ReturnType<
+    typeof schemas.EXPERIMENTALLightClientChunkExecutionProofRequestSchema
+  >
+>;
+
+/**
+ * Response type for EXPERIMENTAL_light_client_chunk_execution_proof: Returns
+ * a proof that a chunk's certified execution roots are committed by the
+ * chain, verifiable against a trusted light client head.
+ */
+export type EXPERIMENTALLightClientChunkExecutionProofResponse = z.infer<
+  ReturnType<
+    typeof schemas.EXPERIMENTALLightClientChunkExecutionProofResponseSchema
+  >
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_light_client_execution_outcome_proof:
+ * Returns a transaction or receipt execution outcome together with its proof
+ * against the chunk's certified outcome root, verifiable against a trusted
+ * light client head.
+ */
+export type EXPERIMENTALLightClientExecutionOutcomeProofRequest = z.infer<
+  ReturnType<
+    typeof schemas.EXPERIMENTALLightClientExecutionOutcomeProofRequestSchema
+  >
+>;
+
+/**
+ * Response type for EXPERIMENTAL_light_client_execution_outcome_proof:
+ * Returns a transaction or receipt execution outcome together with its proof
+ * against the chunk's certified outcome root, verifiable against a trusted
+ * light client head.
+ */
+export type EXPERIMENTALLightClientExecutionOutcomeProofResponse = z.infer<
+  ReturnType<
+    typeof schemas.EXPERIMENTALLightClientExecutionOutcomeProofResponseSchema
+  >
+>;
+
+/**
  * Request parameters for EXPERIMENTAL_light_client_proof: Returns the proofs
  * for a transaction execution.
  */
@@ -1854,6 +2126,24 @@ export type EXPERIMENTALLightClientProofRequest = z.infer<
  */
 export type EXPERIMENTALLightClientProofResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALLightClientProofResponseSchema>
+>;
+
+/**
+ * Request parameters for EXPERIMENTAL_light_client_state_proof: Returns a
+ * value from a shard's state together with its trie proof against the chunk's
+ * certified state root, verifiable against a trusted light client head.
+ */
+export type EXPERIMENTALLightClientStateProofRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALLightClientStateProofRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_light_client_state_proof: Returns a value
+ * from a shard's state together with its trie proof against the chunk's
+ * certified state root, verifiable against a trusted light client head.
+ */
+export type EXPERIMENTALLightClientStateProofResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALLightClientStateProofResponseSchema>
 >;
 
 /**
@@ -1945,18 +2235,18 @@ export type EXPERIMENTALSplitStorageInfoResponse = z.infer<
 >;
 
 /**
- * Request parameters for EXPERIMENTAL_tx_status: Queries status of a
- * transaction by hash, returning the final transaction result and details of
- * all receipts.
+ * Request parameters for EXPERIMENTAL_tx_status: [Deprecated] Queries status
+ * of a transaction by hash, returning the final transaction result and
+ * details of all receipts. Consider using `tx_status` instead.
  */
 export type EXPERIMENTALTxStatusRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALTxStatusRequestSchema>
 >;
 
 /**
- * Response type for EXPERIMENTAL_tx_status: Queries status of a transaction
- * by hash, returning the final transaction result and details of all
- * receipts.
+ * Response type for EXPERIMENTAL_tx_status: [Deprecated] Queries status of a
+ * transaction by hash, returning the final transaction result and details of
+ * all receipts. Consider using `tx_status` instead.
  */
 export type EXPERIMENTALTxStatusResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALTxStatusResponseSchema>
@@ -2353,6 +2643,22 @@ export type TxRequest = z.infer<ReturnType<typeof schemas.TxRequestSchema>>;
  * the final transaction result.
  */
 export type TxResponse = z.infer<ReturnType<typeof schemas.TxResponseSchema>>;
+
+/**
+ * Request parameters for tx_status: Queries status of a transaction by hash,
+ * returning the final transaction result and details of all receipts.
+ */
+export type TxStatusRequest = z.infer<
+  ReturnType<typeof schemas.TxStatusRequestSchema>
+>;
+
+/**
+ * Response type for tx_status: Queries status of a transaction by hash,
+ * returning the final transaction result and details of all receipts.
+ */
+export type TxStatusResponse = z.infer<
+  ReturnType<typeof schemas.TxStatusResponseSchema>
+>;
 
 /**
  * Request parameters for validators: Queries active validators on the
