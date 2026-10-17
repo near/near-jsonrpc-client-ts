@@ -1,5 +1,5 @@
 // Auto-generated exports for tree-shakable functions
-// Generated at: 2026-08-11T06:20:29.122Z
+// Generated at: 2026-10-17T06:14:45.081Z
 // Do not edit manually - changes will be overwritten
 
 export {
@@ -8,6 +8,7 @@ export {
   experimentalChangesInBlock,
   experimentalCongestionLevel,
   experimentalGenesisConfig,
+  experimentalIndexerBlock,
   experimentalLightClientBlockProof,
   experimentalLightClientProof,
   experimentalMaintenanceWindows,
@@ -40,6 +41,7 @@ export {
   sendTx,
   status,
   tx,
+  txStatus,
   validators,
 } from './generated-types';
 
