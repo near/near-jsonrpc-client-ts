@@ -1,5 +1,5 @@
 // Auto-generated TypeScript types from NEAR OpenAPI spec using z.infer (zod/mini version)
-// Generated on: 2026-08-11T06:20:14.569Z
+// Generated on: 2026-10-24T06:15:11.596Z
 // Do not edit manually - run 'pnpm generate' to regenerate
 
 import { z } from 'zod/mini';
@@ -99,12 +99,19 @@ export type AccountDataView = z.infer<
  */
 export type AccountId = z.infer<ReturnType<typeof schemas.AccountIdSchema>>;
 
-export type AccountIdValidityRulesVersion = z.infer<
-  ReturnType<typeof schemas.AccountIdValidityRulesVersionSchema>
->;
-
 /** Account info for validators */
 export type AccountInfo = z.infer<ReturnType<typeof schemas.AccountInfoSchema>>;
+
+/**
+ * Whether an account's state has been installed. Only universal accounts can
+ * be uninitialized: they come into existence when a transfer funds a `0u` id
+ * whose state init has not been applied yet. A deterministic `0s` account
+ * waiting for its state init is an ordinary V1 account with no contract, not
+ * this.
+ */
+export type AccountState = z.infer<
+  ReturnType<typeof schemas.AccountStateSchema>
+>;
 
 /** A view of the account */
 export type AccountView = z.infer<ReturnType<typeof schemas.AccountViewSchema>>;
@@ -196,6 +203,8 @@ export type BlockReference = z.infer<
 export type BlockStatusView = z.infer<
   ReturnType<typeof schemas.BlockStatusViewSchema>
 >;
+
+export type BlockView = z.infer<ReturnType<typeof schemas.BlockViewSchema>>;
 
 /** A result returned by contract method */
 export type CallResult = z.infer<ReturnType<typeof schemas.CallResultSchema>>;
@@ -358,6 +367,10 @@ export type DurationAsStdSchemaProvider = z.infer<
   ReturnType<typeof schemas.DurationAsStdSchemaProviderSchema>
 >;
 
+export type EccTransactionView = z.infer<
+  ReturnType<typeof schemas.EccTransactionViewSchema>
+>;
+
 /**
  * Epoch identifier -- wrapped hash, to make it easier to distinguish. EpochId
  * of epoch T is the hash of last block in T-2 EpochId of first two epochs is
@@ -391,6 +404,10 @@ export type ErrorWrapperFor_RpcClientConfigError = z.infer<
 
 export type ErrorWrapperFor_RpcGasPriceError = z.infer<
   ReturnType<typeof schemas.ErrorWrapperFor_RpcGasPriceErrorSchema>
+>;
+
+export type ErrorWrapperFor_RpcIndexerBlockError = z.infer<
+  ReturnType<typeof schemas.ErrorWrapperFor_RpcIndexerBlockErrorSchema>
 >;
 
 export type ErrorWrapperFor_RpcLightClientNextBlockError = z.infer<
@@ -595,6 +612,26 @@ export type GlobalContractIdentifierView = z.infer<
 
 export type HostError = z.infer<ReturnType<typeof schemas.HostErrorSchema>>;
 
+export type IndexerChunkView = z.infer<
+  ReturnType<typeof schemas.IndexerChunkViewSchema>
+>;
+
+export type IndexerExecutionOutcomeWithOptionalReceipt = z.infer<
+  ReturnType<typeof schemas.IndexerExecutionOutcomeWithOptionalReceiptSchema>
+>;
+
+export type IndexerExecutionOutcomeWithReceipt = z.infer<
+  ReturnType<typeof schemas.IndexerExecutionOutcomeWithReceiptSchema>
+>;
+
+export type IndexerShard = z.infer<
+  ReturnType<typeof schemas.IndexerShardSchema>
+>;
+
+export type IndexerTransactionWithOutcome = z.infer<
+  ReturnType<typeof schemas.IndexerTransactionWithOutcomeSchema>
+>;
+
 export type InternalError = z.infer<
   ReturnType<typeof schemas.InternalErrorSchema>
 >;
@@ -626,6 +663,10 @@ export type JsonRpcRequestFor_EXPERIMENTALCongestionLevel = z.infer<
 
 export type JsonRpcRequestFor_EXPERIMENTALGenesisConfig = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALGenesisConfigSchema>
+>;
+
+export type JsonRpcRequestFor_EXPERIMENTALIndexerBlock = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestFor_EXPERIMENTALIndexerBlockSchema>
 >;
 
 export type JsonRpcRequestFor_EXPERIMENTALLightClientBlockProof = z.infer<
@@ -768,6 +809,10 @@ export type JsonRpcRequestForTx = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestForTxSchema>
 >;
 
+export type JsonRpcRequestForTxStatus = z.infer<
+  ReturnType<typeof schemas.JsonRpcRequestForTxStatusSchema>
+>;
+
 export type JsonRpcRequestForValidators = z.infer<
   ReturnType<typeof schemas.JsonRpcRequestForValidatorsSchema>
 >;
@@ -842,6 +887,13 @@ export type JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcGasPriceError =
   z.infer<
     ReturnType<
       typeof schemas.JsonRpcResponseFor_RpcGasPriceResponseAnd_RpcGasPriceErrorSchema
+    >
+  >;
+
+export type JsonRpcResponseFor_RpcIndexerBlockResponseAnd_RpcIndexerBlockError =
+  z.infer<
+    ReturnType<
+      typeof schemas.JsonRpcResponseFor_RpcIndexerBlockResponseAnd_RpcIndexerBlockErrorSchema
     >
   >;
 
@@ -1072,6 +1124,26 @@ export type RangeOfUint64 = z.infer<
   ReturnType<typeof schemas.RangeOfUint64Schema>
 >;
 
+/**
+ * Raw bytes containing borsh-serialized `UniversalStateInit`. This is the
+ * protocol's view of a state init, not a mere transport wrapper: the account
+ * ID is SHA3-256 over exactly these bytes. The typed form is a decoded *view*
+ * of them, used to install the state and to price the action, and it is never
+ * re-serialized to derive an ID. Two encodings of the same logical value are
+ * two different accounts, which is deliberate: canonical encoding cannot be
+ * enforced end to end anyway, since contracts serialize their own nested
+ * state inside the opaque storage values. It also lets an immutable contract
+ * pass through a `UniversalStateInit` version it predates: the bytes travel
+ * verbatim, so a version added after the contract was compiled still works.
+ * Borsh-serializing `RawStateInit` writes a 4-byte length prefix before the
+ * bytes, which is how the `UniversalStateInit` action carries it as a field;
+ * over serde the bytes are base64. Neither is what the account ID hashes:
+ * that is `self.0` alone, never `borsh::to_vec(self)`.
+ */
+export type RawStateInit = z.infer<
+  ReturnType<typeof schemas.RawStateInitSchema>
+>;
+
 export type ReceiptEnumView = z.infer<
   ReturnType<typeof schemas.ReceiptEnumViewSchema>
 >;
@@ -1159,6 +1231,19 @@ export type RpcHealthRequest = z.infer<
 
 export type RpcHealthResponse = z.infer<
   ReturnType<typeof schemas.RpcHealthResponseSchema>
+>;
+
+export type RpcIndexerBlockError = z.infer<
+  ReturnType<typeof schemas.RpcIndexerBlockErrorSchema>
+>;
+
+export type RpcIndexerBlockRequest = z.infer<
+  ReturnType<typeof schemas.RpcIndexerBlockRequestSchema>
+>;
+
+/** Resulting struct represents block with chunks */
+export type RpcIndexerBlockResponse = z.infer<
+  ReturnType<typeof schemas.RpcIndexerBlockResponseSchema>
 >;
 
 export type RpcKnownProducer = z.infer<
@@ -1521,11 +1606,19 @@ export type SlashedValidator = z.infer<
 /**
  * Per-validator chunk endorsement stats accumulated over a spice epoch,
  * indexed by the current epoch's validator id. Carried on the last block of
- * the epoch (see `BlockHeaderInnerRestV7`) and consumed by reward and
+ * the epoch (see `BlockHeaderInnerRestV8`) and consumed by reward and
  * kickout.
  */
 export type SpiceChunkEndorsementStats = z.infer<
   ReturnType<typeof schemas.SpiceChunkEndorsementStatsSchema>
+>;
+
+/**
+ * In spice missing chunks and equivalent to empty chunks so block hash and
+ * shard id always uniquely identifies chunks.
+ */
+export type SpiceChunkId = z.infer<
+  ReturnType<typeof schemas.SpiceChunkIdSchema>
 >;
 
 /** An action which stakes signer_id tokens and setup's validator public key */
@@ -1631,6 +1724,14 @@ export type TrackedShardsConfig = z.infer<
   ReturnType<typeof schemas.TrackedShardsConfigSchema>
 >;
 
+/**
+ * A transaction in a chunk. Untagged so that a signed transaction keeps the
+ * JSON shape it always had.
+ */
+export type TransactionEnvelopeView = z.infer<
+  ReturnType<typeof schemas.TransactionEnvelopeViewSchema>
+>;
+
 export type TransactionNonce = z.infer<
   ReturnType<typeof schemas.TransactionNonceSchema>
 >;
@@ -1660,6 +1761,18 @@ export type TxExecutionError = z.infer<
 
 export type TxExecutionStatus = z.infer<
   ReturnType<typeof schemas.TxExecutionStatusSchema>
+>;
+
+/**
+ * Create a `0u` universal account from its state init. The receiver id must
+ * equal `derive_universal_account_id(state_init)`; the attached `deposit`
+ * covers the new account's storage staking. The state init travels as the
+ * bytes the producer serialized, because the receiver id commits to exactly
+ * those bytes. The typed [`UniversalStateInit`] is a decoded view of them,
+ * used where the state has to be installed or priced.
+ */
+export type UniversalStateInitAction = z.infer<
+  ReturnType<typeof schemas.UniversalStateInitActionSchema>
 >;
 
 /** Use global contract action */
@@ -1825,6 +1938,24 @@ export type EXPERIMENTALGenesisConfigResponse = z.infer<
 >;
 
 /**
+ * Request parameters for EXPERIMENTAL_indexer_block: Returns an indexer
+ * streamer message and tracked shard coverage for a block hash. Requires
+ * enable_indexer_rpc and retained execution data.
+ */
+export type EXPERIMENTALIndexerBlockRequest = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALIndexerBlockRequestSchema>
+>;
+
+/**
+ * Response type for EXPERIMENTAL_indexer_block: Returns an indexer streamer
+ * message and tracked shard coverage for a block hash. Requires
+ * enable_indexer_rpc and retained execution data.
+ */
+export type EXPERIMENTALIndexerBlockResponse = z.infer<
+  ReturnType<typeof schemas.EXPERIMENTALIndexerBlockResponseSchema>
+>;
+
+/**
  * Request parameters for EXPERIMENTAL_light_client_block_proof: Returns the
  * proofs for a transaction execution.
  */
@@ -1945,18 +2076,18 @@ export type EXPERIMENTALSplitStorageInfoResponse = z.infer<
 >;
 
 /**
- * Request parameters for EXPERIMENTAL_tx_status: Queries status of a
- * transaction by hash, returning the final transaction result and details of
- * all receipts.
+ * Request parameters for EXPERIMENTAL_tx_status: [Deprecated] Queries status
+ * of a transaction by hash, returning the final transaction result and
+ * details of all receipts. Consider using `tx_status` instead.
  */
 export type EXPERIMENTALTxStatusRequest = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALTxStatusRequestSchema>
 >;
 
 /**
- * Response type for EXPERIMENTAL_tx_status: Queries status of a transaction
- * by hash, returning the final transaction result and details of all
- * receipts.
+ * Response type for EXPERIMENTAL_tx_status: [Deprecated] Queries status of a
+ * transaction by hash, returning the final transaction result and details of
+ * all receipts. Consider using `tx_status` instead.
  */
 export type EXPERIMENTALTxStatusResponse = z.infer<
   ReturnType<typeof schemas.EXPERIMENTALTxStatusResponseSchema>
@@ -2353,6 +2484,22 @@ export type TxRequest = z.infer<ReturnType<typeof schemas.TxRequestSchema>>;
  * the final transaction result.
  */
 export type TxResponse = z.infer<ReturnType<typeof schemas.TxResponseSchema>>;
+
+/**
+ * Request parameters for tx_status: Queries status of a transaction by hash,
+ * returning the final transaction result and details of all receipts.
+ */
+export type TxStatusRequest = z.infer<
+  ReturnType<typeof schemas.TxStatusRequestSchema>
+>;
+
+/**
+ * Response type for tx_status: Queries status of a transaction by hash,
+ * returning the final transaction result and details of all receipts.
+ */
+export type TxStatusResponse = z.infer<
+  ReturnType<typeof schemas.TxStatusResponseSchema>
+>;
 
 /**
  * Request parameters for validators: Queries active validators on the
